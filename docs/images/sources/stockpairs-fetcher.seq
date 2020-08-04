@@ -1,0 +1,12 @@
+title: Stock pairs fetcher
+
+Scheduler->Config: Getting the list of supported stocks
+Config->Scheduler: List of stock names
+Scheduler->Queue: Creating jobs for processing each stock
+Queue->Worker: Spawning the (stock) job
+Worker->Stock API: Getting the list of supported pairs
+Stock API->Worker: List of supported pairs
+Worker->Config: Getting the list of supported coins for stock
+Config->Worker:
+Worker->Worker: Filtering the pairs, which includes consists only of supported coins
+Worker->Database: Updating stock's pairs

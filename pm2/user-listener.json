@@ -1,0 +1,8 @@
+{
+  "apps": [
+    {
+      "name": "user-listener-listener",
+      "script": "./services/user/listener.js"
+    }
+  ]
+}

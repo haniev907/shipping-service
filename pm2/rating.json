@@ -1,0 +1,14 @@
+{
+  "apps": [
+    {
+      "name": "rating",
+      "script": "./services/rating/worker.js",
+      "instances": 1
+    },
+    {
+      "name": "less-rating",
+      "script": "./services/rating/less-worker.js",
+      "instances": 1
+    }
+  ]
+}

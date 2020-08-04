@@ -1,0 +1,9 @@
+{
+  "apps": [
+    {
+      "name": "auth-server-worker",
+      "script": "./services/auth/worker.js",
+      "instances": 1
+    }
+  ]
+}

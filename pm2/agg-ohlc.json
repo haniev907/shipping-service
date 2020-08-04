@@ -1,0 +1,9 @@
+{
+  "apps": [
+    {
+      "name": "agg-ohlc",
+      "script": "./services/agg-ohlc/worker.js",
+      "instances": 1
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "apps": [
+    {
+      "name": "following",
+      "script": "./services/following/worker.js",
+      "instances": 1
+    },
+    {
+      "name": "following-quality",
+      "script": "./services/following/quality.js",
+      "instances": 1
+    }
+  ]
+}

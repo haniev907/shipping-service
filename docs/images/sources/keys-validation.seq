@@ -1,0 +1,12 @@
+title: Balances fetcher service - loading active pairs for users
+
+Scheduler->Database: Getting the list of keys
+Database->Scheduler: List of (keys, stock name)
+Scheduler->Queue: Creating jobs for processing (key, stock) pairs
+API service worker->Queue: Adding the key directly from the API controller
+Queue->Worker: Spawning the (key, stock) job
+Worker->Database: Getting API keys
+Database->Worker:
+Worker->Stock API: Calling some account method
+Stock API->Worker: If key is invalid, the error will be thrown
+Worker->Database: Updating the status of the key

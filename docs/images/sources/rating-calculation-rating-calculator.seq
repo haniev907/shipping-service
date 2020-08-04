@@ -1,0 +1,27 @@
+title: Rating calculations service - tick fetcher
+
+Scheduler->Database: Getting the list of valid keys
+Database->Scheduler: List of (keys, stock name)
+Scheduler->Config: Getting the list of base currencies for stock
+Config->Scheduler:
+Scheduler->Queue: Creating jobs for processing (key, currency)
+Currency converter worker->Queue: Creating jobs for processing (key, currency)
+Queue->Worker: Spawning the (key, currency) job
+Worker->Database: Getting the latest rating
+Database->Worker: Latest rating or nothing
+note right of Worker: <case-start> If no rating exists
+Worker->Database: Get the oldest balance with converted value in `currency`
+Database->Worker: Oldest balance or nothing
+note right of Worker: Exit the execution, if balance not found
+Worker->Worker: Initialize the tick from the balance
+Worker->Worker: Initialize the rating from the tick
+Worker->Database: Save the resulted rating
+Database->Worker:
+Worker->Worker: Add the same job for calculating the next rating value and exit
+note right of Worker: <case-end>
+Worker->Database: Getting the balance, which is right after the balance which was used for calculating the latest rating
+Worker->Worker: Get the balance value in `currency` and initialize the tick
+Worker->Worker: Initialize the rating from the latest rating and add the tick
+Worker->Database: Save the new rating value
+Database->Worker:
+Worker->Worker: Add the same job for calculating the next rating value and exit

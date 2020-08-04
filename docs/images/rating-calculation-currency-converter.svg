@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1563.109375" height="392"><style xmlns="http://www.w3.org/1999/xhtml" type="text/css">
+svg text {
+  fill: #000;
+  stroke: none;
+  font-size: 12pt;
+  font-family: 'Andale Mono', monospace;
+}
+
+svg :not(text) {
+  fill: none;
+  stroke: #000;
+  stroke-width: 2;
+}
+
+.textbg {
+  fill: #fff;
+  stroke: none;
+}
+
+.rect {
+  fill: #fff;
+}
+
+.signal-solid {
+  stroke-dasharray: 0;
+}
+
+.signal-dotted {
+  stroke-dasharray: 5;
+}
+
+.arrow-filled {
+  marker-end: url(#arrow-filled);
+}
+
+.arrow-open {
+  marker-end: url(#arrow-open);
+}
+</style><defs><marker id="arrow-filled" refX="5" refY="2.5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 5,2.5 0,5z" style="stroke: none; fill: #000"/></marker><marker id="arrow-open" refX="5" refY="2.5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 5,2.5 0,5" style="stroke-width: 1"/></marker></defs><rect width="413.65625" height="28" x="10" y="10" class="rect"/><text x="216.828125" y="24" style="text-anchor: middle; alignment-baseline: central;">Rating calculations service - tick fetcher</text><rect width="213.421875" height="38" x="10" y="48" class="rect"/><text x="116.7109375" y="67" style="text-anchor: middle; alignment-baseline: central;">Ticks fetcher worker</text><rect width="213.421875" height="38" x="10" y="334" class="rect"/><text x="116.7109375" y="353" style="text-anchor: middle; alignment-baseline: central;">Ticks fetcher worker</text><path d="M116.7109375,86 v248" class="timeline"/><rect width="79" height="38" x="587.2890625" y="48" class="rect"/><text x="626.7890625" y="67" style="text-anchor: middle; alignment-baseline: central;">Worker</text><rect width="79" height="38" x="587.2890625" y="334" class="rect"/><text x="626.7890625" y="353" style="text-anchor: middle; alignment-baseline: central;">Worker</text><path d="M626.7890625,86 v248" class="timeline"/><rect width="97.203125" height="38" x="1165.078125" y="48" class="rect"/><text x="1213.6796875" y="67" style="text-anchor: middle; alignment-baseline: central;">Database</text><rect width="97.203125" height="38" x="1165.078125" y="334" class="rect"/><text x="1213.6796875" y="353" style="text-anchor: middle; alignment-baseline: central;">Database</text><path d="M1213.6796875,86 v248" class="timeline"/><rect width="250.828125" height="38" x="1282.28125" y="48" class="rect"/><text x="1407.6953125" y="67" style="text-anchor: middle; alignment-baseline: central;">Rating calculator worker</text><rect width="250.828125" height="38" x="1282.28125" y="334" class="rect"/><text x="1407.6953125" y="353" style="text-anchor: middle; alignment-baseline: central;">Rating calculator worker</text><path d="M1407.6953125,86 v248" class="timeline"/><rect width="490.078125" height="18" x="126.90625" y="102" class="textbg"/><text x="371.75" y="111" style="text-anchor: middle; alignment-baseline: central;">Spawning the (key, stock, currency, balance ID) job</text><path d="M116.7109375,124 h510.078125" class="signal-solid arrow-filled"/><rect width="509.28125" height="18" x="665.78125" y="140" class="textbg"/><text x="920.234375" y="149" style="text-anchor: middle; alignment-baseline: central;">Getting the rate for each currency in balance's state</text><path d="M626.7890625,162 h586.890625" class="signal-solid arrow-filled"/><rect width="326.453125" height="18" x="757" y="178" class="textbg"/><text x="920.234375" y="187" style="text-anchor: middle; alignment-baseline: central;">Rate for specific (pair, time gap)</text><path d="M1213.6796875,200 h-586.890625" class="signal-solid arrow-filled"/><rect width="489.671875" height="18" x="651.78125" y="220" class="textbg"/><text x="896.625" y="229" style="text-anchor: middle; alignment-baseline: central;">Calculating the total balance's value in `currency`</text><path d="M626.7890625,215 h20 v33 h-20" class="signal-solid arrow-filled"/><rect width="566.890625" height="18" x="636.984375" y="254" class="textbg"/><text x="920.234375" y="263" style="text-anchor: middle; alignment-baseline: central;">Saving the resulted base currency value for current balance</text><path d="M626.7890625,276 h586.890625" class="signal-solid arrow-filled"/><rect width="356.65625" height="18" x="838.609375" y="292" class="textbg"/><text x="1017.2421875" y="301" style="text-anchor: middle; alignment-baseline: central;">Adding job for calculating the rating</text><path d="M626.7890625,314 h780.90625" class="signal-solid arrow-filled"/></svg>

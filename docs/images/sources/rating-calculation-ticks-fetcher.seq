@@ -1,0 +1,23 @@
+title: Rating calculations service - tick fetcher
+
+Scheduler->Database: Getting the list of valid keys
+Database->Scheduler: List of (keys, stock name)
+Scheduler->Config: Getting the list of base currencies for stock
+Config->Scheduler:
+Scheduler->Queue: Creating jobs for processing (key, stock, currency)
+Queue->Worker: Spawning the (key, stock, currency) job
+Worker->Database: Getting the list of balances, where ticks were not checked for `currency`
+Database->Worker: List of unchecked balances
+Worker->Database: Getting the closest tick for each currency in balance's state
+note right of Worker: should be placed in 1 hour gap
+Database->Worker: If ticks exists - return the price, otherwise returns nothing
+Worker->Worker: Checking that the tick is correct
+note right of Worker: <condition-start> If there's no correct tick for specific (pair, timestamp)
+Worker->History rates provider: Query X ticks for pair in (timestamp - Y seconds, timestamp + Y seconds) gap
+History rates provider->Worker: Returns the list of ticks in gap
+Worker->Worker: Checking that the returned list includes the necessary tick
+Worker->Database: Saving the received ticks
+note right of Worker: <condition-end>
+Worker-Database: Updating the balance's flag (means `ticks for (state, currency) were checked`)
+Worker->Currency converter worker: Adding job for converting current balance into `currency`
+Worker->Worker: Adding same job, so the next balance will be processed

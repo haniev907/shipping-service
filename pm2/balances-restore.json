@@ -1,0 +1,9 @@
+{
+  "apps": [
+    {
+      "name": "balances-restore",
+      "script": "./services/balances-restore/worker.js",
+      "instances": 1
+    }
+  ]
+}

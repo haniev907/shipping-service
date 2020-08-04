@@ -1,0 +1,41 @@
+{
+  "name": "cindxnodeserver",
+  "version": "1.0.0",
+  "description": "Cindx Backend Server",
+  "scripts": {
+    "test": "mocha tests/",
+    "auth-server": "env $(cat ./envs/dev.env | xargs) SERVER_PORT=5001 pm2 start ./pm2/auth-server.json --no-daemon",
+    "api-server": "env $(cat ./envs/dev.env | xargs) SERVER_PORT=8080 pm2 start ./pm2/api-server.json --no-daemon",
+    "postinstall": "./link.sh"
+  },
+  "repository": "https://github.com/Bit-Invest/CindxServer.git",
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@sentry/node": "^5.4.0",
+    "bull": "^3.5.2",
+    "chai": "^4.2.0",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "express-async-errors": "^3.1.1",
+    "ioredis": "^4.2.0",
+    "mocha": "^5.2.0",
+    "moment": "^2.23.0",
+    "object-path": "^0.11.4",
+    "prom-client": "^11.3.0",
+    "request": "^2.88.0",
+    "swagger-jsdoc": "^3.2.9",
+    "swagger-routes-express": "^3.0.1",
+    "swagger-ui-express": "^4.0.6",
+    "validate.js": "^0.12.0",
+    "winston": "^3.1.0",
+    "yargs": "^12.0.5"
+  },
+  "devDependencies": {
+    "bull-arena": "^2.6.2",
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-mocha": "^5.2.0"
+  }
+}

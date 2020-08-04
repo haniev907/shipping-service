@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1770.0390625" height="526"><style xmlns="http://www.w3.org/1999/xhtml" type="text/css">
+svg text {
+  fill: #000;
+  stroke: none;
+  font-size: 12pt;
+  font-family: 'Andale Mono', monospace;
+}
+
+svg :not(text) {
+  fill: none;
+  stroke: #000;
+  stroke-width: 2;
+}
+
+.textbg {
+  fill: #fff;
+  stroke: none;
+}
+
+.rect {
+  fill: #fff;
+}
+
+.signal-solid {
+  stroke-dasharray: 0;
+}
+
+.signal-dotted {
+  stroke-dasharray: 5;
+}
+
+.arrow-filled {
+  marker-end: url(#arrow-filled);
+}
+
+.arrow-open {
+  marker-end: url(#arrow-open);
+}
+</style><defs><marker id="arrow-filled" refX="5" refY="2.5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 5,2.5 0,5z" style="stroke: none; fill: #000"/></marker><marker id="arrow-open" refX="5" refY="2.5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 5,2.5 0,5" style="stroke-width: 1"/></marker></defs><rect width="192.828125" height="28" x="10" y="10" class="rect"/><text x="106.4140625" y="24" style="text-anchor: middle; alignment-baseline: central;">Stock pairs fetcher</text><rect width="97.203125" height="38" x="10" y="48" class="rect"/><text x="58.6015625" y="67" style="text-anchor: middle; alignment-baseline: central;">Scheduler</text><rect width="97.203125" height="38" x="10" y="468" class="rect"/><text x="58.6015625" y="487" style="text-anchor: middle; alignment-baseline: central;">Scheduler</text><path d="M58.6015625,86 v382" class="timeline"/><rect width="78" height="38" x="385.2578125" y="48" class="rect"/><text x="424.2578125" y="67" style="text-anchor: middle; alignment-baseline: central;">Config</text><rect width="78" height="38" x="385.2578125" y="468" class="rect"/><text x="424.2578125" y="487" style="text-anchor: middle; alignment-baseline: central;">Config</text><path d="M424.2578125,86 v382" class="timeline"/><rect width="68.40625" height="38" x="483.2578125" y="48" class="rect"/><text x="517.4609375" y="67" style="text-anchor: middle; alignment-baseline: central;">Queue</text><rect width="68.40625" height="38" x="483.2578125" y="468" class="rect"/><text x="517.4609375" y="487" style="text-anchor: middle; alignment-baseline: central;">Queue</text><path d="M517.4609375,86 v382" class="timeline"/><rect width="79" height="38" x="837.2265625" y="48" class="rect"/><text x="876.7265625" y="67" style="text-anchor: middle; alignment-baseline: central;">Worker</text><rect width="79" height="38" x="837.2265625" y="468" class="rect"/><text x="876.7265625" y="487" style="text-anchor: middle; alignment-baseline: central;">Worker</text><path d="M876.7265625,86 v382" class="timeline"/><rect width="106.40625" height="38" x="1516.4296875" y="48" class="rect"/><text x="1569.6328125" y="67" style="text-anchor: middle; alignment-baseline: central;">Stock API</text><rect width="106.40625" height="38" x="1516.4296875" y="468" class="rect"/><text x="1569.6328125" y="487" style="text-anchor: middle; alignment-baseline: central;">Stock API</text><path d="M1569.6328125,86 v382" class="timeline"/><rect width="97.203125" height="38" x="1642.8359375" y="48" class="rect"/><text x="1691.4375" y="67" style="text-anchor: middle; alignment-baseline: central;">Database</text><rect width="97.203125" height="38" x="1642.8359375" y="468" class="rect"/><text x="1691.4375" y="487" style="text-anchor: middle; alignment-baseline: central;">Database</text><path d="M1691.4375,86 v382" class="timeline"/><rect width="345.65625" height="18" x="68.59375" y="102" class="textbg"/><text x="241.4296875" y="111" style="text-anchor: middle; alignment-baseline: central;">Getting the list of supported stocks</text><path d="M58.6015625,124 h365.65625" class="signal-solid arrow-filled"/><rect width="182.421875" height="18" x="150.203125" y="140" class="textbg"/><text x="241.4296875" y="149" style="text-anchor: middle; alignment-baseline: central;">List of stock names</text><path d="M424.2578125,162 h-365.65625" class="signal-solid arrow-filled"/><rect width="374.859375" height="18" x="100.796875" y="178" class="textbg"/><text x="288.03125" y="187" style="text-anchor: middle; alignment-baseline: central;">Creating jobs for processing each stock</text><path d="M58.6015625,200 h458.859375" class="signal-solid arrow-filled"/><rect width="230.828125" height="18" x="581.875" y="216" class="textbg"/><text x="697.09375" y="225" style="text-anchor: middle; alignment-baseline: central;">Spawning the (stock) job</text><path d="M517.4609375,238 h359.265625" class="signal-solid arrow-filled"/><rect width="336.046875" height="18" x="1055.140625" y="254" class="textbg"/><text x="1223.1796875" y="263" style="text-anchor: middle; alignment-baseline: central;">Getting the list of supported pairs</text><path d="M876.7265625,276 h692.90625" class="signal-solid arrow-filled"/><rect width="220.828125" height="18" x="1112.75" y="292" class="textbg"/><text x="1223.1796875" y="301" style="text-anchor: middle; alignment-baseline: central;">List of supported pairs</text><path d="M1569.6328125,314 h-692.90625" class="signal-solid arrow-filled"/><rect width="432.46875" height="18" x="434.453125" y="330" class="textbg"/><text x="650.4921875" y="339" style="text-anchor: middle; alignment-baseline: central;">Getting the list of supported coins for stock</text><path d="M876.7265625,352 h-452.46875" class="signal-solid arrow-filled"/><rect width="0" height="0" x="0" y="0" class="textbg"/><text x="650.4921875" y="377" style="text-anchor: middle; alignment-baseline: central;"/><path d="M424.2578125,372 h452.46875" class="signal-solid arrow-filled"/><rect width="652.90625" height="18" x="901.71875" y="392" class="textbg"/><text x="1228.1796875" y="401" style="text-anchor: middle; alignment-baseline: central;">Filtering the pairs, which includes consists only of supported coins</text><path d="M876.7265625,387 h20 v33 h-20" class="signal-solid arrow-filled"/><rect width="211.234375" height="18" x="1178.453125" y="426" class="textbg"/><text x="1284.08203125" y="435" style="text-anchor: middle; alignment-baseline: central;">Updating stock's pairs</text><path d="M876.7265625,448 h814.7109375" class="signal-solid arrow-filled"/></svg>

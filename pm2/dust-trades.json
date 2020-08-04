@@ -1,0 +1,9 @@
+{
+  "apps": [
+    {
+      "name": "dust-trades",
+      "script": "./services/key-trades/dust-trades.js",
+      "instances": 1
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+title: Rating calculations service - tick fetcher
+
+Ticks fetcher worker->Worker: Spawning the (key, stock, currency, balance ID) job
+Worker->Database: Getting the rate for each currency in balance's state
+Database->Worker: Rate for specific (pair, time gap)
+Worker->Worker: Calculating the total balance's value in `currency`
+Worker->Database: Saving the resulted base currency value for current balance
+Worker->Rating calculator worker: Adding job for calculating the rating

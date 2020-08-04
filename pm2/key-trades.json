@@ -1,0 +1,9 @@
+{
+  "apps": [
+    {
+      "name": "stock-trades",
+      "script": "./services/key-trades/stock-trades.js",
+      "instances": 1
+    }
+  ]
+}

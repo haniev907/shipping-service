@@ -1,0 +1,10 @@
+{
+  "apps": [
+    {
+      "name": "keys-validation-worker",
+      "script": "./services/keys-validation/worker.js",
+      "instances": 1,
+      "exec_mode": "cluster"
+    }
+  ]
+}

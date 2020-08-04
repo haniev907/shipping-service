@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1460.7890625" height="584"><style xmlns="http://www.w3.org/1999/xhtml" type="text/css">
+svg text {
+  fill: #000;
+  stroke: none;
+  font-size: 12pt;
+  font-family: 'Andale Mono', monospace;
+}
+
+svg :not(text) {
+  fill: none;
+  stroke: #000;
+  stroke-width: 2;
+}
+
+.textbg {
+  fill: #fff;
+  stroke: none;
+}
+
+.rect {
+  fill: #fff;
+}
+
+.signal-solid {
+  stroke-dasharray: 0;
+}
+
+.signal-dotted {
+  stroke-dasharray: 5;
+}
+
+.arrow-filled {
+  marker-end: url(#arrow-filled);
+}
+
+.arrow-open {
+  marker-end: url(#arrow-open);
+}
+</style><defs><marker id="arrow-filled" refX="5" refY="2.5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 5,2.5 0,5z" style="stroke: none; fill: #000"/></marker><marker id="arrow-open" refX="5" refY="2.5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 5,2.5 0,5" style="stroke-width: 1"/></marker></defs><rect width="557.28125" height="28" x="10" y="10" class="rect"/><text x="288.640625" y="24" style="text-anchor: middle; alignment-baseline: central;">Balances fetcher service - loading active pairs for users</text><rect width="97.203125" height="38" x="10" y="48" class="rect"/><text x="58.6015625" y="67" style="text-anchor: middle; alignment-baseline: central;">Scheduler</text><rect width="97.203125" height="38" x="10" y="526" class="rect"/><text x="58.6015625" y="545" style="text-anchor: middle; alignment-baseline: central;">Scheduler</text><path d="M58.6015625,86 v440" class="timeline"/><rect width="97.203125" height="38" x="318.046875" y="48" class="rect"/><text x="366.6484375" y="67" style="text-anchor: middle; alignment-baseline: central;">Database</text><rect width="97.203125" height="38" x="318.046875" y="526" class="rect"/><text x="366.6484375" y="545" style="text-anchor: middle; alignment-baseline: central;">Database</text><path d="M366.6484375,86 v440" class="timeline"/><rect width="68.40625" height="38" x="495.6640625" y="48" class="rect"/><text x="529.8671875" y="67" style="text-anchor: middle; alignment-baseline: central;">Queue</text><rect width="68.40625" height="38" x="495.6640625" y="526" class="rect"/><text x="529.8671875" y="545" style="text-anchor: middle; alignment-baseline: central;">Queue</text><path d="M529.8671875,86 v440" class="timeline"/><rect width="79" height="38" x="789.2109375" y="48" class="rect"/><text x="828.7109375" y="67" style="text-anchor: middle; alignment-baseline: central;">Worker</text><rect width="79" height="38" x="789.2109375" y="526" class="rect"/><text x="828.7109375" y="545" style="text-anchor: middle; alignment-baseline: central;">Worker</text><path d="M828.7109375,86 v440" class="timeline"/><rect width="106.40625" height="38" x="1324.3828125" y="48" class="rect"/><text x="1377.5859375" y="67" style="text-anchor: middle; alignment-baseline: central;">Stock API</text><rect width="106.40625" height="38" x="1324.3828125" y="526" class="rect"/><text x="1377.5859375" y="545" style="text-anchor: middle; alignment-baseline: central;">Stock API</text><path d="M1377.5859375,86 v440" class="timeline"/><rect width="288.046875" height="18" x="68.59375" y="102" class="textbg"/><text x="212.625" y="111" style="text-anchor: middle; alignment-baseline: central;">Getting the list of valid keys</text><path d="M58.6015625,124 h308.046875" class="signal-solid arrow-filled"/><rect width="249.640625" height="18" x="87.796875" y="140" class="textbg"/><text x="212.625" y="149" style="text-anchor: middle; alignment-baseline: central;">List of (keys, stock name)</text><path d="M366.6484375,162 h-308.046875" class="signal-solid arrow-filled"/><rect width="451.265625" height="18" x="68.59375" y="178" class="textbg"/><text x="294.234375" y="187" style="text-anchor: middle; alignment-baseline: central;">Creating jobs for processing (key, stock) pairs</text><path d="M58.6015625,200 h471.265625" class="signal-solid arrow-filled"/><rect width="278.84375" height="18" x="540.0625" y="216" class="textbg"/><text x="679.2890625" y="225" style="text-anchor: middle; alignment-baseline: central;">Spawning the (key, stock) job</text><path d="M529.8671875,238 h298.84375" class="signal-solid arrow-filled"/><rect width="153.625" height="18" x="520.859375" y="254" class="textbg"/><text x="597.6796875" y="263" style="text-anchor: middle; alignment-baseline: central;">Getting API keys</text><path d="M828.7109375,276 h-462.0625" class="signal-solid arrow-filled"/><rect width="0" height="0" x="0" y="0" class="textbg"/><text x="597.6796875" y="301" style="text-anchor: middle; alignment-baseline: central;"/><path d="M366.6484375,296 h462.0625" class="signal-solid arrow-filled"/><rect width="355.25" height="18" x="925.515625" y="312" class="textbg"/><text x="1103.1484375" y="321" style="text-anchor: middle; alignment-baseline: central;">Getting the list of non-zero balances</text><path d="M828.7109375,334 h548.875" class="signal-solid arrow-filled"/><rect width="259.234375" height="18" x="973.515625" y="350" class="textbg"/><text x="1103.1484375" y="359" style="text-anchor: middle; alignment-baseline: central;">List of (currency, balance)</text><path d="M1377.5859375,372 h-548.875" class="signal-solid arrow-filled"/><rect width="403.65625" height="18" x="396.046875" y="388" class="textbg"/><text x="597.6796875" y="397" style="text-anchor: middle; alignment-baseline: central;">Getting the list of active pairs for stock</text><path d="M828.7109375,410 h-462.0625" class="signal-solid arrow-filled"/><rect width="0" height="0" x="0" y="0" class="textbg"/><text x="597.6796875" y="435" style="text-anchor: middle; alignment-baseline: central;"/><path d="M366.6484375,430 h462.0625" class="signal-solid arrow-filled"/><rect width="508.875" height="18" x="853.703125" y="450" class="textbg"/><text x="1108.1484375" y="459" style="text-anchor: middle; alignment-baseline: central;">Filtering the pairs, which includes user's currencies</text><path d="M828.7109375,445 h20 v33 h-20" class="signal-solid arrow-filled"/><rect width="412.859375" height="18" x="391.234375" y="484" class="textbg"/><text x="597.6796875" y="493" style="text-anchor: middle; alignment-baseline: central;">Updating user's active pairs and currencies</text><path d="M828.7109375,506 h-462.0625" class="signal-solid arrow-filled"/></svg>

@@ -1,0 +1,8 @@
+{
+  "apps": [
+    {
+      "name": "cluster-scheduler",
+      "script": "./services/cluster/scheduler/index.js"
+    }
+  ]
+}

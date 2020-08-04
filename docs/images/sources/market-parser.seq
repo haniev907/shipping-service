@@ -1,0 +1,12 @@
+title: Market parser service
+
+Scheduler->Config: Getting the list of supported stocks
+Database->Scheduler: List of (stock name)
+Scheduler->Queue: Creating jobs for processing (stock)
+Queue->Worker #1: Spawning the (stock) job
+Worker #1->Database: Getting the list of supported pairs for stock
+Database->Worker #1: List of supported pairs
+Worker #1->Queue: Creating revivable jobs for each (stock, pair)
+Queue->Worker #2: Spawning the (pair, stock) job
+Worker #2->Stock API: Connecting to the stock websocket API
+Stock API->Database: Callback receives new tick and saves it

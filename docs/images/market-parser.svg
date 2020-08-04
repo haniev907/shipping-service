@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1682.1953125" height="544"><style xmlns="http://www.w3.org/1999/xhtml" type="text/css">
+svg text {
+  fill: #000;
+  stroke: none;
+  font-size: 12pt;
+  font-family: 'Andale Mono', monospace;
+}
+
+svg :not(text) {
+  fill: none;
+  stroke: #000;
+  stroke-width: 2;
+}
+
+.textbg {
+  fill: #fff;
+  stroke: none;
+}
+
+.rect {
+  fill: #fff;
+}
+
+.signal-solid {
+  stroke-dasharray: 0;
+}
+
+.signal-dotted {
+  stroke-dasharray: 5;
+}
+
+.arrow-filled {
+  marker-end: url(#arrow-filled);
+}
+
+.arrow-open {
+  marker-end: url(#arrow-open);
+}
+</style><defs><marker id="arrow-filled" refX="5" refY="2.5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 5,2.5 0,5z" style="stroke: none; fill: #000"/></marker><marker id="arrow-open" refX="5" refY="2.5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 5,2.5 0,5" style="stroke-width: 1"/></marker></defs><rect width="212.03125" height="28" x="10" y="10" class="rect"/><text x="116.015625" y="24" style="text-anchor: middle; alignment-baseline: central;">Market parser service</text><rect width="97.203125" height="38" x="10" y="48" class="rect"/><text x="58.6015625" y="67" style="text-anchor: middle; alignment-baseline: central;">Scheduler</text><rect width="97.203125" height="38" x="10" y="486" class="rect"/><text x="58.6015625" y="505" style="text-anchor: middle; alignment-baseline: central;">Scheduler</text><path d="M58.6015625,86 v400" class="timeline"/><rect width="78" height="38" x="385.2578125" y="48" class="rect"/><text x="424.2578125" y="67" style="text-anchor: middle; alignment-baseline: central;">Config</text><rect width="78" height="38" x="385.2578125" y="486" class="rect"/><text x="424.2578125" y="505" style="text-anchor: middle; alignment-baseline: central;">Config</text><path d="M424.2578125,86 v400" class="timeline"/><rect width="97.203125" height="38" x="483.2578125" y="48" class="rect"/><text x="531.859375" y="67" style="text-anchor: middle; alignment-baseline: central;">Database</text><rect width="97.203125" height="38" x="483.2578125" y="486" class="rect"/><text x="531.859375" y="505" style="text-anchor: middle; alignment-baseline: central;">Database</text><path d="M531.859375,86 v400" class="timeline"/><rect width="68.40625" height="38" x="600.4609375" y="48" class="rect"/><text x="634.6640625" y="67" style="text-anchor: middle; alignment-baseline: central;">Queue</text><rect width="68.40625" height="38" x="600.4609375" y="486" class="rect"/><text x="634.6640625" y="505" style="text-anchor: middle; alignment-baseline: central;">Queue</text><path d="M634.6640625,86 v400" class="timeline"/><rect width="107.40625" height="38" x="1042.6328125" y="48" class="rect"/><text x="1096.3359375" y="67" style="text-anchor: middle; alignment-baseline: central;">Worker #1</text><rect width="107.40625" height="38" x="1042.6328125" y="486" class="rect"/><text x="1096.3359375" y="505" style="text-anchor: middle; alignment-baseline: central;">Worker #1</text><path d="M1096.3359375,86 v400" class="timeline"/><rect width="107.40625" height="38" x="1170.0390625" y="48" class="rect"/><text x="1223.7421875" y="67" style="text-anchor: middle; alignment-baseline: central;">Worker #2</text><rect width="107.40625" height="38" x="1170.0390625" y="486" class="rect"/><text x="1223.7421875" y="505" style="text-anchor: middle; alignment-baseline: central;">Worker #2</text><path d="M1223.7421875,86 v400" class="timeline"/><rect width="106.40625" height="38" x="1545.7890625" y="48" class="rect"/><text x="1598.9921875" y="67" style="text-anchor: middle; alignment-baseline: central;">Stock API</text><rect width="106.40625" height="38" x="1545.7890625" y="486" class="rect"/><text x="1598.9921875" y="505" style="text-anchor: middle; alignment-baseline: central;">Stock API</text><path d="M1598.9921875,86 v400" class="timeline"/><rect width="345.65625" height="18" x="68.59375" y="102" class="textbg"/><text x="241.4296875" y="111" style="text-anchor: middle; alignment-baseline: central;">Getting the list of supported stocks</text><path d="M58.6015625,124 h365.65625" class="signal-solid arrow-filled"/><rect width="192.03125" height="18" x="199.203125" y="140" class="textbg"/><text x="295.23046875" y="149" style="text-anchor: middle; alignment-baseline: central;">List of (stock name)</text><path d="M531.859375,162 h-473.2578125" class="signal-solid arrow-filled"/><rect width="345.65625" height="18" x="173.796875" y="178" class="textbg"/><text x="346.6328125" y="187" style="text-anchor: middle; alignment-baseline: central;">Creating jobs for processing (stock)</text><path d="M58.6015625,200 h576.0625" class="signal-solid arrow-filled"/><rect width="230.828125" height="18" x="750.28125" y="216" class="textbg"/><text x="865.5" y="225" style="text-anchor: middle; alignment-baseline: central;">Spawning the (stock) job</text><path d="M634.6640625,238 h461.671875" class="signal-solid arrow-filled"/><rect width="432.46875" height="18" x="598.0625" y="254" class="textbg"/><text x="814.09765625" y="263" style="text-anchor: middle; alignment-baseline: central;">Getting the list of supported pairs for stock</text><path d="M1096.3359375,276 h-564.4765625" class="signal-solid arrow-filled"/><rect width="220.828125" height="18" x="703.671875" y="292" class="textbg"/><text x="814.09765625" y="301" style="text-anchor: middle; alignment-baseline: central;">List of supported pairs</text><path d="M531.859375,314 h564.4765625" class="signal-solid arrow-filled"/><rect width="441.671875" height="18" x="644.65625" y="330" class="textbg"/><text x="865.5" y="339" style="text-anchor: middle; alignment-baseline: central;">Creating revivable jobs for each (stock, pair)</text><path d="M1096.3359375,352 h-461.671875" class="signal-solid arrow-filled"/><rect width="288.4375" height="18" x="785.171875" y="368" class="textbg"/><text x="929.203125" y="377" style="text-anchor: middle; alignment-baseline: central;">Spawning the (pair, stock) job</text><path d="M634.6640625,390 h589.078125" class="signal-solid arrow-filled"/><rect width="355.25" height="18" x="1233.734375" y="406" class="textbg"/><text x="1411.3671875" y="415" style="text-anchor: middle; alignment-baseline: central;">Connecting to the stock websocket API</text><path d="M1223.7421875,428 h375.25" class="signal-solid arrow-filled"/><rect width="374.859375" height="18" x="878.1875" y="444" class="textbg"/><text x="1065.42578125" y="453" style="text-anchor: middle; alignment-baseline: central;">Callback receives new tick and saves it</text><path d="M1598.9921875,466 h-1067.1328125" class="signal-solid arrow-filled"/></svg>

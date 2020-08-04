@@ -1,0 +1,9 @@
+{
+  "apps": [
+    {
+      "name": "monitoring-metrics",
+      "script": "./monitoring/metrics/index.js",
+      "instances": 1
+    }
+  ]
+}

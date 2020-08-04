@@ -1,0 +1,22 @@
+{
+  "apps": [
+    {
+      "name": "mail-sender-change-password",
+      "script": "./services/mail-sender/change-password.js",
+      "instances": 1,
+      "exec_mode": "cluster"
+    },
+    {
+      "name": "mail-sender-change-mail",
+      "script": "./services/mail-sender/change-mail.js",
+      "instances": 1,
+      "exec_mode": "cluster"
+    },
+    {
+      "name": "mail-sender-send-signup",
+      "script": "./services/mail-sender/signup.js",
+      "instances": 1,
+      "exec_mode": "cluster"
+    }
+  ]
+}

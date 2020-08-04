@@ -1,0 +1,9 @@
+{
+  "apps": [
+    {
+      "name": "api-server-worker",
+      "script": "./services/api/worker.js",
+      "instances": 1
+    }
+  ]
+}

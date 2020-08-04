@@ -1,0 +1,22 @@
+title: Balances fetcher service - loading balances for active pairs
+
+Scheduler->Database: Getting the list of valid keys
+Database->Scheduler: List of (keys, stock name)
+Scheduler->Database: Getting the list of active (pairs, currencies) for each user
+Database->Scheduler:
+Scheduler->Queue: Creating jobs for processing (key, stock, pairs, currencies)
+Queue->Worker: Spawning the (key, stock, pairs, currencies) job
+Worker->Worker: Checking that the pairs list is not empty, exit otherwise
+Worker->Database: Getting API keys
+Database->Worker:
+Worker->Database: Getting the latest balance for user
+Database->Worker:
+Worker->Stock wrapper: Getting the orders for each pair
+note right of Worker: Orders are later than the (latest balance, zero time)
+Stock wrapper->Worker: List of orders for each pair
+Worker->Worker: Merging orders for each pair, sorting, filtering out non-filled
+Worker->Worker: Grouping orders in the groups by X seconds
+Worker->Worker: Processing each order group and updating state for (from, to)
+Worker->Database: Saving new balances
+Database->Worker:
+Worker->Queue: Adding new job with pairs, which may includes the non-processed orders

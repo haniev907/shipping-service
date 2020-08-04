@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1675.2109375" height="526"><style xmlns="http://www.w3.org/1999/xhtml" type="text/css">
+svg text {
+  fill: #000;
+  stroke: none;
+  font-size: 12pt;
+  font-family: 'Andale Mono', monospace;
+}
+
+svg :not(text) {
+  fill: none;
+  stroke: #000;
+  stroke-width: 2;
+}
+
+.textbg {
+  fill: #fff;
+  stroke: none;
+}
+
+.rect {
+  fill: #fff;
+}
+
+.signal-solid {
+  stroke-dasharray: 0;
+}
+
+.signal-dotted {
+  stroke-dasharray: 5;
+}
+
+.arrow-filled {
+  marker-end: url(#arrow-filled);
+}
+
+.arrow-open {
+  marker-end: url(#arrow-open);
+}
+</style><defs><marker id="arrow-filled" refX="5" refY="2.5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 5,2.5 0,5z" style="stroke: none; fill: #000"/></marker><marker id="arrow-open" refX="5" refY="2.5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 5,2.5 0,5" style="stroke-width: 1"/></marker></defs><rect width="557.28125" height="28" x="10" y="10" class="rect"/><text x="288.640625" y="24" style="text-anchor: middle; alignment-baseline: central;">Balances fetcher service - loading active pairs for users</text><rect width="97.203125" height="38" x="10" y="48" class="rect"/><text x="58.6015625" y="67" style="text-anchor: middle; alignment-baseline: central;">Scheduler</text><rect width="97.203125" height="38" x="10" y="468" class="rect"/><text x="58.6015625" y="487" style="text-anchor: middle; alignment-baseline: central;">Scheduler</text><path d="M58.6015625,86 v382" class="timeline"/><rect width="97.203125" height="38" x="279.640625" y="48" class="rect"/><text x="328.2421875" y="67" style="text-anchor: middle; alignment-baseline: central;">Database</text><rect width="97.203125" height="38" x="279.640625" y="468" class="rect"/><text x="328.2421875" y="487" style="text-anchor: middle; alignment-baseline: central;">Database</text><path d="M328.2421875,86 v382" class="timeline"/><rect width="68.40625" height="38" x="495.6640625" y="48" class="rect"/><text x="529.8671875" y="67" style="text-anchor: middle; alignment-baseline: central;">Queue</text><rect width="68.40625" height="38" x="495.6640625" y="468" class="rect"/><text x="529.8671875" y="487" style="text-anchor: middle; alignment-baseline: central;">Queue</text><path d="M529.8671875,86 v382" class="timeline"/><rect width="194.21875" height="38" x="905.4296875" y="48" class="rect"/><text x="1002.5390625" y="67" style="text-anchor: middle; alignment-baseline: central;">API service worker</text><rect width="194.21875" height="38" x="905.4296875" y="468" class="rect"/><text x="1002.5390625" y="487" style="text-anchor: middle; alignment-baseline: central;">API service worker</text><path d="M1002.5390625,86 v382" class="timeline"/><rect width="79" height="38" x="1119.6484375" y="48" class="rect"/><text x="1159.1484375" y="67" style="text-anchor: middle; alignment-baseline: central;">Worker</text><rect width="79" height="38" x="1119.6484375" y="468" class="rect"/><text x="1159.1484375" y="487" style="text-anchor: middle; alignment-baseline: central;">Worker</text><path d="M1159.1484375,86 v382" class="timeline"/><rect width="106.40625" height="38" x="1538.8046875" y="48" class="rect"/><text x="1592.0078125" y="67" style="text-anchor: middle; alignment-baseline: central;">Stock API</text><rect width="106.40625" height="38" x="1538.8046875" y="468" class="rect"/><text x="1592.0078125" y="487" style="text-anchor: middle; alignment-baseline: central;">Stock API</text><path d="M1592.0078125,86 v382" class="timeline"/><rect width="230.4375" height="18" x="78.203125" y="102" class="textbg"/><text x="193.421875" y="111" style="text-anchor: middle; alignment-baseline: central;">Getting the list of keys</text><path d="M58.6015625,124 h269.640625" class="signal-solid arrow-filled"/><rect width="249.640625" height="18" x="68.59375" y="140" class="textbg"/><text x="193.421875" y="149" style="text-anchor: middle; alignment-baseline: central;">List of (keys, stock name)</text><path d="M328.2421875,162 h-269.640625" class="signal-solid arrow-filled"/><rect width="451.265625" height="18" x="68.59375" y="178" class="textbg"/><text x="294.234375" y="187" style="text-anchor: middle; alignment-baseline: central;">Creating jobs for processing (key, stock) pairs</text><path d="M58.6015625,200 h471.265625" class="signal-solid arrow-filled"/><rect width="452.671875" height="18" x="539.5625" y="216" class="textbg"/><text x="766.203125" y="225" style="text-anchor: middle; alignment-baseline: central;">Adding the key directly from the API controller</text><path d="M1002.5390625,238 h-472.671875" class="signal-solid arrow-filled"/><rect width="278.84375" height="18" x="705.28125" y="254" class="textbg"/><text x="844.5078125" y="263" style="text-anchor: middle; alignment-baseline: central;">Spawning the (key, stock) job</text><path d="M529.8671875,276 h629.28125" class="signal-solid arrow-filled"/><rect width="153.625" height="18" x="666.875" y="292" class="textbg"/><text x="743.6953125" y="301" style="text-anchor: middle; alignment-baseline: central;">Getting API keys</text><path d="M1159.1484375,314 h-830.90625" class="signal-solid arrow-filled"/><rect width="0" height="0" x="0" y="0" class="textbg"/><text x="743.6953125" y="339" style="text-anchor: middle; alignment-baseline: central;"/><path d="M328.2421875,334 h830.90625" class="signal-solid arrow-filled"/><rect width="259.234375" height="18" x="1245.953125" y="350" class="textbg"/><text x="1375.578125" y="359" style="text-anchor: middle; alignment-baseline: central;">Calling some account method</text><path d="M1159.1484375,372 h432.859375" class="signal-solid arrow-filled"/><rect width="412.859375" height="18" x="1169.140625" y="388" class="textbg"/><text x="1375.578125" y="397" style="text-anchor: middle; alignment-baseline: central;">If key is invalid, the error will be thrown</text><path d="M1592.0078125,410 h-432.859375" class="signal-solid arrow-filled"/><rect width="288.4375" height="18" x="599.671875" y="426" class="textbg"/><text x="743.6953125" y="435" style="text-anchor: middle; alignment-baseline: central;">Updating the status of the key</text><path d="M1159.1484375,448 h-830.90625" class="signal-solid arrow-filled"/></svg>
