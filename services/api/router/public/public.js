@@ -21,6 +21,8 @@ const init = (config, cdx) => {
   router.post('/order', controllers.createOrder);
   router.get('/orders/:publicUserToken', controllers.getMyOrders);
 
+  router.post('/order/cancel', controllers.cancelOrder);
+
   return router;
 };
 

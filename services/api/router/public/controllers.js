@@ -68,12 +68,31 @@ const collect = (config, cdx) => {
           phone: order.phone,
           status: order.status,
           message: cdxUtil.getStatusTestOfStatusNumber(order.status),
-          total: dishesWithFullInfo.reduce((prev, cItem) => prev + cItem.price, 0)
+          total: dishesWithFullInfo.reduce((prev, cItem) => prev + cItem.price, 0),
+          _id: order._id
         });
       }
 
       res.json(new cdxUtil.UserResponse(ordersReadyForClient));
     },
+
+    cancelOrder: async (req, res) => {
+      const {
+        body: {
+          orderId, publicUserToken
+        },
+      } = req;
+
+      const currentOrder = await cdx.db.order.getOrderById(orderId);
+
+      if (currentOrder.publicUserToken !== publicUserToken) {
+        throw new Error('User is not owner of this order')
+      }
+
+      await cdx.db.order.upgradeOrder(orderId, 4);
+
+      res.json(new cdxUtil.UserResponseOK());
+    }
   };
 };
 
