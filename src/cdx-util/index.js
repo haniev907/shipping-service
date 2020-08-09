@@ -12,6 +12,9 @@ const ds = require('./ds');
 const cluster = require('./cluster');
 const FutureProfits = require('./future-profits');
 
+const util = require('util');
+const request = util.promisify(require('request'));
+
 
 const { envFlag, envRequire } = require('./env');
 const {
@@ -96,10 +99,53 @@ const sendNotificationToUser = (phone, text) => {
   });
 };
 
+const sendTelegramMessageToAdmin = (message) => {
+  const clientTg = {
+    recipient: null,
+    message: null,
+    token: null,
+    endpoint: 'https://api.telegram.org/bot%token/sendMessage?chat_id=%chatId&text=%message',
+
+    setToken: function (token) {
+      this.token = token;
+    },
+
+    setRecipient: function (chatId) {
+      this.recipient = chatId;
+    },
+
+    setMessage: function (message) {
+      this.message = message;
+    },
+
+    send: async function () {
+      let endpointUrl = this.endpoint
+          .replace('%token', this.token)
+          .replace('%chatId', this.recipient)
+          .replace('%message', this.message);
+
+      try {
+        await request({
+          uri: endpointUrl,
+          method: 'GET',
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
+  clientTg.setToken('1365977882:AAEgiIM3kxjKat61XDhD_2ep_fYLQReTXGM');
+  clientTg.setRecipient('368250774');
+  clientTg.setMessage(message || 'You have a new order!');
+  clientTg.send();
+};
+
 module.exports = {
   getStatusTestOfStatusNumber,
   sendNotificationToPhoneAdmin,
   sendNotificationToUser,
+  sendTelegramMessageToAdmin,
 
   randomToken,
   envFlag,
