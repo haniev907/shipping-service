@@ -60,7 +60,9 @@ const collect = (config, cdx) => {
 
         for (const dish of order.items) {
           const currentDishWithFullInfo = await cdx.db.dish.getDishById(dish.id);
-          dishesWithFullInfo.push(currentDishWithFullInfo);
+          if (currentDishWithFullInfo) {
+            dishesWithFullInfo.push(currentDishWithFullInfo);
+          }
         }
 
         ordersReadyForClient.push({

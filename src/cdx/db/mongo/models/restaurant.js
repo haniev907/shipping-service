@@ -30,6 +30,12 @@ class MongoRestaurant extends MongoModelBase {
     }).exec();
   }
 
+  async removeRestaurantByRestId(restId) {
+    return this.Model.deleteOne({
+      _id: restId
+    }).exec();
+  }
+
   async getRestaurantByRestId(restId) {
     return this.Model.findOne({
       _id: restId

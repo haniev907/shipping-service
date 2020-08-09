@@ -28,6 +28,12 @@ class MongoDish extends MongoModelBase {
     return doc.save();
   }
 
+  async removeDishById(idDish) {
+    return this.Model.deleteOne({
+      _id: idDish
+    }).exec();
+  }
+
   async getDishesByRestId(restId) {
     return this.Model.find({
       restId
