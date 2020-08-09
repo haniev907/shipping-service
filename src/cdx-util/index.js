@@ -76,10 +76,30 @@ const statuses = [
 
 const getStatusTestOfStatusNumber = (statusNumber) => {
   return statuses[statusNumber] || 'Что-то не так с заказом :(';
-}
+};
+
+const SmsRu = require('sms_ru');
+
+const smsClient = new SmsRu('BB0FE51A-85B4-3EFE-C3C6-F69AE01C6C6A');
+
+const sendNotificationToPhoneAdmin = (text) => {
+  const numberPhoneAdmin = '79850789026';
+
+  smsClient.sms_send({to: numberPhoneAdmin, text: text || 'Получен новый заказ'}, (e) => {
+    console.log(e.description);
+  });
+};
+
+const sendNotificationToUser = (phone, text) => {
+  smsClient.sms_send({to: phone, text: text || 'Получен новый заказ'}, (e) => {
+    console.log(e.description);
+  });
+};
 
 module.exports = {
   getStatusTestOfStatusNumber,
+  sendNotificationToPhoneAdmin,
+  sendNotificationToUser,
 
   randomToken,
   envFlag,

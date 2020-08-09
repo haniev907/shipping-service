@@ -1,10 +1,8 @@
-const validate = require('validate.js');
 const cdxUtil = require('@cdx/util');
 
-const moment = require('moment');
 
 const collect = (config, cdx) => {
-  return {
+  const actions = {
     getRestaurants: async (req, res) => {
       const { userId } = req;
 
@@ -41,6 +39,8 @@ const collect = (config, cdx) => {
       } = req;
 
       await cdx.db.order.createOrder(publicUserToken, items, restId, address, phone);
+
+      cdxUtil.sendNotificationToPhoneAdmin('Eda-hh.ru! Мы получили новый заказ!');
 
       res.json(new cdxUtil.UserResponseOK());
     },
@@ -94,6 +94,8 @@ const collect = (config, cdx) => {
       res.json(new cdxUtil.UserResponseOK());
     }
   };
+
+  return actions
 };
 
 module.exports.init = (config, cdx) => collect(config, cdx);
