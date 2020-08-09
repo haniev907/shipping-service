@@ -98,7 +98,7 @@ const collect = (config, cdx) => {
 
       const messageStatus = cdxUtil.getStatusTestOfStatusNumber(status);
       cdxUtil.sendNotificationToUser(currentOrder.phone, `
-        eda-hh.ru! Ваш заказ перевели в статус "${messageStatus}". Спасибо, что вы с нами!
+        eda-hh.ru! Ваш заказ ${messageStatus.toLowerCase()}. Спасибо, что вы с нами!
       `);
 
       res.json(new cdxUtil.UserResponseOK());
