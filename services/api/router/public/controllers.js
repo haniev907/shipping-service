@@ -40,8 +40,8 @@ const collect = (config, cdx) => {
 
       await cdx.db.order.createOrder(publicUserToken, items, restId, address, phone);
 
-      cdxUtil.sendNotificationToPhoneAdmin('Eda-hh.ru! Мы получили новый заказ!');
-
+      cdxUtil.sendNotificationToPhoneAdmin('eda-hh.ru! Мы получили новый заказ!');
+  
       res.json(new cdxUtil.UserResponseOK());
     },
 

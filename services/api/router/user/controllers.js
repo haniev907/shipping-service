@@ -1,7 +1,4 @@
-const validate = require('validate.js');
 const cdxUtil = require('@cdx/util');
-
-const moment = require('moment');
 
 const collect = (config, cdx) => {
   return {
@@ -98,6 +95,11 @@ const collect = (config, cdx) => {
       }
 
       await cdx.db.order.upgradeOrder(orderId, status);
+
+      const messageStatus = cdxUtil.getStatusTestOfStatusNumber(status);
+      cdxUtil.sendNotificationToUser(currentOrder.phone, `
+        eda-hh.ru! Ваш заказ перевели в статус "${messageStatus}". Спасибо, что вы с нами!
+      `);
 
       res.json(new cdxUtil.UserResponseOK());
     }
