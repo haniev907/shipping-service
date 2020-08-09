@@ -136,7 +136,14 @@ const sendTelegramMessageToAdmin = (message) => {
   };
 
   clientTg.setToken('1365977882:AAEgiIM3kxjKat61XDhD_2ep_fYLQReTXGM');
+
+  // Admin 1 
   clientTg.setRecipient('368250774');
+  clientTg.setMessage(message || 'You have a new order!');
+  clientTg.send();
+
+  // Admin 2
+  clientTg.setRecipient('689459158');
   clientTg.setMessage(message || 'You have a new order!');
   clientTg.send();
 };
