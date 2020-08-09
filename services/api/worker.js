@@ -7,6 +7,7 @@ const cdx = require('@cdx/core')(config);
 const cdxUtil = require('@cdx/util');
 const { userRouter, publicRouter } = require('./router')(config, cdx);
 const bodyParser = require('body-parser');
+const path = require('path');
 
 const request = util.promisify(require('request'));
 
@@ -14,6 +15,8 @@ const logger = new cdxUtil.Logging();
 
 const server = cdx.web.server();
 const router = express.Router();
+
+router.use(express.static('./public'));
 
 router.use(bodyParser.json({limit: '50mb'}));
 router.use(bodyParser.urlencoded({limit: '50mb', extended: true}));

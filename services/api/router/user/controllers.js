@@ -1,4 +1,8 @@
 const cdxUtil = require('@cdx/util');
+const base64Img = require('base64-img');
+const fs = require("fs")
+
+const imagesDir = './public/images';
 
 const collect = (config, cdx) => {
   return {
@@ -9,9 +13,14 @@ const collect = (config, cdx) => {
         },
       } = req;
 
-      await cdx.db.restaurant.createRestaurant(name, address, photo, userId);
+      base64Img.img(photo, imagesDir, Date.now(), async function(err, filepath) {
+        const pathArr = filepath.split('/')
+        const fileName = pathArr[pathArr.length - 1];
 
-      res.json(new cdxUtil.UserResponseOK());
+        await cdx.db.restaurant.createRestaurant(name, address, fileName, userId);
+
+        res.json(new cdxUtil.UserResponseOK());
+      });
     },
 
     removeRestaurant: async (req, res) => {
@@ -63,9 +72,14 @@ const collect = (config, cdx) => {
         throw new Error('User is not owner of this rest')
       }
 
-      await cdx.db.dish.addDish(name, Number(price), photo, idRestaurant);
+      base64Img.img(photo, imagesDir, Date.now(), async function(err, filepath) {
+        const pathArr = filepath.split('/')
+        const fileName = pathArr[pathArr.length - 1];
 
-      res.json(new cdxUtil.UserResponseOK());
+        await cdx.db.dish.addDish(name, Number(price), fileName, idRestaurant);
+
+        res.json(new cdxUtil.UserResponseOK());
+      });
     },
 
     removeDish: async (req, res) => {
@@ -82,6 +96,12 @@ const collect = (config, cdx) => {
       if (!isUserOwnerThisRest) {
         throw new Error('User is not owner of this rest')
       }
+
+      fs.unlink(`${imagesDir}/${dish.photo}`, function(err) {
+        if (err) {
+          throw err
+        }
+      });
 
       await cdx.db.dish.removeDishById(idDish);
 
