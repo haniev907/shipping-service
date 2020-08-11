@@ -38,11 +38,13 @@ const collect = (config, cdx) => {
         },
       } = req;
 
-      const length = await cdx.db.order.getAmountAllOrders();
-      await cdx.db.order.createOrder(publicUserToken, items, restId, address, phone, length);
+      const orderNumber = await cdx.db.order.getAmountAllOrders();
+      await cdx.db.order.createOrder(publicUserToken, items, restId, address, phone, orderNumber);
 
       // cdxUtil.sendNotificationToPhoneAdmin('eda-hh.ru! Мы получили новый заказ!');
-      // cdxUtil.sendTelegramMessageToAdmin(encodeURI('Мы получили новый заказ!'));
+      cdxUtil.sendTelegramMessageToAdmin(encodeURI(`
+        Мы получили новый заказ! Номер заказа: ${orderNumber}. Телефон клиента: ${phone}, адрес: ${address}
+      `));
 
       res.json(new cdxUtil.UserResponseOK());
     },
