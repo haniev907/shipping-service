@@ -166,6 +166,7 @@ const collect = (config, cdx) => {
           items: dishesWithFullInfo,
           message: cdxUtil.getStatusTestOfStatusNumber(order.status),
           total: dishesWithFullInfo.reduce((prev, cItem) => prev + cItem.price, 0),
+          orderNumber: order.orderNumber,
           _id: order._id
         });
       }

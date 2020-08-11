@@ -38,10 +38,11 @@ const collect = (config, cdx) => {
         },
       } = req;
 
-      await cdx.db.order.createOrder(publicUserToken, items, restId, address, phone);
+      const length = await cdx.db.order.getAmountAllOrders();
+      await cdx.db.order.createOrder(publicUserToken, items, restId, address, phone, length);
 
       // cdxUtil.sendNotificationToPhoneAdmin('eda-hh.ru! Мы получили новый заказ!');
-      cdxUtil.sendTelegramMessageToAdmin(encodeURI('Мы получили новый заказ!'));
+      // cdxUtil.sendTelegramMessageToAdmin(encodeURI('Мы получили новый заказ!'));
 
       res.json(new cdxUtil.UserResponseOK());
     },
@@ -72,6 +73,7 @@ const collect = (config, cdx) => {
           status: order.status,
           message: cdxUtil.getStatusTestOfStatusNumber(order.status),
           total: dishesWithFullInfo.reduce((prev, cItem) => prev + cItem.price, 0),
+          orderNumber: order.orderNumber,
           _id: order._id
         });
       }

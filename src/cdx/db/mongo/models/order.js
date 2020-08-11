@@ -23,15 +23,16 @@ class MongoOrder extends MongoModelBase {
       restId: { type: String, ref: 'Restaurant', required: true },
       address: { type: String, required: true },
       phone: { type: String, required: true },
-      status: { type: Number, required: true, default: 0 }
+      status: { type: Number, required: true, default: 0 },
+      orderNumber: { type: Number, default: 0 }
     }, { timestamps: true });
 
     this.Model = mongoose.model('Order', this.schema);
   }
 
-  async createOrder(publicUserToken, items, restId, address, phone) {
+  async createOrder(publicUserToken, items, restId, address, phone, orderNumber) {
     const doc = new this.Model({
-      publicUserToken, items, restId, address, phone
+      publicUserToken, items, restId, address, phone, orderNumber
     });
 
     return doc.save();
@@ -65,6 +66,10 @@ class MongoOrder extends MongoModelBase {
     return this.Model.find({
       publicUserToken
     }).exec();
+  }
+
+  async getAmountAllOrders() {
+    return this.Model.countDocuments()
   }
 }
 
