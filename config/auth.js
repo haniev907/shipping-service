@@ -11,7 +11,7 @@ config.jwt = {
   publicKey: Buffer.from(process.env.AUTH_JWT_PUBLIC_KEY || '', 'base64'),
   privateKey: Buffer.from(process.env.AUTH_JWT_PRIVATE_KEY || '', 'base64'),
   algorithm: process.env.AUTH_JWT_ALGORITHM || 'ES512',
-  accessTokenExpiration: '2h',
+  accessTokenExpiration: '1d',
   refreshTokenExpiration: '2d',
   toleranceSeconds: 300,
 };
