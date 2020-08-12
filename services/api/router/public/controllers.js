@@ -98,6 +98,10 @@ const collect = (config, cdx) => {
 
       await cdx.db.order.upgradeOrder(orderId, 4);
 
+      cdxUtil.sendTelegramMessageToAdmin(encodeURI(`
+        Отменен клиентом заказ номер ${currentOrder.orderNumber}. Телефон клиента: ${currentOrder.phone}
+      `));
+
       res.json(new cdxUtil.UserResponseOK());
     }
   };

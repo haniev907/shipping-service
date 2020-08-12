@@ -137,13 +137,18 @@ const sendTelegramMessageToAdmin = (message) => {
 
   clientTg.setToken('1365977882:AAEgiIM3kxjKat61XDhD_2ep_fYLQReTXGM');
 
-  // Admin 1 
-  clientTg.setRecipient('368250774');
+  // Admin 1 Макуша
+  clientTg.setRecipient('1128268046');
   clientTg.setMessage(message || 'You have a new order!');
   clientTg.send();
 
-  // Admin 2
+  // Admin 2 Ибрагим
   clientTg.setRecipient('689459158');
+  clientTg.setMessage(message || 'You have a new order!');
+  clientTg.send();
+
+  // Admin 3 Магомед
+  clientTg.setRecipient('368250774');
   clientTg.setMessage(message || 'You have a new order!');
   clientTg.send();
 };
