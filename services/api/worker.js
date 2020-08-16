@@ -22,6 +22,9 @@ router.use(bodyParser.json({limit: '50mb'}));
 router.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 // router.use(express.json());
 
+// Стартуем бота
+cdxUtil.startTelegramBotAdmin(cdx, config);
+
 router.get('/ping', (_, res) => {
   res.json(new cdxUtil.UserResponseOK());
 });

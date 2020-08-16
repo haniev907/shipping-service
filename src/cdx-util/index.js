@@ -1,7 +1,8 @@
 const Logging = require('./logging');
-const util = require('util');
-const request = util.promisify(require('request'));
 const { envFlag, envRequire } = require('./env');
+const telegramClient = require('./telegram');
+const orderDb = require('./orderDb');
+const orderMethods = require('./orderMethods');
 
 class UserError extends Error {
   constructor(...args) {
@@ -34,19 +35,6 @@ class UserResponseOK extends UserResponse {
   }
 }
 
-const statuses = [
-  'В обработке',
-  'Принят и уже готовится',
-  'Уже едет к вам',
-  'Доставлен',
-  'Отменен клиентом',
-  'Отменен рестораном'
-];
-
-const getStatusTestOfStatusNumber = (statusNumber) => {
-  return statuses[statusNumber] || 'Что-то не так с заказом :(';
-};
-
 const SmsRu = require('sms_ru');
 
 const smsClient = new SmsRu('BB0FE51A-85B4-3EFE-C3C6-F69AE01C6C6A');
@@ -65,62 +53,68 @@ const sendNotificationToUser = (phone, text) => {
   });
 };
 
-const sendTelegramMessageToAdmin = (message) => {
-  const clientTg = {
-    recipient: null,
-    message: null,
-    token: null,
-    endpoint: 'https://api.telegram.org/bot%token/sendMessage?chat_id=%chatId&text=%message',
+const sendTelegramMessageToAdmin = ({order}) => {
+  telegramClient.sendMessageOrder('368250774', {order});
 
-    setToken: function (token) {
-      this.token = token;
-    },
+  // const clientTg = {
+  //   recipient: null,
+  //   message: null,
+  //   token: null,
+  //   endpoint: 'https://api.telegram.org/bot%token/sendMessage?chat_id=%chatId&text=%message',
 
-    setRecipient: function (chatId) {
-      this.recipient = chatId;
-    },
+  //   setToken: function (token) {
+  //     this.token = token;
+  //   },
 
-    setMessage: function (message) {
-      this.message = message;
-    },
+  //   setRecipient: function (chatId) {
+  //     this.recipient = chatId;
+  //   },
 
-    send: async function () {
-      let endpointUrl = this.endpoint
-          .replace('%token', this.token)
-          .replace('%chatId', this.recipient)
-          .replace('%message', this.message);
+  //   setMessage: function (message) {
+  //     this.message = message;
+  //   },
 
-      try {
-        await request({
-          uri: endpointUrl,
-          method: 'GET',
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  };
+  //   send: async function () {
+  //     let endpointUrl = this.endpoint
+  //         .replace('%token', this.token)
+  //         .replace('%chatId', this.recipient)
+  //         .replace('%message', this.message);
 
-  clientTg.setToken('1365977882:AAEgiIM3kxjKat61XDhD_2ep_fYLQReTXGM');
+  //     try {
+  //       await request({
+  //         uri: endpointUrl,
+  //         method: 'GET',
+  //       });
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+  // };
 
-  // Admin 1 Макуша
-  clientTg.setRecipient('1128268046');
-  clientTg.setMessage(message || 'You have a new order!');
-  clientTg.send();
+  // clientTg.setToken('1365977882:AAEgiIM3kxjKat61XDhD_2ep_fYLQReTXGM');
 
-  // Admin 2 Ибрагим
-  clientTg.setRecipient('689459158');
-  clientTg.setMessage(message || 'You have a new order!');
-  clientTg.send();
+  // // Admin 1 Макуша
+  // clientTg.setRecipient('1128268046');
+  // clientTg.setMessage(message || 'You have a new order!');
+  // clientTg.send();
 
-  // Admin 3 Магомед
-  clientTg.setRecipient('368250774');
-  clientTg.setMessage(message || 'You have a new order!');
-  clientTg.send();
+  // // Admin 2 Ибрагим
+  // clientTg.setRecipient('689459158');
+  // clientTg.setMessage(message || 'You have a new order!');
+  // clientTg.send();
+
+  // // Admin 3 Магомед
+  // clientTg.setRecipient('368250774');
+  // clientTg.setMessage(message || 'You have a new order!');
+  // clientTg.send();
+};
+
+const startTelegramBotAdmin = (cdx, config) => {
+  telegramClient.init(cdx, config);
 };
 
 module.exports = {
-  getStatusTestOfStatusNumber,
+  getStatusTestOfStatusNumber: orderMethods.getStatusTestOfStatusNumber,
   sendNotificationToPhoneAdmin,
   sendNotificationToUser,
   sendTelegramMessageToAdmin,
@@ -130,34 +124,7 @@ module.exports = {
   UserResponse,
   UserError,
   UserResponseOK,
-
-  // randomToken,
-  
-  // NotImplementedError,
-  // Rating,
-  // Tick,
-  // sentry,
-  // queue,
-  // MailSender,
-  // hideCredential,
-  // sum,
-  // hash,
-  // choose,
-  // groupByGap,
-  // HistoricalRates,
-  // SimpleCache,
-  // restGetURL,
-  // buildArgs,
-  // filteredPairs,
-  // filterObject,
-  // following,
-  
-  // ds,
-  // cluster,
-  // sha256,
-  // stableStringify,
-  // JSONHash,
-  // mod,
-  // Converter,
-  // FutureProfits,
+  startTelegramBotAdmin,
+  orderMethods,
+  orderDb
 };

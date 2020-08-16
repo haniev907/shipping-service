@@ -51,7 +51,7 @@ class MongoOrder extends MongoModelBase {
   }
 
   async upgradeOrder(orderId, status) {
-    return this.Model.updateOne(
+    await this.Model.updateOne(
       { _id: orderId },
       { 
         $set: {
@@ -59,7 +59,11 @@ class MongoOrder extends MongoModelBase {
         }
       },
       { upsert: false },
-    );
+    ).exec();
+
+    return this.Model.findOne({
+      _id: orderId
+    }).exec();
   }
 
   async getMyOrders(publicUserToken) {

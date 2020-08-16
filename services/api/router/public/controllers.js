@@ -1,6 +1,5 @@
 const cdxUtil = require('@cdx/util');
 
-
 const collect = (config, cdx) => {
   const actions = {
     getRestaurants: async (req, res) => {
@@ -39,12 +38,12 @@ const collect = (config, cdx) => {
       } = req;
 
       const orderNumber = await cdx.db.order.getAmountAllOrders();
-      await cdx.db.order.createOrder(publicUserToken, items, restId, address, phone, orderNumber);
+      const order = await cdx.db.order.createOrder(publicUserToken, items, restId, address, phone, orderNumber);
+      const fullOrder = await cdxUtil.orderDb.getFullOrder(cdx, order);
 
-      // cdxUtil.sendNotificationToPhoneAdmin('eda-hh.ru! Мы получили новый заказ!');
-      cdxUtil.sendTelegramMessageToAdmin(encodeURI(`
-        Мы получили новый заказ! Номер заказа: ${orderNumber}. Телефон клиента: ${phone}, адрес: ${address}
-      `));
+      cdxUtil.sendTelegramMessageToAdmin({
+        order: fullOrder
+      });
 
       res.json(new cdxUtil.UserResponseOK());
     },
@@ -60,33 +59,14 @@ const collect = (config, cdx) => {
       const ordersReadyForClient = [];
       
       for (const order of orders) {
-        const dishesWithFullInfo = [];
-
-        for (const dish of order.items) {
-          const currentDishWithFullInfo = await cdx.db.dish.getDishById(dish.id);
-          
-          if (!currentDishWithFullInfo) {
-            dishesWithFullInfo.push({
-              name: 'Неизвестно',
-              price: 0,
-              photo: '',
-              quantity: dish.quantity,
-              _id: dish._id,
-            });
-          } else {
-            dishesWithFullInfo.push({
-              ...currentDishWithFullInfo._doc,
-              quantity: dish.quantity,
-            });
-          }
-        }
+        const fullOrder = await cdxUtil.orderDb.getFullOrder(cdx, order);
 
         ordersReadyForClient.push({
           address: order.address,
           phone: order.phone,
           status: order.status,
           message: cdxUtil.getStatusTestOfStatusNumber(order.status),
-          total: dishesWithFullInfo.reduce((prev, cItem) => prev + (cItem.price * cItem.quantity), 0),
+          total: fullOrder.items.reduce((prev, cItem) => prev + (cItem.price * cItem.quantity), 0),
           orderNumber: order.orderNumber,
           _id: order._id
         });
@@ -110,9 +90,9 @@ const collect = (config, cdx) => {
 
       await cdx.db.order.upgradeOrder(orderId, 4);
 
-      cdxUtil.sendTelegramMessageToAdmin(encodeURI(`
-        Отменен клиентом заказ номер ${currentOrder.orderNumber}. Телефон клиента: ${currentOrder.phone}
-      `));
+      cdxUtil.sendTelegramMessageToAdmin({
+        order: currentOrder
+      });
 
       res.json(new cdxUtil.UserResponseOK());
     }

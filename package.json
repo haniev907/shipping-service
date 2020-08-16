@@ -23,6 +23,7 @@
     "ioredis": "^4.2.0",
     "mocha": "^5.2.0",
     "moment": "^2.23.0",
+    "node-telegram-bot-api": "^0.50.0",
     "object-path": "^0.11.4",
     "path": "^0.12.7",
     "prom-client": "^11.3.0",
