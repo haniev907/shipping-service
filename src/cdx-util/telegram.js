@@ -2,6 +2,7 @@ const TelegramBot = require('node-telegram-bot-api');
 const statuses = require('./statuses');
 const orderMethods = require('./orderMethods');
 const orderDb = require('./orderDb');
+const phoneNotification = require('./phoneNotification');
 
 const token = '1382278246:AAEacKQoKWR6vMlvDtkLH5f_7buwvX8qWfE';
 
@@ -33,11 +34,21 @@ const enableHandleChangeStatus = (cdx) => {
       parse_mode : 'HTML'
     };
 
-    const updatedOrder = await cdx.db.order.upgradeOrder(callbackData.orderId, callbackData.actionId);
-    const readyOrder = await orderDb.getFullOrder(cdx, updatedOrder);
-    const newMessage = orderMethods.getHtmlMessageOrder(readyOrder);
+    try {
+      const updatedOrder = await cdx.db.order.upgradeOrder(callbackData.orderId, callbackData.actionId);
+      const readyOrder = await orderDb.getFullOrder(cdx, updatedOrder);
+      const newMessage = orderMethods.getHtmlMessageOrder(readyOrder);
 
-    bot.editMessageText(newMessage, options);
+      bot.editMessageText(newMessage, options);
+
+      const messageStatus = orderMethods.getStatusTestOfStatusNumber(readyOrder.status);
+      phoneNotification.sendNotificationToUser(readyOrder.phone, `
+        eda-hh.ru! Ваш заказ ${messageStatus.toLowerCase()}. Спасибо, что вы с нами!
+      `);
+  
+    } catch (error) {
+      console.log(error);
+    }
   });
 };
 
@@ -50,8 +61,17 @@ const sendMessageOrder = async (chatId, {order}) => {
   });
 };
 
+const enableHandlePullMessage = () => {
+  bot.on('message', (msg) => {
+    if (msg.text === '/getChatId') {
+      bot.sendMessage(msg.chat.id, msg.chat.id);
+    }
+  });
+};
+
 const init = async (cdx, config) => {
   enableHandleChangeStatus(cdx);
+  enableHandlePullMessage();
 };
 
 module.exports = {

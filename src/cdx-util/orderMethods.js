@@ -21,6 +21,8 @@ const getHtmlMessageOrder = (order) => (`
 Меню:
 ${getMenuListHtml(order.items)}
 
+Всего: ${order.items.reduce((prev, cItem) => prev + (cItem.price * cItem.quantity), 0)} Р
+
 Выставить статус:
 `);
 
