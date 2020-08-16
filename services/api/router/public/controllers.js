@@ -74,7 +74,7 @@ const collect = (config, cdx) => {
           phone: order.phone,
           status: order.status,
           message: cdxUtil.getStatusTestOfStatusNumber(order.status),
-          total: dishesWithFullInfo.reduce((prev, cItem) => prev + cItem.price, 0),
+          total: dishesWithFullInfo.reduce((prev, cItem) => prev + (cItem.price * cItem.quantity), 0),
           orderNumber: order.orderNumber,
           _id: order._id
         });
