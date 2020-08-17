@@ -39,6 +39,7 @@ class UserResponseOK extends UserResponse {
 const sendTelegramMessageToAdmin = ({order}) => {
   telegramClient.sendMessageOrder('1128268046', {order});
   telegramClient.sendMessageOrder('368250774', {order});
+  telegramClient.sendMessageOrder('689459158', {order});
 };
 
 const startTelegramBotAdmin = (cdx, config) => {
