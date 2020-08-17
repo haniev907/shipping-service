@@ -84,6 +84,10 @@ const sendMessageOrder = async (chatId, {order}) => {
   });
 };
 
+const sendMessage = async (chatId, message) => {
+  await bot.sendMessage(chatId, message);
+};
+
 const enableHandlePullMessage = () => {
   bot.on('message', (msg) => {
     if (msg.text === '/getChatId') {
@@ -100,4 +104,5 @@ const init = async (cdx, config) => {
 module.exports = {
   init,
   sendMessageOrder,
+  sendMessage,
 };

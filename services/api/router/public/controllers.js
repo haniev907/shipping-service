@@ -90,9 +90,9 @@ const collect = (config, cdx) => {
 
       await cdx.db.order.upgradeOrder(orderId, 4);
 
-      cdxUtil.sendTelegramMessageToAdmin({
-        order: currentOrder
-      });
+      cdxUtil.sendTelegramAnyMessageToAdmin(`
+        Заказ №${currentOrder.orderNumber} отменен клиентом.
+      `);
 
       res.json(new cdxUtil.UserResponseOK());
     }

@@ -36,6 +36,12 @@ class UserResponseOK extends UserResponse {
   }
 }
 
+const sendTelegramAnyMessageToAdmin = (message) => {
+  telegramClient.sendMessage('1128268046', message);
+  telegramClient.sendMessage('368250774', message);
+  telegramClient.sendMessage('689459158', message);
+};
+
 const sendTelegramMessageToAdmin = ({order}) => {
   telegramClient.sendMessageOrder('1128268046', {order});
   telegramClient.sendMessageOrder('368250774', {order});
@@ -50,6 +56,7 @@ module.exports = {
   getStatusTestOfStatusNumber: orderMethods.getStatusTestOfStatusNumber,
   sendNotificationToUser: phoneNotification.sendNotificationToUser,
   sendTelegramMessageToAdmin,
+  sendTelegramAnyMessageToAdmin,
   envFlag,
   envRequire,
   Logging,
