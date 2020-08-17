@@ -9,14 +9,17 @@ const getStatusTestOfStatusNumber = (statusNumber) => {
 };
 
 const getMenuListHtml = (items) => items.map((currentItem) => (
-  `${currentItem.name} ${currentItem.quantity > 1 ? `${currentItem.quantity} штук` : ''}, ${(currentItem.price * currentItem.quantity)} Р
 `
+${currentItem.name} ${currentItem.quantity > 1 ? `${currentItem.quantity} штук` : ''}`
 ))
 
 const getHtmlMessageOrder = (order) => (`
-Заказ №${order.orderNumber} 
+Заказ <b>№${order.orderNumber}</b>
+
 Телефон клиента: <i>${order.phone}</i>
+
 Адрес клиента: ${order.address} 
+
 Текущий статус: <b>${getStatusTestOfStatusNumber(order.status)}</b>
 
 Меню:
