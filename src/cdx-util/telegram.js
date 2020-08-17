@@ -17,9 +17,17 @@ const getCallbackData = (callbackDataString) => {
   };
 };
 
-const getMarkups = (orderId) => statuses.map((currentStatus, index) => ([{
-  text: currentStatus, callback_data: createCallbackData(index, orderId)
-}]));
+const getMarkups = (orderId) => {
+  const resArray = statuses.map((currentStatus, index) => [{
+    text: currentStatus, callback_data: createCallbackData(index, orderId)
+  }]);
+
+  resArray.unshift([{
+    text: 'Обновить данные про заказ', callback_data: createCallbackData(-1, orderId)
+  }])
+
+  return resArray;
+};
 
 const enableHandleChangeStatus = (cdx) => {
   bot.on('callback_query', async (callbackQuery) => {
@@ -33,6 +41,21 @@ const enableHandleChangeStatus = (cdx) => {
       }),
       parse_mode : 'HTML'
     };
+
+    // Акшен обновить данные
+    if (callbackData.actionId === '-1') {
+      try {
+        const order = await cdx.db.order.getOrderById(callbackData.orderId);
+        const fullOrder = await orderDb.getFullOrder(cdx, order);
+        const newMessage = orderMethods.getHtmlMessageOrder(fullOrder);
+
+        bot.editMessageText(newMessage, options);
+      } catch (error) {
+        console.log(error);
+      }
+
+      return;
+    }
 
     try {
       const updatedOrder = await cdx.db.order.upgradeOrder(callbackData.orderId, callbackData.actionId);

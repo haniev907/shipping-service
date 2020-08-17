@@ -9,7 +9,8 @@ const getStatusTestOfStatusNumber = (statusNumber) => {
 };
 
 const getMenuListHtml = (items) => items.map((currentItem) => (
-  `${currentItem.name} ${currentItem.quantity}x, ${(currentItem.price * currentItem.quantity)} Р`
+  `${currentItem.name} ${currentItem.quantity > 1 ? `${currentItem.quantity} штук` : ''}, ${(currentItem.price * currentItem.quantity)} Р
+`
 ))
 
 const getHtmlMessageOrder = (order) => (`
@@ -22,6 +23,8 @@ const getHtmlMessageOrder = (order) => (`
 ${getMenuListHtml(order.items)}
 
 Всего: ${order.items.reduce((prev, cItem) => prev + (cItem.price * cItem.quantity), 0)} Р
+
+Последнее время обновления: ${new Date()}
 
 Выставить статус:
 `);
