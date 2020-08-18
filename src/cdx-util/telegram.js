@@ -75,8 +75,8 @@ const enableHandleChangeStatus = (cdx) => {
   });
 };
 
-const sendMessageOrder = async (chatId, {order}) => {
-  await bot.sendMessage(chatId, orderMethods.getHtmlMessageOrder(order), {
+const sendMessageOrder = async (chatId, restName, {order}) => {
+  await bot.sendMessage(chatId, orderMethods.getHtmlMessageOrder(order, restName), {
     reply_markup: JSON.stringify({
       inline_keyboard: getMarkups(order._id)
     }),

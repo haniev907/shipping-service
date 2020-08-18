@@ -47,9 +47,9 @@ const sendTelegramAnyMessageToAdmin = (tgRestId, message) => {
   ));
 };
 
-const sendTelegramMessageToAdmin = (tgRestId, {order}) => {  
+const sendTelegramMessageToAdmin = (tgRestId, restName, {order}) => {  
   ([tgRestId, ...hardCodeTelegramAdminIds]).forEach((currentTgId) => (
-    telegramClient.sendMessageOrder(currentTgId, {order})
+    telegramClient.sendMessageOrder(currentTgId, restName, {order})
   ));
 };
 

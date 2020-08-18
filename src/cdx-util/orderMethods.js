@@ -13,12 +13,12 @@ const getMenuListHtml = (items) => items.map((currentItem) => (
 ${currentItem.name} ${currentItem.quantity > 1 ? `${currentItem.quantity} штук` : ''}`
 ))
 
-const getHtmlMessageOrder = (order) => (`
-Заказ <b>№${order.orderNumber}</b>
+const getHtmlMessageOrder = (order, restName) => (`
+Заказ <b>№${order.orderNumber}</b> (${restName})
 
 Телефон клиента: <i>${order.phone}</i>
 
-Адрес клиента: ${order.address} 
+Адрес клиента: <b>${order.address}</b>
 
 Текущий статус: <b>${getStatusTestOfStatusNumber(order.status)}</b>
 

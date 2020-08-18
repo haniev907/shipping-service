@@ -42,10 +42,12 @@ const collect = (config, cdx) => {
       const fullOrder = await cdxUtil.orderDb.getFullOrder(cdx, order);
 
       const rest = await cdx.db.restaurant.getRestaurantByRestId(restId);
-
-      cdxUtil.sendTelegramMessageToAdmin(rest.telegramChatId, {
-        order: fullOrder
-      });
+      
+      if (rest.telegramChatId) {
+        cdxUtil.sendTelegramMessageToAdmin(rest.telegramChatId, rest.name, {
+          order: fullOrder
+        });
+      }
 
       res.json(new cdxUtil.UserResponseOK());
     },
@@ -93,9 +95,11 @@ const collect = (config, cdx) => {
 
       await cdx.db.order.upgradeOrder(orderId, 4);
 
-      cdxUtil.sendTelegramAnyMessageToAdmin(rest.telegramChatId, `
-        Заказ №${currentOrder.orderNumber} отменен клиентом.
-      `);
+      if (rest.telegramChatId) {
+        cdxUtil.sendTelegramAnyMessageToAdmin(rest.telegramChatId, `
+          Заказ №${currentOrder.orderNumber} отменен клиентом. (${rest.name})
+        `);
+      }
 
       res.json(new cdxUtil.UserResponseOK());
     }
