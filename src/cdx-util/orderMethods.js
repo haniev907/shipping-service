@@ -16,6 +16,8 @@ ${currentItem.name} ${currentItem.quantity > 1 ? `${currentItem.quantity} шту
 const getHtmlMessageOrder = (order, restName) => (`
 Заказ <b>№${order.orderNumber}</b> (${restName})
 
+Формат: <b>${order.shippingType === 'pickup' ? 'Самовывоз' : 'Доставка'}</b>
+
 Телефон клиента: <i>${order.phone}</i>
 
 Адрес клиента: <b>${order.address}</b>

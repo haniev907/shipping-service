@@ -33,16 +33,16 @@ const collect = (config, cdx) => {
     createOrder: async (req, res) => {
       const {
         userId, body: {
-          publicUserToken, items, restId, address, phone
+          publicUserToken, items, restId, address, phone, shippingType
         },
       } = req;
 
       const orderNumber = await cdx.db.order.getAmountAllOrders();
-      const order = await cdx.db.order.createOrder(publicUserToken, items, restId, address, phone, orderNumber);
+      const order = await cdx.db.order.createOrder(publicUserToken, items, restId, address, phone, orderNumber, shippingType);
       const fullOrder = await cdxUtil.orderDb.getFullOrder(cdx, order);
 
       const rest = await cdx.db.restaurant.getRestaurantByRestId(restId);
-      
+
       if (rest.telegramChatId) {
         cdxUtil.sendTelegramMessageToAdmin(rest.telegramChatId, rest.name, {
           order: fullOrder
@@ -72,6 +72,7 @@ const collect = (config, cdx) => {
           message: cdxUtil.getStatusTestOfStatusNumber(order.status),
           total: fullOrder.items.reduce((prev, cItem) => prev + (cItem.price * cItem.quantity), 0),
           orderNumber: order.orderNumber,
+          shippingType: order.shippingType,
           _id: order._id
         });
       }
