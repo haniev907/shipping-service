@@ -69,7 +69,7 @@ const collect = (config, cdx) => {
           address: order.address,
           phone: order.phone,
           status: order.status,
-          message: cdxUtil.getStatusTestOfStatusNumber(order.status),
+          message: cdxUtil.getStatusTestOfStatusNumber(order.status, order.shippingType),
           total: fullOrder.items.reduce((prev, cItem) => prev + (cItem.price * cItem.quantity), 0),
           orderNumber: order.orderNumber,
           shippingType: order.shippingType,

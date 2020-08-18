@@ -222,7 +222,7 @@ const collect = (config, cdx) => {
           phone: order.phone,
           status: order.status,
           items: dishesWithFullInfo,
-          message: cdxUtil.getStatusTestOfStatusNumber(order.status),
+          message: cdxUtil.getStatusTestOfStatusNumber(order.status, order.shippingType),
           total: dishesWithFullInfo.reduce((prev, cItem) => prev + (cItem.price * cItem.quantity), 0),
           orderNumber: order.orderNumber,
           _id: order._id

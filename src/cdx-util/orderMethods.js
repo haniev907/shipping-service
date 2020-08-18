@@ -4,7 +4,11 @@ const getMessageOrder = (order) => (
   `Мы получили новый заказ! Номер заказа: ${order.orderNumber}. Телефон клиента: ${order.phone}, адрес: ${order.address}`
 );
 
-const getStatusTestOfStatusNumber = (statusNumber) => {
+const getStatusTestOfStatusNumber = (statusNumber, shippingType) => {
+  if (statusNumber === 2 && shippingType === 'pickup') {
+    return 'Готов, приходите забирать'
+  }
+
   return statuses[statusNumber] || 'Что-то не так с заказом :(';
 };
 

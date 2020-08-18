@@ -17,9 +17,9 @@ const getCallbackData = (callbackDataString) => {
   };
 };
 
-const getMarkups = (orderId) => {
+const getMarkups = (orderId, shippingType) => {
   const resArray = statuses.map((currentStatus, index) => [{
-    text: currentStatus, callback_data: createCallbackData(index, orderId)
+    text: orderMethods.getStatusTestOfStatusNumber(index, shippingType), callback_data: createCallbackData(index, orderId)
   }]);
 
   resArray.unshift([{
@@ -47,7 +47,8 @@ const enableHandleChangeStatus = (cdx) => {
       try {
         const order = await cdx.db.order.getOrderById(callbackData.orderId);
         const fullOrder = await orderDb.getFullOrder(cdx, order);
-        const newMessage = orderMethods.getHtmlMessageOrder(fullOrder);
+        const rest = await cdx.db.restaurant.getRestaurantByRestId(fullOrder.restId);
+        const newMessage = orderMethods.getHtmlMessageOrder(fullOrder, rest.name);
 
         bot.editMessageText(newMessage, options);
       } catch (error) {
@@ -60,11 +61,12 @@ const enableHandleChangeStatus = (cdx) => {
     try {
       const updatedOrder = await cdx.db.order.upgradeOrder(callbackData.orderId, callbackData.actionId);
       const readyOrder = await orderDb.getFullOrder(cdx, updatedOrder);
-      const newMessage = orderMethods.getHtmlMessageOrder(readyOrder);
+      const rest = await cdx.db.restaurant.getRestaurantByRestId(readyOrder.restId);
+      const newMessage = orderMethods.getHtmlMessageOrder(readyOrder, rest.name);
 
       bot.editMessageText(newMessage, options);
 
-      const messageStatus = orderMethods.getStatusTestOfStatusNumber(readyOrder.status);
+      const messageStatus = orderMethods.getStatusTestOfStatusNumber(readyOrder.status, readyOrder.shippingType);
       phoneNotification.sendNotificationToUser(readyOrder.phone, `
         eda-hh.ru! Ваш заказ ${messageStatus.toLowerCase()}. Спасибо, что вы с нами!
       `);
@@ -78,7 +80,7 @@ const enableHandleChangeStatus = (cdx) => {
 const sendMessageOrder = async (chatId, restName, {order}) => {
   await bot.sendMessage(chatId, orderMethods.getHtmlMessageOrder(order, restName), {
     reply_markup: JSON.stringify({
-      inline_keyboard: getMarkups(order._id)
+      inline_keyboard: getMarkups(order._id, order.shippingType)
     }),
     parse_mode : 'HTML'
   });
