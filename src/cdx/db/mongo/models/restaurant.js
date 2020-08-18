@@ -10,18 +10,29 @@ class MongoRestaurant extends MongoModelBase {
       name: { type: String, required: true },
       address: { type: String, required: true },
       photo: { type: String },
-      userId: { type: String, ref: 'User', required: true }
+      userId: { type: String, ref: 'User', required: true },
+      telegramChatId: { type: String, required: true },
     }, { timestamps: true });
 
     this.Model = mongoose.model('Restaurant', this.schema);
   }
 
-  async createRestaurant(name, address, photo, userId) {
+  async createRestaurant({name, address, photo, userId, telegramChatId}) {
     const doc = new this.Model({
-      name, address, photo, userId
+      name, address, photo, userId, telegramChatId
     });
 
     return doc.save();
+  }
+
+  async editRestaurant(idRest, setData) {
+    return await this.Model.updateOne(
+      { _id: idRest },
+      { 
+        $set: setData
+      },
+      { upsert: false },
+    ).exec();
   }
 
   async getRestaurantsByUserId(userId) {

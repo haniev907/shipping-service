@@ -83,6 +83,7 @@ const collect = (config, cdx) => {
       } = req;
 
       const currentOrder = await cdx.db.order.getOrderById(orderId);
+      const rest = await cdx.db.restaurant.getRestaurantByRestId(currentOrder.restId);
 
       if (currentOrder.publicUserToken !== publicUserToken) {
         throw new Error('User is not owner of this order')

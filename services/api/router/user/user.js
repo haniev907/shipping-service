@@ -19,10 +19,12 @@ const init = (config, cdx) => {
   router.get('/restaurant/:id', controllers.getMyRestaurant);
   router.post('/restaurant', controllers.addRestaurant);
   router.delete('/restaurant/:id', controllers.removeRestaurant);
-  
+  router.post('/restaurant/edit', controllers.editRestaurant);
+
   router.get('/dishes/:restId', controllers.getMyRestDishes);
   router.post('/dish', controllers.addDish);
   router.delete('/dish/:id', controllers.removeDish);
+  router.post('/dish/edit', controllers.editDish);
 
   router.get('/orders/:restId', controllers.getMyRestOrders);
   router.post('/order/upgrade', controllers.upgradeOrder);

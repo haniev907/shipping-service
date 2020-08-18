@@ -28,6 +28,16 @@ class MongoDish extends MongoModelBase {
     return doc.save();
   }
 
+  async editDish(idDish, setData) {
+    return await this.Model.updateOne(
+      { _id: idDish },
+      { 
+        $set: setData
+      },
+      { upsert: false },
+    ).exec();
+  }
+
   async removeDishById(idDish) {
     return this.Model.deleteOne({
       _id: idDish

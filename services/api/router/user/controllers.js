@@ -9,7 +9,7 @@ const collect = (config, cdx) => {
     addRestaurant: async (req, res) => {
       const {
         userId, body: {
-          name, address, photo
+          name, address, photo, telegramChatId
         },
       } = req;
 
@@ -17,10 +17,39 @@ const collect = (config, cdx) => {
         const pathArr = filepath.split('/')
         const fileName = pathArr[pathArr.length - 1];
 
-        await cdx.db.restaurant.createRestaurant(name, address, fileName, userId);
+        await cdx.db.restaurant.createRestaurant({name, address, photo: fileName, userId, telegramChatId});
 
         res.json(new cdxUtil.UserResponseOK());
       });
+    },
+
+    editRestaurant: async (req, res) => {
+      const {
+        userId, body: {
+          name, address, photo, telegramChatId, idRest
+        },
+      } = req;
+
+      if (photo) {
+        base64Img.img(photo, imagesDir, Date.now(), async function(err, filepath) {
+          const pathArr = filepath.split('/')
+          const fileName = pathArr[pathArr.length - 1];
+  
+          await cdx.db.restaurant.editRestaurant(idRest, {
+            name, address, photo: fileName, telegramChatId
+          });
+  
+          res.json(new cdxUtil.UserResponseOK());
+        });
+
+        return;
+      }
+
+      await cdx.db.restaurant.editRestaurant(idRest, {
+        name, address, telegramChatId
+      });
+
+      res.json(new cdxUtil.UserResponseOK());
     },
 
     removeRestaurant: async (req, res) => {
@@ -80,6 +109,35 @@ const collect = (config, cdx) => {
 
         res.json(new cdxUtil.UserResponseOK());
       });
+    },
+
+    editDish: async (req, res) => {
+      const {
+        userId, body: {
+          name, price, photo, idDish
+        },
+      } = req;
+
+      if (photo) {
+        base64Img.img(photo, imagesDir, Date.now(), async function(err, filepath) {
+          const pathArr = filepath.split('/')
+          const fileName = pathArr[pathArr.length - 1];
+  
+          await cdx.db.dish.editDish(idDish, {
+            name, price: Number(price), photo: fileName
+          });
+  
+          res.json(new cdxUtil.UserResponseOK());
+        });
+
+        return;
+      }
+
+      await cdx.db.dish.editDish(idDish, {
+        name, price: Number(price)
+      });
+
+      res.json(new cdxUtil.UserResponseOK());
     },
 
     removeDish: async (req, res) => {
