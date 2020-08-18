@@ -41,7 +41,9 @@ const collect = (config, cdx) => {
       const order = await cdx.db.order.createOrder(publicUserToken, items, restId, address, phone, orderNumber);
       const fullOrder = await cdxUtil.orderDb.getFullOrder(cdx, order);
 
-      cdxUtil.sendTelegramMessageToAdmin({
+      const rest = await cdx.db.restaurant.getRestaurantByRestId(restId);
+
+      cdxUtil.sendTelegramMessageToAdmin(rest.telegramChatId, {
         order: fullOrder
       });
 
@@ -91,7 +93,7 @@ const collect = (config, cdx) => {
 
       await cdx.db.order.upgradeOrder(orderId, 4);
 
-      cdxUtil.sendTelegramAnyMessageToAdmin(`
+      cdxUtil.sendTelegramAnyMessageToAdmin(rest.telegramChatId, `
         Заказ №${currentOrder.orderNumber} отменен клиентом.
       `);
 

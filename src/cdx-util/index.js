@@ -5,6 +5,11 @@ const orderDb = require('./orderDb');
 const orderMethods = require('./orderMethods');
 const phoneNotification = require('./phoneNotification');
 
+const hardCodeTelegramAdminIds = [
+  '368250774',
+  '689459158',
+]
+
 class UserError extends Error {
   constructor(...args) {
     super(...args);
@@ -36,16 +41,16 @@ class UserResponseOK extends UserResponse {
   }
 }
 
-const sendTelegramAnyMessageToAdmin = (message) => {
-  telegramClient.sendMessage('1128268046', message);
-  telegramClient.sendMessage('368250774', message);
-  telegramClient.sendMessage('689459158', message);
+const sendTelegramAnyMessageToAdmin = (tgRestId, message) => {
+  ([tgRestId, ...hardCodeTelegramAdminIds]).forEach((currentTgId) => (
+    telegramClient.sendMessage(currentTgId, message)
+  ));
 };
 
-const sendTelegramMessageToAdmin = ({order}) => {
-  telegramClient.sendMessageOrder('1128268046', {order});
-  telegramClient.sendMessageOrder('368250774', {order});
-  telegramClient.sendMessageOrder('689459158', {order});
+const sendTelegramMessageToAdmin = (tgRestId, {order}) => {  
+  ([tgRestId, ...hardCodeTelegramAdminIds]).forEach((currentTgId) => (
+    telegramClient.sendMessageOrder(currentTgId, {order})
+  ));
 };
 
 const startTelegramBotAdmin = (cdx, config) => {
