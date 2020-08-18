@@ -36,9 +36,6 @@ const enableHandleChangeStatus = (cdx) => {
     const options = {
       chat_id: msg.chat.id,
       message_id: msg.message_id,
-      reply_markup: JSON.stringify({
-        inline_keyboard: getMarkups(callbackData.orderId)
-      }),
       parse_mode : 'HTML'
     };
 
@@ -49,6 +46,10 @@ const enableHandleChangeStatus = (cdx) => {
         const fullOrder = await orderDb.getFullOrder(cdx, order);
         const rest = await cdx.db.restaurant.getRestaurantByRestId(fullOrder.restId);
         const newMessage = orderMethods.getHtmlMessageOrder(fullOrder, rest.name);
+
+        options.reply_markup = JSON.stringify({
+          inline_keyboard: getMarkups(callbackData.orderId, order.shippingType)
+        });
 
         bot.editMessageText(newMessage, options);
       } catch (error) {
@@ -63,6 +64,10 @@ const enableHandleChangeStatus = (cdx) => {
       const readyOrder = await orderDb.getFullOrder(cdx, updatedOrder);
       const rest = await cdx.db.restaurant.getRestaurantByRestId(readyOrder.restId);
       const newMessage = orderMethods.getHtmlMessageOrder(readyOrder, rest.name);
+
+      options.reply_markup = JSON.stringify({
+        inline_keyboard: getMarkups(callbackData.orderId, readyOrder.shippingType)
+      });
 
       bot.editMessageText(newMessage, options);
 
