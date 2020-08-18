@@ -26,7 +26,7 @@ const getHtmlMessageOrder = (order, restName) => (`
 
 Адрес клиента: <b>${order.address}</b>
 
-Текущий статус: <b>${getStatusTestOfStatusNumber(order.status)}</b>
+Текущий статус: <b>${getStatusTestOfStatusNumber(order.status, order.shippingType)}</b>
 
 Меню:
 ${getMenuListHtml(order.items)}
