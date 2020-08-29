@@ -54,7 +54,7 @@ const sendTelegramMessageToAdmin = (tgRestId, restName, {order}) => {
 };
 
 const startTelegramBotAdmin = (cdx, config) => {
-  // telegramClient.init(cdx, config);
+  telegramClient.init(cdx, config);
 };
 
 module.exports = {
