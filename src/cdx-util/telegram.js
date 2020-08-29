@@ -3,7 +3,7 @@ const statuses = require('./statuses');
 const orderMethods = require('./orderMethods');
 const phoneNotification = require('./phoneNotification');
 
-const token = '1345593475:AAE39-SA_BVpj3kT-Mn7sgCH2dXgx6TlbZk';
+const token = process.env.TG_BOT;
 
 const bot = new TelegramBot(token, {polling: true});
 
