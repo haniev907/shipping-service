@@ -26,13 +26,9 @@ module.exports = (db) => {
         }
       }
 
-      const rest = await db.restaurant.getRestaurantByRestId(order.restId);
-      const deliveryPrice = cdxUtil.delivery.getPriceDelivery(rest.city, order.city);
-
       return {
         ...order._doc,
-        deliveryPrice,
-        total: dishesWithFullInfo.reduce((prev, cItem) => prev + (cItem.price * cItem.quantity), deliveryPrice),
+        total: dishesWithFullInfo.reduce((prev, cItem) => prev + (cItem.price * cItem.quantity), order.deliveryPrice),
         items: dishesWithFullInfo
       };
     }

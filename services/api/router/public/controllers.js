@@ -38,10 +38,12 @@ const collect = (config, cdx) => {
       } = req;
 
       const orderNumber = await cdx.db.order.getAmountAllOrders();
-      const order = await cdx.db.order.createOrder(publicUserToken, items, restId, address, phone, orderNumber, shippingType, city);
-      const fullOrder = await cdx.db.wrapper.getFullOrder(order._id);
-
       const rest = await cdx.db.restaurant.getRestaurantByRestId(restId);
+
+      const deliveryPrice = cdxUtil.delivery.getPriceDelivery(rest.city, city);
+
+      const order = await cdx.db.order.createOrder({publicUserToken, items, restId, address, phone, orderNumber, shippingType, city, deliveryPrice});
+      const fullOrder = await cdx.db.wrapper.getFullOrder(order._id);      
 
       if (rest.telegramChatId) {
         cdxUtil.sendTelegramMessageToAdmin(rest.telegramChatId, rest.name, {
