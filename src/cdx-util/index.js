@@ -4,6 +4,7 @@ const telegramClient = require('./telegram');
 const orderDb = require('./orderDb');
 const orderMethods = require('./orderMethods');
 const phoneNotification = require('./phoneNotification');
+const delivery = require('./delivery');
 
 const hardCodeTelegramAdminIds = [
   '368250774',
@@ -54,7 +55,7 @@ const sendTelegramMessageToAdmin = (tgRestId, restName, {order}) => {
 };
 
 const startTelegramBotAdmin = (cdx, config) => {
-  telegramClient.init(cdx, config);
+  // telegramClient.init(cdx, config);
 };
 
 module.exports = {
@@ -70,5 +71,6 @@ module.exports = {
   UserResponseOK,
   startTelegramBotAdmin,
   orderMethods,
-  orderDb
+  orderDb,
+  delivery
 };

@@ -23,6 +23,9 @@ const init = (config, cdx) => {
 
   router.post('/order/cancel', controllers.cancelOrder);
 
+  router.get('/cities', controllers.getCities);
+  router.post('/delivery/price', controllers.getPriceDelivery);
+
   return router;
 };
 

@@ -4,6 +4,8 @@ const orderMethods = require('./orderMethods');
 const orderDb = require('./orderDb');
 const phoneNotification = require('./phoneNotification');
 
+return;
+
 const token = '1382278246:AAEacKQoKWR6vMlvDtkLH5f_7buwvX8qWfE';
 
 const bot = new TelegramBot(token, {polling: true});
@@ -104,8 +106,8 @@ const enableHandlePullMessage = () => {
 };
 
 const init = async (cdx, config) => {
-  enableHandleChangeStatus(cdx);
-  enableHandlePullMessage();
+  // enableHandleChangeStatus(cdx);
+  // enableHandlePullMessage();
 };
 
 module.exports = {

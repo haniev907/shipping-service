@@ -103,7 +103,25 @@ const collect = (config, cdx) => {
       }
 
       res.json(new cdxUtil.UserResponseOK());
-    }
+    },
+
+    getCities: async (req, res) => {
+      const cities = cdxUtil.delivery.getCities();
+
+      res.json(new cdxUtil.UserResponse(cities));
+    },
+
+    getPriceDelivery: async (req, res) => {
+      const {
+        body: {
+          a, b
+        },
+      } = req;
+
+      const price = cdxUtil.delivery.getPriceDelivery(a, b);
+
+      res.json(new cdxUtil.UserResponse(price));
+    },
   };
 
   return actions

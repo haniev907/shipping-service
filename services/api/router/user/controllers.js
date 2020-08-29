@@ -9,7 +9,7 @@ const collect = (config, cdx) => {
     addRestaurant: async (req, res) => {
       const {
         userId, body: {
-          name, address, photo, telegramChatId
+          name, address, photo, telegramChatId, city
         },
       } = req;
 
@@ -17,7 +17,7 @@ const collect = (config, cdx) => {
         const pathArr = filepath.split('/')
         const fileName = pathArr[pathArr.length - 1];
 
-        await cdx.db.restaurant.createRestaurant({name, address, photo: fileName, userId, telegramChatId});
+        await cdx.db.restaurant.createRestaurant({name, address, photo: fileName, userId, telegramChatId, city});
 
         res.json(new cdxUtil.UserResponseOK());
       });
@@ -26,7 +26,7 @@ const collect = (config, cdx) => {
     editRestaurant: async (req, res) => {
       const {
         userId, body: {
-          name, address, photo, telegramChatId, idRest
+          name, address, photo, telegramChatId, idRest, city
         },
       } = req;
 
@@ -36,7 +36,7 @@ const collect = (config, cdx) => {
           const fileName = pathArr[pathArr.length - 1];
   
           await cdx.db.restaurant.editRestaurant(idRest, {
-            name, address, photo: fileName, telegramChatId
+            name, address, photo: fileName, telegramChatId, city
           });
   
           res.json(new cdxUtil.UserResponseOK());
@@ -46,7 +46,7 @@ const collect = (config, cdx) => {
       }
 
       await cdx.db.restaurant.editRestaurant(idRest, {
-        name, address, telegramChatId
+        name, address, telegramChatId, city
       });
 
       res.json(new cdxUtil.UserResponseOK());
