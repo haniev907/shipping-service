@@ -28,10 +28,12 @@ const getHtmlMessageOrder = (order, restName) => (`
 
 Текущий статус: <b>${getStatusTestOfStatusNumber(order.status, order.shippingType)}</b>
 
-Меню:
+Меню (${order.total - order.deliveryPrice} Р):
 ${getMenuListHtml(order.items)}
 
-Всего: ${order.items.reduce((prev, cItem) => prev + (cItem.price * cItem.quantity), 0)} Р
+Доставка: ${order.deliveryPrice} Р
+Всего: ${order.total} Р
+
 
 Последнее время обновления: ${new Date()}
 

@@ -60,7 +60,12 @@ class DB {
     this.user = registerMongoModel(MongoUser);
     this.order = registerMongoModel(MongoOrder);
 
-    this.wrapper = Wrapper;
+    this.wrapper = Wrapper({
+      order: this.order,
+      dish: this.dish,
+      user: this.user,
+      restaurant: this.restaurant
+    });
   }
 }
 

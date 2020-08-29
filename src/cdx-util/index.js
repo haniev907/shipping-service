@@ -1,7 +1,6 @@
 const Logging = require('./logging');
 const { envFlag, envRequire } = require('./env');
 const telegramClient = require('./telegram');
-const orderDb = require('./orderDb');
 const orderMethods = require('./orderMethods');
 const phoneNotification = require('./phoneNotification');
 const delivery = require('./delivery');
@@ -71,6 +70,5 @@ module.exports = {
   UserResponseOK,
   startTelegramBotAdmin,
   orderMethods,
-  orderDb,
   delivery
 };

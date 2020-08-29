@@ -32,14 +32,14 @@ const collect = (config, cdx) => {
 
     createOrder: async (req, res) => {
       const {
-        userId, body: {
-          publicUserToken, items, restId, address, phone, shippingType
+        body: {
+          publicUserToken, items, restId, address, phone, shippingType, city
         },
       } = req;
 
       const orderNumber = await cdx.db.order.getAmountAllOrders();
-      const order = await cdx.db.order.createOrder(publicUserToken, items, restId, address, phone, orderNumber, shippingType);
-      const fullOrder = await cdxUtil.orderDb.getFullOrder(cdx, order);
+      const order = await cdx.db.order.createOrder(publicUserToken, items, restId, address, phone, orderNumber, shippingType, city);
+      const fullOrder = await cdx.db.wrapper.getFullOrder(order._id);
 
       const rest = await cdx.db.restaurant.getRestaurantByRestId(restId);
 
@@ -63,14 +63,15 @@ const collect = (config, cdx) => {
       const ordersReadyForClient = [];
       
       for (const order of orders) {
-        const fullOrder = await cdxUtil.orderDb.getFullOrder(cdx, order);
+        const fullOrder = await cdx.db.wrapper.getFullOrder(order._id);
 
         ordersReadyForClient.push({
           address: order.address,
           phone: order.phone,
           status: order.status,
           message: cdxUtil.getStatusTestOfStatusNumber(order.status, order.shippingType),
-          total: fullOrder.items.reduce((prev, cItem) => prev + (cItem.price * cItem.quantity), 0),
+          deliveryPrice: fullOrder.deliveryPrice,
+          total: fullOrder.total,
           orderNumber: order.orderNumber,
           shippingType: order.shippingType,
           _id: order._id

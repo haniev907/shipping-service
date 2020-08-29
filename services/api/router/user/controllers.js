@@ -196,34 +196,16 @@ const collect = (config, cdx) => {
       const ordersReadyForAdmin = [];
       
       for (const order of listOrders) {
-        const dishesWithFullInfo = [];
-
-        for (const dish of order.items) {
-          const currentDishWithFullInfo = await cdx.db.dish.getDishById(dish.id);
-
-          if (!currentDishWithFullInfo) {
-            dishesWithFullInfo.push({
-              name: 'Неизвестно',
-              price: 0,
-              photo: '',
-              quantity: dish.quantity,
-              _id: dish._id,
-            });
-          } else {
-            dishesWithFullInfo.push({
-              ...currentDishWithFullInfo._doc,
-              quantity: dish.quantity,
-            });
-          }
-        }
+        const fullOrder = await cdx.db.wrapper.getFullOrder(order._id);
 
         ordersReadyForAdmin.push({
           address: order.address,
           phone: order.phone,
           status: order.status,
-          items: dishesWithFullInfo,
+          items: fullOrder.items,
           message: cdxUtil.getStatusTestOfStatusNumber(order.status, order.shippingType),
-          total: dishesWithFullInfo.reduce((prev, cItem) => prev + (cItem.price * cItem.quantity), 0),
+          deliveryPrice: fullOrder.deliveryPrice,
+          total: fullOrder.total,
           orderNumber: order.orderNumber,
           _id: order._id
         });
