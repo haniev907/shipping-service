@@ -25,15 +25,18 @@ class MongoOrder extends MongoModelBase {
       phone: { type: String, required: true },
       status: { type: Number, required: true, default: 0 },
       orderNumber: { type: Number, default: 0 },
-      shippingType: { type: String, default: 'delivery' }
+      shippingType: { type: String, default: 'delivery' },
+      city: { type: String, required: true },
+      deliveryPrice: { type: Number, required: true, default: 0 },
+      payType: { type: String, required: true, default: 'online' }
     }, { timestamps: true });
 
     this.Model = mongoose.model('Order', this.schema);
   }
 
-  async createOrder(publicUserToken, items, restId, address, phone, orderNumber, shippingType) {
+  async createOrder({publicUserToken, items, restId, address, phone, orderNumber, shippingType, city, deliveryPrice, payType}) {
     const doc = new this.Model({
-      publicUserToken, items, restId, address, phone, orderNumber, shippingType
+      publicUserToken, items, restId, address, phone, orderNumber, shippingType, city, deliveryPrice, payType
     });
 
     return doc.save();

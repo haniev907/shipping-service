@@ -32,16 +32,18 @@ const collect = (config, cdx) => {
 
     createOrder: async (req, res) => {
       const {
-        userId, body: {
-          publicUserToken, items, restId, address, phone, shippingType
+        body: {
+          publicUserToken, items, restId, address, phone, shippingType, city, payType
         },
       } = req;
 
       const orderNumber = await cdx.db.order.getAmountAllOrders();
-      const order = await cdx.db.order.createOrder(publicUserToken, items, restId, address, phone, orderNumber, shippingType);
-      const fullOrder = await cdxUtil.orderDb.getFullOrder(cdx, order);
-
       const rest = await cdx.db.restaurant.getRestaurantByRestId(restId);
+
+      const deliveryPrice = cdxUtil.delivery.getPriceDelivery(rest.city, city);
+
+      const order = await cdx.db.order.createOrder({publicUserToken, items, restId, address, phone, orderNumber, shippingType, city, deliveryPrice, payType});
+      const fullOrder = await cdx.db.wrapper.getFullOrder(order._id);      
 
       if (rest.telegramChatId) {
         cdxUtil.sendTelegramMessageToAdmin(rest.telegramChatId, rest.name, {
@@ -63,14 +65,15 @@ const collect = (config, cdx) => {
       const ordersReadyForClient = [];
       
       for (const order of orders) {
-        const fullOrder = await cdxUtil.orderDb.getFullOrder(cdx, order);
+        const fullOrder = await cdx.db.wrapper.getFullOrder(order._id);
 
         ordersReadyForClient.push({
           address: order.address,
           phone: order.phone,
           status: order.status,
           message: cdxUtil.getStatusTestOfStatusNumber(order.status, order.shippingType),
-          total: fullOrder.items.reduce((prev, cItem) => prev + (cItem.price * cItem.quantity), 0),
+          deliveryPrice: fullOrder.deliveryPrice,
+          total: fullOrder.total,
           orderNumber: order.orderNumber,
           shippingType: order.shippingType,
           _id: order._id
@@ -103,7 +106,25 @@ const collect = (config, cdx) => {
       }
 
       res.json(new cdxUtil.UserResponseOK());
-    }
+    },
+
+    getCities: async (req, res) => {
+      const cities = cdxUtil.delivery.getCities();
+
+      res.json(new cdxUtil.UserResponse(cities));
+    },
+
+    getPriceDelivery: async (req, res) => {
+      const {
+        body: {
+          a, b
+        },
+      } = req;
+
+      const price = cdxUtil.delivery.getPriceDelivery(a, b);
+
+      res.json(new cdxUtil.UserResponse(price));
+    },
   };
 
   return actions

@@ -1,10 +1,9 @@
 const TelegramBot = require('node-telegram-bot-api');
 const statuses = require('./statuses');
 const orderMethods = require('./orderMethods');
-const orderDb = require('./orderDb');
 const phoneNotification = require('./phoneNotification');
 
-const token = '1382278246:AAEacKQoKWR6vMlvDtkLH5f_7buwvX8qWfE';
+const token = process.env.TG_BOT;
 
 const bot = new TelegramBot(token, {polling: true});
 
@@ -43,7 +42,7 @@ const enableHandleChangeStatus = (cdx) => {
     if (callbackData.actionId === '-1') {
       try {
         const order = await cdx.db.order.getOrderById(callbackData.orderId);
-        const fullOrder = await orderDb.getFullOrder(cdx, order);
+        const fullOrder = await cdx.db.wrapper.getFullOrder(order._id);
         const rest = await cdx.db.restaurant.getRestaurantByRestId(fullOrder.restId);
         const newMessage = orderMethods.getHtmlMessageOrder(fullOrder, rest.name);
 
@@ -61,7 +60,7 @@ const enableHandleChangeStatus = (cdx) => {
 
     try {
       const updatedOrder = await cdx.db.order.upgradeOrder(callbackData.orderId, callbackData.actionId);
-      const readyOrder = await orderDb.getFullOrder(cdx, updatedOrder);
+      const readyOrder = await cdx.db.getFullOrder(updatedOrder._id);
       const rest = await cdx.db.restaurant.getRestaurantByRestId(readyOrder.restId);
       const newMessage = orderMethods.getHtmlMessageOrder(readyOrder, rest.name);
 

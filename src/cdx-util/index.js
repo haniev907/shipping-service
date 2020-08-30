@@ -1,9 +1,9 @@
 const Logging = require('./logging');
 const { envFlag, envRequire } = require('./env');
 const telegramClient = require('./telegram');
-const orderDb = require('./orderDb');
 const orderMethods = require('./orderMethods');
 const phoneNotification = require('./phoneNotification');
+const delivery = require('./delivery');
 
 const hardCodeTelegramAdminIds = [
   '368250774',
@@ -70,5 +70,5 @@ module.exports = {
   UserResponseOK,
   startTelegramBotAdmin,
   orderMethods,
-  orderDb
+  delivery
 };
