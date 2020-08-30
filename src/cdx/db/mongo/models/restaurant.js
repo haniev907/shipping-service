@@ -12,15 +12,16 @@ class MongoRestaurant extends MongoModelBase {
       photo: { type: String },
       userId: { type: String, ref: 'User', required: true },
       telegramChatId: { type: String, required: true },
-      city: { type: String, required: true }
+      city: { type: String, required: true },
+      onlinePayMessage: { type: String }
     }, { timestamps: true });
 
     this.Model = mongoose.model('Restaurant', this.schema);
   }
 
-  async createRestaurant({name, address, photo, userId, telegramChatId, city}) {
+  async createRestaurant({name, address, photo, userId, telegramChatId, city, onlinePayMessage}) {
     const doc = new this.Model({
-      name, address, photo, userId, telegramChatId, city
+      name, address, photo, userId, telegramChatId, city, onlinePayMessage
     });
 
     return doc.save();

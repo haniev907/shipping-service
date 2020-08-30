@@ -33,7 +33,7 @@ const collect = (config, cdx) => {
     createOrder: async (req, res) => {
       const {
         body: {
-          publicUserToken, items, restId, address, phone, shippingType, city
+          publicUserToken, items, restId, address, phone, shippingType, city, payType
         },
       } = req;
 
@@ -42,7 +42,7 @@ const collect = (config, cdx) => {
 
       const deliveryPrice = cdxUtil.delivery.getPriceDelivery(rest.city, city);
 
-      const order = await cdx.db.order.createOrder({publicUserToken, items, restId, address, phone, orderNumber, shippingType, city, deliveryPrice});
+      const order = await cdx.db.order.createOrder({publicUserToken, items, restId, address, phone, orderNumber, shippingType, city, deliveryPrice, payType});
       const fullOrder = await cdx.db.wrapper.getFullOrder(order._id);      
 
       if (rest.telegramChatId) {

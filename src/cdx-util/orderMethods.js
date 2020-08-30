@@ -13,16 +13,16 @@ const getStatusTestOfStatusNumber = (statusNumber, shippingType) => {
 };
 
 const getMenuListHtml = (items) => items.map((currentItem) => (
-`
-${currentItem.name} ${currentItem.quantity > 1 ? `${currentItem.quantity} штук` : ''}`
-))
+`${currentItem.name} ${currentItem.quantity > 1 ? `(${currentItem.quantity} штук)` : ''}`
+)).join(`
+`)
 
 const getHtmlMessageOrder = (order, restName) => (`
 Заказ <b>№${order.orderNumber}</b> (${restName})
 
 Формат: <b>${order.shippingType === 'pickup' ? 'Самовывоз' : 'Доставка'}</b>
 
-Телефон клиента: <i>${order.phone}</i>
+Телефон клиента: <b><i>${order.phone}</i></b>
 
 Адрес клиента: <b>${order.address}</b>
 
@@ -34,6 +34,7 @@ ${getMenuListHtml(order.items)}
 Доставка: ${order.deliveryPrice} Р
 Всего: ${order.total} Р
 
+Оплата: <b>${order.payType === 'online' ? 'Перевод онлайн' : 'Наличными'}</b>
 
 Последнее время обновления: ${new Date()}
 

@@ -9,7 +9,7 @@ const collect = (config, cdx) => {
     addRestaurant: async (req, res) => {
       const {
         userId, body: {
-          name, address, photo, telegramChatId, city
+          name, address, photo, telegramChatId, city, onlinePayMessage
         },
       } = req;
 
@@ -17,7 +17,7 @@ const collect = (config, cdx) => {
         const pathArr = filepath.split('/')
         const fileName = pathArr[pathArr.length - 1];
 
-        await cdx.db.restaurant.createRestaurant({name, address, photo: fileName, userId, telegramChatId, city});
+        await cdx.db.restaurant.createRestaurant({name, address, photo: fileName, userId, telegramChatId, city, onlinePayMessage});
 
         res.json(new cdxUtil.UserResponseOK());
       });
@@ -26,7 +26,7 @@ const collect = (config, cdx) => {
     editRestaurant: async (req, res) => {
       const {
         userId, body: {
-          name, address, photo, telegramChatId, idRest, city
+          name, address, photo, telegramChatId, idRest, city, onlinePayMessage
         },
       } = req;
 
@@ -36,7 +36,7 @@ const collect = (config, cdx) => {
           const fileName = pathArr[pathArr.length - 1];
   
           await cdx.db.restaurant.editRestaurant(idRest, {
-            name, address, photo: fileName, telegramChatId, city
+            name, address, photo: fileName, telegramChatId, city, onlinePayMessage
           });
   
           res.json(new cdxUtil.UserResponseOK());
@@ -46,7 +46,7 @@ const collect = (config, cdx) => {
       }
 
       await cdx.db.restaurant.editRestaurant(idRest, {
-        name, address, telegramChatId, city
+        name, address, telegramChatId, city, onlinePayMessage
       });
 
       res.json(new cdxUtil.UserResponseOK());
