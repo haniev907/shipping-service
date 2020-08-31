@@ -25,7 +25,7 @@ const getHtmlMessageOrder = (order, restName) => (`
 
 Телефон клиента: <b><i>${order.phone}</i></b>
 
-Адрес клиента: <b>${delivery.cityNamesMap()[(order.city)]}, ${order.address}</b>
+Адрес клиента: <b>${delivery.getCities()[(order.city)]}, ${order.address}</b>
 
 Текущий статус: <b>${getStatusTestOfStatusNumber(order.status, order.shippingType)}</b>
 
