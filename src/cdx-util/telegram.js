@@ -60,7 +60,7 @@ const enableHandleChangeStatus = (cdx) => {
 
     try {
       const updatedOrder = await cdx.db.order.upgradeOrder(callbackData.orderId, callbackData.actionId);
-      const readyOrder = await cdx.db.getFullOrder(updatedOrder._id);
+      const readyOrder = await cdx.db.wrapper.getFullOrder(updatedOrder._id);
       const rest = await cdx.db.restaurant.getRestaurantByRestId(readyOrder.restId);
       const newMessage = orderMethods.getHtmlMessageOrder(readyOrder, rest.name);
 
