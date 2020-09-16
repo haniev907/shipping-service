@@ -90,7 +90,7 @@ const collect = (config, cdx) => {
     addDish: async (req, res) => {
       const {
         userId, body: {
-          idRestaurant, name, price, photo
+          idRestaurant, name, price, photo, category, weight, description
         },
       } = req;
 
@@ -105,7 +105,9 @@ const collect = (config, cdx) => {
         const pathArr = filepath.split('/')
         const fileName = pathArr[pathArr.length - 1];
 
-        await cdx.db.dish.addDish(name, Number(price), fileName, idRestaurant);
+        await cdx.db.dish.addDish({
+          name, price: Number(price), photo: fileName, restId: idRestaurant, category, weight, description
+        });
 
         res.json(new cdxUtil.UserResponseOK());
       });
@@ -114,7 +116,7 @@ const collect = (config, cdx) => {
     editDish: async (req, res) => {
       const {
         userId, body: {
-          name, price, photo, idDish
+          name, price, photo, idDish, category, weight, description
         },
       } = req;
 
@@ -124,7 +126,7 @@ const collect = (config, cdx) => {
           const fileName = pathArr[pathArr.length - 1];
   
           await cdx.db.dish.editDish(idDish, {
-            name, price: Number(price), photo: fileName
+            name, price: Number(price), photo: fileName, category, weight, description
           });
   
           res.json(new cdxUtil.UserResponseOK());
@@ -134,7 +136,7 @@ const collect = (config, cdx) => {
       }
 
       await cdx.db.dish.editDish(idDish, {
-        name, price: Number(price)
+        name, price: Number(price), category, weight, description
       });
 
       res.json(new cdxUtil.UserResponseOK());
