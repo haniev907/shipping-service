@@ -41,8 +41,13 @@ const collect = (config, cdx) => {
       const rest = await cdx.db.restaurant.getRestaurantByRestId(restId);
 
       const deliveryPrice = cdxUtil.delivery.getPriceDelivery(rest.city, city);
+      const fullItemsData = await cdx.db.wrapper.getFullDishes(items);
+      const totalPrice = fullItemsData.totalPrice + deliveryPrice;
 
-      const order = await cdx.db.order.createOrder({publicUserToken, items, restId, address, phone, orderNumber, shippingType, city, deliveryPrice, payType});
+      const order = await cdx.db.order.createOrder({
+        publicUserToken, items, restId, address, phone, orderNumber, shippingType, city, deliveryPrice, payType,
+        total: Number(totalPrice)
+      });
       const fullOrder = await cdx.db.wrapper.getFullOrder(order._id);      
 
       if (rest.telegramChatId) {
