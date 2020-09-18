@@ -8,7 +8,8 @@ const delivery = require('./delivery');
 const hardCodeTelegramAdminIds = [
   '368250774',
   '689459158',
-]
+  '609733324'
+];
 
 class UserError extends Error {
   constructor(...args) {
