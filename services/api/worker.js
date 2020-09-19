@@ -33,7 +33,7 @@ router.get('/ping', (_, res) => {
 });
 
 router.get('/syncOrders', async (_, res) => {
-  const orders = await cdx.db.order.getAll();
+  const orders = await cdx.db.order.getAll(10);
 
   orders.reduce(async (prev, currentOrder, index) => {
     await prev;
@@ -101,6 +101,10 @@ router.get('/stats', async (_, res) => {
     prevResponse[index].averagePrice = prevResponse[index].totalPrice / listOrders.length;
     prevResponse[index].quantityOrders = listOrders.length;
     prevResponse[index].quantityUniqOrders = listOrders.reduce((prevUniqQuantity, currentOrderForUniq) => prevUniqQuantity + (currentOrderForUniq.uniq ? 1 : 0), 0);
+    prevResponse[index].quantityRetenshenOrders = prevResponse[index].quantityOrders - prevResponse[index].quantityUniqOrders;
+    prevResponse[index].quantityRetenshenOrdersRatio = ((prevResponse[index].quantityRetenshenOrders / prevResponse[index].quantityOrders) * 100).toFixed(2);
+    prevResponse[index].canceledOrders = listOrders.reduce((prevUniqQuantity, currentOrderForUniq) => prevUniqQuantity + (currentOrderForUniq.status > 3 ? 1 : 0), 0);
+    prevResponse[index].canceledOrdersRatio = ((prevResponse[index].canceledOrders / prevResponse[index].quantityOrders) * 100).toFixed(2);
 
     return prevResponse;
   }, {});
@@ -113,7 +117,11 @@ router.get('/stats', async (_, res) => {
     prevResponse.totalPrice += dayData.totalPrice;
     prevResponse.quantityOrders += dayData.quantityOrders;
     prevResponse.quantityUniqOrders += dayData.quantityUniqOrders;
+    prevResponse.quantityRetenshenOrders = prevResponse.quantityOrders - prevResponse.quantityUniqOrders;
+    prevResponse.quantityRetenshenOrdersRatio = ((prevResponse.quantityRetenshenOrders / prevResponse.quantityOrders) * 100).toFixed(2);
     prevResponse.averagePrice = prevResponse.totalPrice / prevResponse.quantityOrders;
+    prevResponse.canceledOrders += dayData.canceledOrders;
+    prevResponse.canceledOrdersRatio = ((prevResponse.canceledOrders / prevResponse.quantityOrders) * 100).toFixed(2);
 
     return prevResponse;
   }, {});
@@ -125,17 +133,30 @@ router.get('/stats', async (_, res) => {
   };
 
   const createFileHtml = () => {
-    const header = ['Дата', 'Заказы всего', 'Уникальных заказов', 'Общая сумма заказов', 'Средний чек']
+    const header = ['Дата', 'Заказы всего', 'Общая сумма заказов', 'Средний чек', '% отмен заказов (абс)', '% ретеншена (абс)']
     const dayRows = Object.entries(statsOfDay).sort(([dayNameA], [dayNameB]) => {
       const timeA = moment(dayNameA).valueOf();
       const timeB = moment(dayNameB).valueOf();
 
       return timeA - timeB;
     }).map(([dayName, dayData]) => {
-      return [dayName, dayData.quantityOrders, dayData.quantityUniqOrders, Math.ceil(dayData.totalPrice), Math.ceil(dayData.averagePrice)]
-    })
+      return [
+        dayName,
+        dayData.quantityOrders,
+        Math.ceil(dayData.totalPrice),
+        Math.ceil(dayData.averagePrice),
+        `${dayData.canceledOrdersRatio}% (${dayData.canceledOrders})`,
+        `${dayData.quantityRetenshenOrdersRatio}% (${dayData.quantityRetenshenOrders})`
+      ];
+    });
 
-    const endRows = ['Всего', allDaysData.quantityOrders, allDaysData.quantityUniqOrders, Math.ceil(allDaysData.totalPrice), Math.ceil(allDaysData.averagePrice)]
+    const endRows = ['Всего',
+      allDaysData.quantityOrders,
+      Math.ceil(allDaysData.totalPrice),
+      Math.ceil(allDaysData.averagePrice),
+      `${allDaysData.canceledOrdersRatio}% (${allDaysData.canceledOrders})`,
+      `${allDaysData.quantityRetenshenOrdersRatio}% (${allDaysData.quantityRetenshenOrders})`
+    ];
 
     return `
       <html>
