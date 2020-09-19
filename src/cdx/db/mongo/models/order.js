@@ -91,8 +91,11 @@ class MongoOrder extends MongoModelBase {
     return this.Model.countDocuments()
   }
 
-  async getAll() {
-    return this.Model.find().exec();
+  async getAll(limit) {
+    return this.Model
+      .find()
+      .sort({_id: -1})
+      .limit(limit || null);
   }
 }
 
