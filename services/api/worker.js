@@ -198,6 +198,79 @@ router.get('/stats', async (_, res) => {
   // }));
 });
 
+
+router.get('/users', async (_, res) => {
+  const orders = await cdx.db.order.getAll();
+
+  const usersMap = orders.reduce((prevResponse, currentOrder) => {
+    const index = currentOrder.phone;
+
+    if (!prevResponse[index]) {
+      prevResponse[index] = [];
+    }
+
+    prevResponse[index].push(currentOrder);
+
+    if (prevResponse[index].length > 1) {
+      prevResponse[index] = prevResponse[index].sort((orderA, orderB) => moment(orderA.createdAt).valueOf() - moment(orderB.createdAt).valueOf());
+    }
+
+    return prevResponse;
+  }, {});
+
+  const createFileHtml = () => {
+    const header = ['Телефон', 'Заказов всего', 'Последний заказ', 'Город', 'Всего на сумму']
+    const dayRows = Object.entries(usersMap)
+      .sort(([, userOrdersA], [, userOrdersB]) => {
+        const lastOrderTimeA = moment(userOrdersA[userOrdersA.length - 1].createdAt).valueOf();
+        const lastOrderTimeB = moment(userOrdersB[userOrdersB.length - 1].createdAt).valueOf();
+
+        return lastOrderTimeB - lastOrderTimeA;
+      })
+      .map(([userPhone, userOrders]) => {
+        const amountOrders = userOrders.length;
+        const lastOrder = userOrders[userOrders.length - 1];
+        const lastOrderTime = moment(lastOrder.createdAt).format('L');
+        const city = cdxUtil.delivery.getCities()[lastOrder.city] || lastOrder.address;
+        const amountPrice = userOrders.reduce((prev, currentOrder) => prev + currentOrder.total, 0);
+
+        return [
+          userPhone,
+          amountOrders,
+          lastOrderTime,
+          city,
+          amountPrice
+        ];
+      });
+
+    return `
+      <html>
+        <style>
+          td {
+            background: #f2f2f2;
+            padding: 10px 20px;
+          }
+        </style>
+        <body>
+          <table>
+            <tr>
+              ${header.map((currentHeaderCol) => (`<td>${currentHeaderCol}</td>`))}
+            </tr>
+            ${dayRows.map((currentRow) => (`
+              <tr>
+                ${currentRow.map((currentRowCol) => (`<td>${currentRowCol}</td>`))}
+              </tr>
+            `))}
+          </table>
+        </body>
+      </html>
+    `;
+  };
+
+  const statsStrXls = createFileHtml();
+  return res.send(statsStrXls);
+});
+
 router.post('/auth/signup', async (req, res) => {
   const userData = req.body;
 
