@@ -42,15 +42,31 @@ class UserResponseOK extends UserResponse {
 }
 
 const sendTelegramAnyMessageToAdmin = (tgRestId, message) => {
-  ([tgRestId, ...hardCodeTelegramAdminIds]).forEach((currentTgId) => (
+  const arrIds = [...hardCodeTelegramAdminIds];
+
+  if (tgRestId) {
+    arrIds.unshift(tgRestId);
+  }
+
+  arrIds.forEach((currentTgId) => (
     telegramClient.sendMessage(currentTgId, message)
   ));
 };
 
-const sendTelegramMessageToAdmin = (tgRestId, restName, {order}) => {  
-  ([tgRestId, ...hardCodeTelegramAdminIds]).forEach((currentTgId) => (
-    telegramClient.sendMessageOrder(currentTgId, restName, {order})
-  ));
+const sendTelegramMessageToAdmin = (tgRestId, restName, {order}) => {
+  const arrIds = [...hardCodeTelegramAdminIds];
+
+  if (tgRestId) {
+    arrIds.unshift(tgRestId);
+  }
+
+  arrIds.forEach((currentTgId) => {
+    try {
+      telegramClient.sendMessageOrder(currentTgId, restName, {order});
+    } catch (error) {
+      console.log(`Ошибка отправки тг-уведомления на ${currentTgId}`);
+    }
+  });
 };
 
 const startTelegramBotAdmin = (cdx, config) => {

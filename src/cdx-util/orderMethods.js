@@ -19,7 +19,11 @@ const getMenuListHtml = (items) => items.map((currentItem) => (
 
 const getHtmlMessageOrder = (order, restName) => (`
 Заказ <b>№${order.orderNumber}</b> (${restName})
-
+${!order.confirmed && (
+`
+<b>НЕ ПОДТВЕРЖДЕН!</b>
+`
+)} 
 Формат: <b>${order.shippingType === 'pickup' ? 'Самовывоз' : 'Доставка'}</b>
 
 Телефон клиента: <b><i>${order.phone}</i></b>

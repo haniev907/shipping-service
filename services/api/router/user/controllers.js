@@ -232,11 +232,6 @@ const collect = (config, cdx) => {
 
       await cdx.db.order.upgradeOrder(orderId, status);
 
-      const messageStatus = cdxUtil.getStatusTestOfStatusNumber(status);
-      cdxUtil.sendNotificationToUser(currentOrder.phone, `
-        eda-hh.ru! Ваш заказ ${messageStatus.toLowerCase()}. Спасибо, что вы с нами!
-      `);
-
       res.json(new cdxUtil.UserResponseOK());
     }
   };

@@ -30,6 +30,7 @@ class MongoOrder extends MongoModelBase {
       deliveryPrice: { type: Number, required: true, default: 0 },
       payType: { type: String, required: true, default: 'online' },
       total: { type: Number, required: true, default: 0 },
+      confirmed: { type: Boolean, required: true, default: false },
     }, { timestamps: true });
 
     this.Model = mongoose.model('Order', this.schema);

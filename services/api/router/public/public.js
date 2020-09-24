@@ -19,6 +19,7 @@ const init = (config, cdx) => {
   router.get('/menu/:restId', controllers.getMenu);
 
   router.post('/order', controllers.createOrder);
+  router.post('/order/confirm', controllers.confirmOrder);
   router.get('/orders/:publicUserToken', controllers.getMyOrders);
 
   router.post('/order/cancel', controllers.cancelOrder);
