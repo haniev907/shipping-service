@@ -6,9 +6,10 @@ const phoneNotification = require('./phoneNotification');
 const delivery = require('./delivery');
 
 const hardCodeTelegramAdminIds = [
-  '368250774',
-  '689459158',
-  '609733324'
+  '368250774', // ibragim
+  '689459158', // magomed
+  '609733324', // lida
+  '408388567' // daniil
 ];
 
 class UserError extends Error {
