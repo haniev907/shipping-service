@@ -36,10 +36,8 @@ class MongoOrder extends MongoModelBase {
     this.Model = mongoose.model('Order', this.schema);
   }
 
-  async createOrder({publicUserToken, items, restId, address, phone, orderNumber, shippingType, city, deliveryPrice, payType, total}) {
-    const doc = new this.Model({
-      publicUserToken, items, restId, address, phone, orderNumber, shippingType, city, deliveryPrice, payType, total
-    });
+  async createOrder(data) {
+    const doc = new this.Model(data);
 
     return doc.save();
   }

@@ -9,7 +9,8 @@ const getPhonePinOfToken = (token) => {
   const [phone, pin] = token.split('-');
 
   return {
-    phone, pin
+    phone: phone || token, 
+    pin
   };
 };
 
@@ -52,10 +53,11 @@ const collect = (config, cdx) => {
 
       let isConfirmed = false;
 
-      const {tokenPhone, pin}  = getPhonePinOfToken(publicUserToken);
+      const {pin} = getPhonePinOfToken(publicUserToken);
+      const tokenPhone = phone;
 
       if (pin) {
-        const client = await cdx.db.client.getUserByPhone(phone);
+        const client = await cdx.db.client.getUserByPhone(tokenPhone);
 
         if (client && client.pin) {
           isConfirmed = client.pin === pin;
@@ -70,7 +72,8 @@ const collect = (config, cdx) => {
       const totalPrice = fullItemsData.totalPrice + deliveryPrice;
 
       const order = await cdx.db.order.createOrder({
-        publicUserToken, items, restId, address, phone, orderNumber, shippingType, city, deliveryPrice, payType,
+        publicUserToken, items, restId, address, phone, 
+        orderNumber, shippingType, city, deliveryPrice, payType,
         total: Number(totalPrice), confirmed: isConfirmed
       });
       const fullOrder = await cdx.db.wrapper.getFullOrder(order._id);      
@@ -79,14 +82,27 @@ const collect = (config, cdx) => {
         order: fullOrder
       });
 
-      if (!isConfirmed) {
-        const newClientPin = getRandomPin();
-        const client = await cdx.db.client.createClient({
-          phone, pin: newClientPin, lastTimeRemind: Date.now()
-        });
+      let client = await cdx.db.client.getUserByPhone(phone);;
 
-        cdxUtil.sendNotificationToUser(phone, `@eda.house | Ваш пин-номер ${newClientPin}, подтвердите свой заказ на сайте.`);
+      if (!isConfirmed) {
+        let clientPin = getRandomPin();
+
+        if (!client) {
+          client = await cdx.db.client.createClient({
+            phone, 
+            pin: clientPin,
+            city,
+            address
+          });
+
+          cdxUtil.sendNotificationToUser(phone, `@eda.house | Ваш пин-номер ${client.pin}, подтвердите свой заказ на сайте. Теперь это ваш пароль, запомните его, пожалуйста.`);
+        }
       }
+
+      await cdx.db.client.editClient(client._id, {
+        city,
+        address
+      });
 
       res.json(new cdxUtil.UserResponseOK());
     },
@@ -94,17 +110,20 @@ const collect = (config, cdx) => {
     confirmOrder: async (req, res) => {
       const {
         body: {
-          orderId, pin, phone
+          orderId, pin
         },
       } = req;
 
+      const order = await cdx.db.order.getOrderById(orderId);
+      const phone = order.phone;
       const client = await cdx.db.client.getUserByPhone(phone);
       const isConfirmed = client.pin === pin;
 
+      const fullOrder = await cdx.db.wrapper.getFullOrder(order._id);
+
       if (isConfirmed) {
-        const order = await cdx.db.order.getOrderById(orderId);
         const rest = await cdx.db.restaurant.getRestaurantByRestId(order.restId);
-        const publicUserToken = getPublicToken(phone, pin);
+        const publicUserToken = getPublicToken(client.phone, client.pin);
 
         await cdx.db.order.editOrder(orderId, {
           confirmed: true,
@@ -120,48 +139,45 @@ const collect = (config, cdx) => {
         return;
       }
 
-      res.json(new cdxUtil.UserResponse({
-        error: {
-          needConfirmId: fullOrder._id
-        }
-      }));
+      throw new cdxUtil.UserError(`needConfirmId: ${fullOrder._id}`);
     },
 
     remindPin: async (req, res) => {
       const {
-        params: {
-          phone,
+        body: {
+          phone
         },
       } = req;
 
-      const client = await cdx.db.client.getUserByPhone(phone);
+      let client = await cdx.db.client.getUserByPhone(phone);
 
       if (!client) {
-        return res.json(new cdxUtil.UserResponse({
-          error: {
-            message: 'User is not defined'
-          }
-        }));
+        let clientPin = getRandomPin();
+
+        if (!client) {
+          client = await cdx.db.client.createClient({
+            phone, 
+            pin: clientPin
+          });
+
+          cdxUtil.sendNotificationToUser(phone, `@eda.house | Ваш пин-номер ${client.pin}, подтвердите свой заказ на сайте. Теперь это ваш пароль, запомните его, пожалуйста.`);
+        }
       }
 
       const nowTime = Date.now();
-      const isBan = nowTime - client.lastTimeRemind < (5 * 1000 * 60);
+      const isBan = client.lastTimeRemind && nowTime - client.lastTimeRemind < (5 * 1000 * 60);
 
       if (isBan) {
-        return res.json(new cdxUtil.UserResponse({
-          error: {
-            message: 'Too many requests'
-          }
-        }));
+        throw new cdxUtil.UserError('Подождите пару минут, слишком много попыток.')
       }
 
-      cdxUtil.sendNotificationToUser(phone, `@eda.house | Ваш пин-номер ${client.pin}, подтвердите свой заказ на сайте.`);
+      cdxUtil.sendNotificationToUser(phone, `@eda.house | Ваш пин-номер ${client.pin}, подтвердите свой заказ на сайте. Теперь это ваш пароль, запомните его, пожалуйста.`);
 
       await cdx.db.client.editClient(client._id, {
         lastTimeRemind: nowTime
       });
 
-      res.json(new cdxUtil.UserResponseOk());
+      res.json(new cdxUtil.UserResponseOK());
     },
 
     getMyOrders: async (req, res) => {
@@ -205,7 +221,7 @@ const collect = (config, cdx) => {
       const rest = await cdx.db.restaurant.getRestaurantByRestId(currentOrder.restId);
 
       if (currentOrder.publicUserToken !== publicUserToken) {
-        throw new Error('User is not owner of this order')
+        throw new cdxUtil.UserError('User is not owner of this order')
       }
 
       await cdx.db.order.upgradeOrder(orderId, 4);
@@ -237,7 +253,7 @@ const collect = (config, cdx) => {
       res.json(new cdxUtil.UserResponse(price));
     },
 
-    authClient: async () => {
+    authClient: async (req, res) => {
       const {
         body: {
           phone, pin
@@ -247,11 +263,7 @@ const collect = (config, cdx) => {
       const client = await cdx.db.client.getUserByPhone(phone);
 
       if (!client || pin !== client.pin) {
-        return res.json(new cdxUtil.UserResponse({
-          error: {
-            message: 'User is not defined'
-          }
-        }));
+        throw new cdxUtil.UserError('User is not defined')
       }
 
       const publicUserToken = getPublicToken(phone, pin);;
@@ -259,9 +271,9 @@ const collect = (config, cdx) => {
       res.json(new cdxUtil.UserResponse(publicUserToken));
     },
 
-    getInfoClient: async () => {
+    getInfoClient: async (req, res) => {
       const {
-        body: {
+        params: {
           publicUserToken
         },
       } = req;
@@ -271,20 +283,18 @@ const collect = (config, cdx) => {
       const client = await cdx.db.client.getUserByPhone(phone); 
 
       if (!client || pin !== client.pin) {
-        return res.json(new cdxUtil.UserResponse({
-          error: {
-            message: 'User is not defined'
-          }
-        }));
+        throw new cdxUtil.UserError('User is not defined')
       }
 
       res.json(new cdxUtil.UserResponse(client));
     },
 
-    editInfoClient: async () => {
+    editInfoClient: async (req, res) => {
       const {
         body: {
-          publicUserToken, data
+          publicUserToken, data: {
+            name
+          }
         },
       } = req;
 
@@ -293,16 +303,30 @@ const collect = (config, cdx) => {
       const client = await cdx.db.client.getUserByPhone(phone); 
 
       if (!client || pin !== client.pin) {
-        return res.json(new cdxUtil.UserResponse({
-          error: {
-            message: 'User is not defined'
-          }
-        }));
+        throw new cdxUtil.UserError('User is not defined')
       }
 
-      await cdx.db.client.editClient(client._id, data); 
+      await cdx.db.client.editClient(client._id, {name}); 
 
-      res.json(new cdxUtil.UserResponseOk());
+      res.json(new cdxUtil.UserResponseOK());
+    },
+
+    getFullOrder: async (req, res) => {
+      const {
+        body: {
+          publicUserToken, orderId
+        },
+      } = req;
+      
+      const currentOrder = await cdx.db.order.getOrderById(orderId);
+
+      if (currentOrder.publicUserToken !== publicUserToken) {
+        throw new cdxUtil.UserError('User is not owner of this order')
+      }
+
+      const fullOrder = await cdx.db.wrapper.getFullOrder(currentOrder._id);      
+
+      res.json(new cdxUtil.UserResponse(fullOrder));
     },
   };
 

@@ -48,9 +48,13 @@ const sendTelegramAnyMessageToAdmin = (tgRestId, message) => {
     arrIds.unshift(tgRestId);
   }
 
-  arrIds.forEach((currentTgId) => (
-    telegramClient.sendMessage(currentTgId, message)
-  ));
+  try {
+    arrIds.forEach((currentTgId) => (
+      telegramClient.sendMessage(currentTgId, message)
+    ));
+  } catch (error) {
+    console.log('sendTelegramAnyMessageToAdmin', error)
+  }
 };
 
 const sendTelegramMessageToAdmin = (tgRestId, restName, {order}) => {
