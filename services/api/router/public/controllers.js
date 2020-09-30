@@ -75,8 +75,6 @@ const collect = (config, cdx) => {
       if (promocode) {
         const dbPromocode = await cdx.db.promocode.getBySign(promocode);
 
-        console.log({dbPromocode});
-
         if (!dbPromocode || dbPromocode.charge < 1) {
           return res.json(new cdxUtil.UserResponse({
             failPromocode: {
@@ -230,7 +228,7 @@ const collect = (config, cdx) => {
           status: order.status,
           message: cdxUtil.getStatusTestOfStatusNumber(order.status, order.shippingType),
           deliveryPrice: fullOrder.deliveryPrice,
-          total: fullOrder.total,
+          total: fullOrder.total - fullOrder.discount,
           orderNumber: order.orderNumber,
           shippingType: order.shippingType,
           _id: order._id,
@@ -359,6 +357,33 @@ const collect = (config, cdx) => {
       const fullOrder = await cdx.db.wrapper.getFullOrder(currentOrder._id);      
 
       res.json(new cdxUtil.UserResponse(fullOrder));
+    },
+
+    getDiscount: async (req, res) => {
+      const {
+        body: {
+          promocode, value
+        },
+      } = req;
+      
+      const dbPromocode = await cdx.db.promocode.getBySign(promocode);
+      let discount = 0;
+
+      if (dbPromocode && dbPromocode.charge > 0) {
+        if (dbPromocode.type === 'percent') {
+          discount = value * (dbPromocode.value / 100);
+        } else {
+          discount = dbPromocode.value;
+        }
+
+        if (dbPromocode.maxValue && dbPromocode.maxValue > 0) {
+          discount = Math.min(discount, dbPromocode.maxValue);
+        }
+
+        discount = Math.ceil(discount);
+      }
+
+      res.json(new cdxUtil.UserResponse(discount));
     },
   };
 

@@ -33,6 +33,8 @@ const init = (config, cdx) => {
   router.post('/profile/edit', controllers.editInfoClient);
   router.post('/profile/auth', controllers.authClient);
 
+  router.post('/get-discount', controllers.getDiscount);
+
   return router;
 };
 
