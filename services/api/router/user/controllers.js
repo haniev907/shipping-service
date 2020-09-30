@@ -4,6 +4,8 @@ const fs = require("fs")
 
 const imagesDir = './public/images';
 
+const isSuperAdmin = (password) => password === 'hanievSuperAdmin818';
+
 const collect = (config, cdx) => {
   return {
     addRestaurant: async (req, res) => {
@@ -90,7 +92,7 @@ const collect = (config, cdx) => {
     addDish: async (req, res) => {
       const {
         userId, body: {
-          idRestaurant, name, price, photo
+          idRestaurant, name, price, photo, category, weight, description
         },
       } = req;
 
@@ -105,7 +107,9 @@ const collect = (config, cdx) => {
         const pathArr = filepath.split('/')
         const fileName = pathArr[pathArr.length - 1];
 
-        await cdx.db.dish.addDish(name, Number(price), fileName, idRestaurant);
+        await cdx.db.dish.addDish({
+          name, price: Number(price), photo: fileName, restId: idRestaurant, category, weight, description
+        });
 
         res.json(new cdxUtil.UserResponseOK());
       });
@@ -114,7 +118,7 @@ const collect = (config, cdx) => {
     editDish: async (req, res) => {
       const {
         userId, body: {
-          name, price, photo, idDish
+          name, price, photo, idDish, category, weight, description
         },
       } = req;
 
@@ -124,7 +128,7 @@ const collect = (config, cdx) => {
           const fileName = pathArr[pathArr.length - 1];
   
           await cdx.db.dish.editDish(idDish, {
-            name, price: Number(price), photo: fileName
+            name, price: Number(price), photo: fileName, category, weight, description
           });
   
           res.json(new cdxUtil.UserResponseOK());
@@ -134,7 +138,7 @@ const collect = (config, cdx) => {
       }
 
       await cdx.db.dish.editDish(idDish, {
-        name, price: Number(price)
+        name, price: Number(price), category, weight, description
       });
 
       res.json(new cdxUtil.UserResponseOK());
@@ -225,15 +229,10 @@ const collect = (config, cdx) => {
       const currentRest = await cdx.db.restaurant.getRestaurantByRestId(currentOrder.restId);
 
       if (currentRest.userId !== userId) {
-        throw new Error('User is not owner of this rest')
+        throw new Error('User is not owner of this rest');
       }
 
       await cdx.db.order.upgradeOrder(orderId, status);
-
-      const messageStatus = cdxUtil.getStatusTestOfStatusNumber(status);
-      cdxUtil.sendNotificationToUser(currentOrder.phone, `
-        eda-hh.ru! Ваш заказ ${messageStatus.toLowerCase()}. Спасибо, что вы с нами!
-      `);
 
       res.json(new cdxUtil.UserResponseOK());
     }

@@ -6,6 +6,8 @@ const MongoDish = require('./mongo/models/dish');
 const MongoRestaurant = require('./mongo/models/restaurant');
 const MongoUser = require('./mongo/models/user');
 const MongoOrder = require('./mongo/models/order');
+const MongoClient = require('./mongo/models/client');
+const MongoPromocode = require('./mongo/models/promocode');
 
 const Wrapper = require('./wrapper');
 
@@ -59,12 +61,15 @@ class DB {
     this.restaurant = registerMongoModel(MongoRestaurant);
     this.user = registerMongoModel(MongoUser);
     this.order = registerMongoModel(MongoOrder);
+    this.client = registerMongoModel(MongoClient);
+    this.promocode = registerMongoModel(MongoPromocode);
 
     this.wrapper = Wrapper({
       order: this.order,
       dish: this.dish,
       user: this.user,
-      restaurant: this.restaurant
+      restaurant: this.restaurant,
+      client: this.client
     });
   }
 }

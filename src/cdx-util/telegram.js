@@ -69,12 +69,6 @@ const enableHandleChangeStatus = (cdx) => {
       });
 
       bot.editMessageText(newMessage, options);
-
-      const messageStatus = orderMethods.getStatusTestOfStatusNumber(readyOrder.status, updatedOrder.shippingType);
-      phoneNotification.sendNotificationToUser(readyOrder.phone, `
-        eda-hh.ru! Ваш заказ ${messageStatus.toLowerCase()}. Спасибо, что вы с нами!
-      `);
-  
     } catch (error) {
       console.log(error);
     }

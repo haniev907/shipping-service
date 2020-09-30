@@ -9,7 +9,10 @@ class MongoDish extends MongoModelBase {
     this.schema = new mongoose.Schema({
       name: { type: String, required: true },
       price: { type: Number, required: true },
-      photo: { type: String },
+      photo: { type: String, required: true },
+      category: { type: String },
+      weight: { type: String },
+      description: { type: String },
       restId: {
         type: String,
         ref: 'Restaurant',
@@ -20,9 +23,9 @@ class MongoDish extends MongoModelBase {
     this.Model = mongoose.model('Dish', this.schema);
   }
 
-  async addDish(name, price, photo, restId) {
+  async addDish({name, price, photo, restId, category, weight, description}) {
     const doc = new this.Model({
-      name, price, photo, restId
+      name, price, photo, restId, category
     });
 
     return doc.save();

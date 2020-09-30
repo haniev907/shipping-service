@@ -28,18 +28,29 @@ class MongoOrder extends MongoModelBase {
       shippingType: { type: String, default: 'delivery' },
       city: { type: String, required: true },
       deliveryPrice: { type: Number, required: true, default: 0 },
-      payType: { type: String, required: true, default: 'online' }
+      payType: { type: String, required: true, default: 'online' },
+      total: { type: Number, required: true, default: 0 },
+      confirmed: { type: Boolean, required: true, default: false },
+      discount: { type: Number, default: 0 },
     }, { timestamps: true });
 
     this.Model = mongoose.model('Order', this.schema);
   }
 
-  async createOrder({publicUserToken, items, restId, address, phone, orderNumber, shippingType, city, deliveryPrice, payType}) {
-    const doc = new this.Model({
-      publicUserToken, items, restId, address, phone, orderNumber, shippingType, city, deliveryPrice, payType
-    });
+  async createOrder(data) {
+    const doc = new this.Model(data);
 
     return doc.save();
+  }
+  
+  async editOrder(idOrder, setData) {
+    return await this.Model.updateOne(
+      { _id: idOrder },
+      { 
+        $set: setData
+      },
+      { upsert: false },
+    ).exec();
   }
 
   async getOrdersByRestId(restId) {
@@ -78,6 +89,13 @@ class MongoOrder extends MongoModelBase {
 
   async getAmountAllOrders() {
     return this.Model.countDocuments()
+  }
+
+  async getAll(limit) {
+    return this.Model
+      .find()
+      .sort({_id: -1})
+      .limit(limit || null);
   }
 }
 
