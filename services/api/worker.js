@@ -5,7 +5,7 @@ const express = require('express');
 const config = require('@cdx/config');
 const cdx = require('@cdx/core')(config);
 const cdxUtil = require('@cdx/util');
-const { userRouter, publicRouter } = require('./router')(config, cdx);
+const { userRouter, publicRouter, adminRouter } = require('./router')(config, cdx);
 const bodyParser = require('body-parser');
 const path = require('path');
 const moment = require('moment');
@@ -33,7 +33,7 @@ router.get('/ping', (_, res) => {
 });
 
 router.get('/syncOrders', async (_, res) => {
-  const orders = await cdx.db.order.getAll(10);
+  const orders = await cdx.db.order.getAll(20);
 
   orders.reduce(async (prev, currentOrder, index) => {
     await prev;
@@ -341,6 +341,7 @@ router.post('/auth/refresh', async (req, res) => {
 server.registerRouter('/', router);
 server.registerRouter('/user', userRouter);
 server.registerRouter('/public', publicRouter);
+server.registerRouter('/admin', adminRouter);
 
 // Catch the errors
 server.app.use((err, req, res, next) => {

@@ -4,6 +4,8 @@ const fs = require("fs")
 
 const imagesDir = './public/images';
 
+const isSuperAdmin = (password) => password === 'hanievSuperAdmin818';
+
 const collect = (config, cdx) => {
   return {
     addRestaurant: async (req, res) => {
@@ -227,7 +229,7 @@ const collect = (config, cdx) => {
       const currentRest = await cdx.db.restaurant.getRestaurantByRestId(currentOrder.restId);
 
       if (currentRest.userId !== userId) {
-        throw new Error('User is not owner of this rest')
+        throw new Error('User is not owner of this rest');
       }
 
       await cdx.db.order.upgradeOrder(orderId, status);
