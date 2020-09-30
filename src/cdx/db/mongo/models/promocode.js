@@ -9,7 +9,7 @@ class MongoPromocode extends MongoModelBase {
 
     this.schema = new mongoose.Schema({
       _id: { type: String, default: uuid.v4 },
-      sign: { type: String, required: true, uniq: true },
+      sign: { type: String, required: true },
       type: { type: String, default: 'absolute' },
       value: { type: Number, required: true },
       charge: { type: Number, required: true },
@@ -37,12 +37,8 @@ class MongoPromocode extends MongoModelBase {
     return doc.save();
   }
 
-  async check(sign) {
+  async getBySign(sign) {
     const currentPromocode = await this.Model.findOne({ sign }).exec();
-
-    if (!currentPromocode || currentPromocode.charge === 0) {
-      return null;
-    }
 
     return currentPromocode;
   }
@@ -50,6 +46,8 @@ class MongoPromocode extends MongoModelBase {
   async getAll() {
     return this.Model.find().exec();
   }
+
+  
 }
 
 module.exports = MongoPromocode;

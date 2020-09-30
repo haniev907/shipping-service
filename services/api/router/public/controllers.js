@@ -47,7 +47,7 @@ const collect = (config, cdx) => {
     createOrder: async (req, res) => {
       const {
         body: {
-          publicUserToken, items, restId, address, phone, shippingType, city, payType
+          publicUserToken, items, restId, address, phone, shippingType, city, payType, promocode
         },
       } = req;
 
@@ -70,11 +70,42 @@ const collect = (config, cdx) => {
       const deliveryPrice = cdxUtil.delivery.getPriceDelivery(rest.city, city);
       const fullItemsData = await cdx.db.wrapper.getFullDishes(items);
       const totalPrice = fullItemsData.totalPrice + deliveryPrice;
+      let discount = 0;
+  
+      if (promocode) {
+        const dbPromocode = await cdx.db.promocode.getBySign(promocode);
+
+        console.log({dbPromocode});
+
+        if (!dbPromocode || dbPromocode.charge < 1) {
+          return res.json(new cdxUtil.UserResponse({
+            failPromocode: {
+              message: 'Промокод устарел или не существует'
+            }
+          }));
+        }
+
+        if (dbPromocode.type === 'percent') {
+          discount = totalPrice * (dbPromocode.value / 100);
+        } else {
+          discount = dbPromocode.value;
+        }
+
+        if (dbPromocode.maxValue && dbPromocode.maxValue > 0) {
+          discount = Math.min(discount, dbPromocode.maxValue);
+        }
+
+        discount = Math.ceil(discount);
+
+        await cdx.db.promocode.editPromocode(dbPromocode._id, {
+          charge: dbPromocode.charge - 1
+        });
+      }
 
       const order = await cdx.db.order.createOrder({
         publicUserToken, items, restId, address, phone, 
         orderNumber, shippingType, city, deliveryPrice, payType,
-        total: Number(totalPrice), confirmed: isConfirmed
+        total: Number(totalPrice), confirmed: isConfirmed, discount
       });
       const fullOrder = await cdx.db.wrapper.getFullOrder(order._id);      
 
@@ -203,7 +234,8 @@ const collect = (config, cdx) => {
           orderNumber: order.orderNumber,
           shippingType: order.shippingType,
           _id: order._id,
-          confirmed: order.confirmed
+          confirmed: order.confirmed,
+          discount: fullOrder.discount
         });
       }
 

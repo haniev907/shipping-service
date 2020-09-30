@@ -9,7 +9,7 @@ class MongoClient extends MongoModelBase {
 
     this.schema = new mongoose.Schema({
       _id: { type: String, default: uuid.v4 },
-      phone: { type: String, required: true, uniq: true },
+      phone: { type: String, required: true, unique: true },
       pin: { type: String, required: true },
       name: { type: String },
       address: { type: String },
