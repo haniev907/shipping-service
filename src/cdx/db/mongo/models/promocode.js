@@ -30,15 +30,20 @@ class MongoPromocode extends MongoModelBase {
   }
 
   async createPromocode(promocodeData) {
+    const sign = promocodeData && promocodeData.sign && promocodeData.sign.toLowerCase().trim();
+
     const doc = new this.Model({
-      ...promocodeData
+      ...promocodeData,
+      sign
     });
 
     return doc.save();
   }
 
   async getBySign(sign) {
-    const currentPromocode = await this.Model.findOne({ sign }).exec();
+    const currentPromocode = await this.Model.findOne({ 
+      sign: sign ? sign.toLowerCase().trim() : ''
+    }).exec();
 
     return currentPromocode;
   }

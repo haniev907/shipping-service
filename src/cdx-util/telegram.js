@@ -16,14 +16,32 @@ const getCallbackData = (callbackDataString) => {
   };
 };
 
-const getMarkups = (orderId, shippingType) => {
-  const resArray = statuses.map((currentStatus, index) => [{
-    text: orderMethods.getStatusTestOfStatusNumber(index, shippingType), callback_data: createCallbackData(index, orderId)
-  }]);
+const getMarkups = (orderId, shippingType, nowOrderStatus) => {
+  // const resArray = statuses.map((currentStatus, index) => [{
+  //   text: orderMethods.getStatusTestOfStatusNumber(index, shippingType), 
+  //   callback_data: createCallbackData(index, orderId)
+  // }]);
 
-  resArray.unshift([{
-    text: 'Обновить данные про заказ', callback_data: createCallbackData(-1, orderId)
-  }])
+  const resArray = [
+    [{
+      text: 'Обновить данные про заказ', callback_data: createCallbackData(-1, orderId)
+    }]
+  ];
+
+  // Если доставлено или отменено
+  if (nowOrderStatus > 2) {
+    return resArray;
+  }
+
+  const nextStatusIndex = nowOrderStatus + 1;  
+  const cancelStatusIndex = 5;
+
+  [nextStatusIndex, cancelStatusIndex].forEach((currentStatusIndex) => {
+    resArray.push([{
+      text: orderMethods.getStatusTestOfStatusNumber(currentStatusIndex, shippingType), 
+      callback_data: createCallbackData(currentStatusIndex, orderId)
+    }]);
+  });
 
   return resArray;
 };
@@ -47,7 +65,7 @@ const enableHandleChangeStatus = (cdx) => {
         const newMessage = orderMethods.getHtmlMessageOrder(fullOrder, rest.name);
 
         options.reply_markup = JSON.stringify({
-          inline_keyboard: getMarkups(callbackData.orderId, order.shippingType)
+          inline_keyboard: getMarkups(callbackData.orderId, order.shippingType, order.status)
         });
 
         bot.editMessageText(newMessage, options);
@@ -65,7 +83,7 @@ const enableHandleChangeStatus = (cdx) => {
       const newMessage = orderMethods.getHtmlMessageOrder(readyOrder, rest.name);
 
       options.reply_markup = JSON.stringify({
-        inline_keyboard: getMarkups(callbackData.orderId, readyOrder.shippingType)
+        inline_keyboard: getMarkups(callbackData.orderId, readyOrder.shippingType, readyOrder.status)
       });
 
       bot.editMessageText(newMessage, options);
@@ -78,7 +96,7 @@ const enableHandleChangeStatus = (cdx) => {
 const sendMessageOrder = async (chatId, restName, {order}) => {
   await bot.sendMessage(chatId, orderMethods.getHtmlMessageOrder(order, restName), {
     reply_markup: JSON.stringify({
-      inline_keyboard: getMarkups(order._id, order.shippingType)
+      inline_keyboard: getMarkups(order._id, order.shippingType, order.status)
     }),
     parse_mode : 'HTML'
   });

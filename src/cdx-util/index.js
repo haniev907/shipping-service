@@ -60,15 +60,22 @@ const sendTelegramAnyMessageToAdmin = (tgRestId, message) => {
 };
 
 const sendTelegramMessageToAdmin = (tgRestId, restName, {order}) => {
-  const arrIds = [...hardCodeTelegramAdminIds];
+  let arrIds = [...hardCodeTelegramAdminIds];
 
-  if (tgRestId) {
+  if (tgRestId && !arrIds.includes(tgRestId)) {
     arrIds.unshift(tgRestId);
   }
 
+  const sended = {};
+
   arrIds.forEach((currentTgId) => {
     try {
+      if (sended[currentTgId]) {
+        return;
+      }
+
       telegramClient.sendMessageOrder(currentTgId, restName, {order});
+      sended[currentTgId] = true;
     } catch (error) {
       console.log(`Ошибка отправки тг-уведомления на ${currentTgId}`);
     }

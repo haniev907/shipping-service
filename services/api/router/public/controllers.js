@@ -107,9 +107,11 @@ const collect = (config, cdx) => {
       });
       const fullOrder = await cdx.db.wrapper.getFullOrder(order._id);      
 
-      cdxUtil.sendTelegramMessageToAdmin(isConfirmed ? rest.telegramChatId : null, rest.name, {
-        order: fullOrder
-      });
+      if (isConfirmed) {
+        cdxUtil.sendTelegramMessageToAdmin(rest.telegramChatId, rest.name, {
+          order: fullOrder
+        });
+      }
 
       let client = await cdx.db.client.getUserByPhone(phone);;
 
