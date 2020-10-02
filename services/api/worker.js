@@ -32,7 +32,7 @@ router.get('/ping', (_, res) => {
   res.json(new cdxUtil.UserResponseOK());
 });
 
-router.get('/syncOrders/:count', async (_, res) => {
+router.get('/syncOrders/:count', async (req, res) => {
   const {
     params: {
       count,
