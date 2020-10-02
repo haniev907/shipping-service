@@ -18,7 +18,7 @@ const getStatusTestOfStatusNumber = (statusNumber, shippingType) => {
 const getMenuListHtml = (items) => items.map((currentItem) => (
 `${currentItem.name} ${currentItem.quantity > 1 ? `(${currentItem.quantity} штук)` : ''}`
 )).join(`
-`)
+`);
 
 const getHtmlMessageOrder = (order, restName) => {
   return (`

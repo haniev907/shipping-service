@@ -67,7 +67,7 @@ const collect = (config, cdx) => {
       const orderNumber = await cdx.db.order.getAmountAllOrders();
       const rest = await cdx.db.restaurant.getRestaurantByRestId(restId);
 
-      const deliveryPrice = cdxUtil.delivery.getPriceDelivery(rest.city, city);
+      const deliveryPrice = shippingType === 'pickup' ? 0 : cdxUtil.delivery.getPriceDelivery(rest.city, city);
       const fullItemsData = await cdx.db.wrapper.getFullDishes(items);
       const totalPrice = shippingType === 'pickup' ? fullItemsData.totalPrice : fullItemsData.totalPrice + deliveryPrice;
       let discount = 0;

@@ -32,14 +32,20 @@ router.get('/ping', (_, res) => {
   res.json(new cdxUtil.UserResponseOK());
 });
 
-router.get('/syncOrders', async (_, res) => {
-  const orders = await cdx.db.order.getAll(20);
+router.get('/syncOrders/:count', async (_, res) => {
+  const {
+    params: {
+      count,
+    },
+  } = req;
+
+  const orders = await cdx.db.order.getAll(count);
 
   orders.reduce(async (prev, currentOrder, index) => {
     await prev;
 
     const fullItemsData = await cdx.db.wrapper.getFullDishes(currentOrder.items);
-    const deliveryPrice = currentOrder.deliveryPrice || 100;
+    const deliveryPrice = currentOrder.shippingType === 'pickup' ? 0 : (currentOrder.deliveryPrice || 100);
     const totalPrice = fullItemsData.totalPrice + deliveryPrice;
 
     console.log((((index + 1) / orders.length) * 100).toFixed(2) + '%', currentOrder._id, totalPrice);
