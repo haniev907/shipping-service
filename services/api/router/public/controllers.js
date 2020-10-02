@@ -69,7 +69,7 @@ const collect = (config, cdx) => {
 
       const deliveryPrice = cdxUtil.delivery.getPriceDelivery(rest.city, city);
       const fullItemsData = await cdx.db.wrapper.getFullDishes(items);
-      const totalPrice = fullItemsData.totalPrice + deliveryPrice;
+      const totalPrice = shippingType === 'pickup' ? fullItemsData.totalPrice : fullItemsData.totalPrice + deliveryPrice;
       let discount = 0;
   
       if (promocode) {

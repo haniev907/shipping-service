@@ -32,7 +32,7 @@ const getHtmlMessageOrder = (order, restName) => {
 Меню (${order.total - order.deliveryPrice} Р):
 ${getMenuListHtml(order.items)}
 
-Доставка: ${order.deliveryPrice} Р
+${order.shippingType === 'delivery' ? `Доставка: ${order.deliveryPrice} Р` : ''}
 Скидка: ${order.discount} Р
 Всего: ${order.total - order.discount} Р
 Оплата: <b>${order.payType === 'online' ? 'Перевод онлайн' : 'Наличными'}</b>
