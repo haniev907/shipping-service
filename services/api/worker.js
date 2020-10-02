@@ -39,7 +39,7 @@ router.get('/syncOrders/:count', async (req, res) => {
     },
   } = req;
 
-  const orders = await cdx.db.order.getAll(count);
+  const orders = await cdx.db.order.getAll(Number(count));
 
   orders.reduce(async (prev, currentOrder, index) => {
     await prev;
