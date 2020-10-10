@@ -39,7 +39,7 @@ ${getMenuList(order.items).join(`
   `;
   const skidka = `Скидка: ${order.discount} Р`;
   const dostavka = `Доставка: ${order.deliveryPrice} Р`;
-  const vsego = `Всего: ${order.total - order.discount} Р`;
+  const vsego = `Всего: <b>${order.total - order.discount} Р</b>`;
   const oplata = `Оплата: <b>${order.payType === 'online' ? 'Перевод онлайн' : 'Наличными'}</b>`;
   const upd = `upd: ${moment().format('h:mm:ss')}`;
 
@@ -64,20 +64,35 @@ ${getMenuList(order.items).join(`
 
 const getMessageOrderTelegram = (order, restName) => {
   const infoMap = getInfoArray(order, restName);
+  const list = [
+    infoMap.zakaz,
+    '',
+    infoMap.format,
+    infoMap.phone,
+  ];
 
-  return `
-${infoMap.zakaz}
-${infoMap.format}
-${infoMap.phone}
-${infoMap.address}
-${infoMap.status}
-${infoMap.menu}
-${infoMap.isShippingDelivery ? infoMap.dostavka : ''}
-${infoMap.skidka}
-${infoMap.vsego}
-${infoMap.oplata}
-${infoMap.upd}
-`;
+  if (infoMap.isShippingDelivery) {
+    list.push(infoMap.address);
+  }
+
+  list.push(infoMap.status);
+
+  list.push(infoMap.menu);
+
+  if (infoMap.isShippingDelivery) {
+    list.push(infoMap.dostavka);
+  }
+
+  list.push(infoMap.skidka);
+  list.push(infoMap.vsego);
+  list.push(infoMap.oplata);
+
+  list.push('');
+
+  list.push(infoMap.upd);
+
+  return list.join(`
+`);
 };
 
 const getMessageOrderWeb = (order, restName) => {
