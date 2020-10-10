@@ -203,15 +203,18 @@ const collect = (config, cdx) => {
         const fullOrder = await cdx.db.wrapper.getFullOrder(order._id);
 
         ordersReadyForAdmin.push({
-          address: order.address,
-          phone: order.phone,
-          status: order.status,
+          address: fullOrder.address,
+          phone: fullOrder.phone,
+          status: fullOrder.status,
           items: fullOrder.items,
           message: cdxUtil.getStatusTestOfStatusNumber(order.status, order.shippingType),
           deliveryPrice: fullOrder.deliveryPrice,
           total: fullOrder.total,
-          orderNumber: order.orderNumber,
-          _id: order._id
+          orderNumber: fullOrder.orderNumber,
+          updatedTime: fullOrder.updatedAt,
+          shippingType: fullOrder.shippingType,
+          orderInfo: cdxUtil.orderMethods.getMessageOrderWeb(fullOrder, currentRest.name),
+          _id: fullOrder._id
         });
       }
 
