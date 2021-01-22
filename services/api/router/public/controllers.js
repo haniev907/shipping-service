@@ -14,14 +14,22 @@ const getPhonePinOfToken = (token) => {
   };
 };
 
+const cities = cdxUtil.delivery.getCities();
+
 const collect = (config, cdx) => {
   const actions = {
     getRestaurants: async (req, res) => {
       const { userId } = req;
 
       const listRests = await cdx.db.restaurant.getPublicRestaurants();
+      const response = listRests.map((currRest) => {
+        return {
+          ...currRest._doc,
+          city_ru: cities[currRest.city]
+        };
+      });
 
-      res.json(new cdxUtil.UserResponse(listRests));
+      res.json(new cdxUtil.UserResponse(response));
     },
 
     getRestaurant: async (req, res) => {

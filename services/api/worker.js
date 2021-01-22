@@ -59,6 +59,63 @@ router.get('/syncOrders/:count', async (req, res) => {
   res.json(new cdxUtil.UserResponse(orders));
 });
 
+router.get('/stats-of-cites', async (req, res) => {
+  const orders = await cdx.db.order.getAll();
+  const cities = {};
+  const citiesMapOrders = {}; 
+  const aroundTheCity = {};
+  let aroundTheCityAmount = 0;
+  let allOrders = 0;
+
+  const cityMapOrders = orders.reduce(async (prevResponse, currentOrder, index) => {
+    await prevResponse;
+
+    let rest = null;
+
+    if (cities[currentOrder.restId]) {
+      rest = cities[currentOrder.restId];
+    } else {
+      const gettedRest = await cdx.db.restaurant.getRestaurantByRestId(currentOrder.restId);
+      console.log({gettedRest});
+      cities[currentOrder.restId] = gettedRest;
+      rest = gettedRest;
+    }
+
+    const fromCity = rest.city;
+    const toCity = currentOrder.city;
+    const indexKey = `${fromCity}/${toCity}`;
+
+    if (!toCity) {
+      return rest; 
+    }
+
+    if (fromCity === toCity) {
+      aroundTheCity[indexKey] = (aroundTheCity[indexKey] || 0) + 1;
+      aroundTheCityAmount++;
+    }
+  
+    if (!citiesMapOrders[indexKey]) {
+      citiesMapOrders[indexKey] = 0;
+    }
+
+    citiesMapOrders[indexKey]++;
+    allOrders++;
+
+    console.log(indexKey, citiesMapOrders[indexKey]);
+
+    return rest;
+  }, Promise.resolve());
+
+  cityMapOrders.then(() => {
+    res.json(new cdxUtil.UserResponse({
+      citiesMapOrders,
+      aroundTheCity,
+      aroundTheCityAmount,
+      allOrders
+    }));
+  });
+});
+
 router.get('/stats', async (_, res) => {
   const orders = await cdx.db.order.getAll();
 
@@ -187,7 +244,8 @@ router.get('/stats', async (_, res) => {
               </tr>
           </table>
           <script>
-            console.log(${JSON.stringify(resData)})
+            var data = ${JSON.stringify(resData)};
+            var allOrders = ${JSON.stringify(orders)};
           </script>
         </body>
       </html>
