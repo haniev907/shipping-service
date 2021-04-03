@@ -30,7 +30,7 @@ const getInfoArray = (order, restName) => {
   const zakaz = `Заказ <b>№${order.orderNumber}</b> (${restName})`;
   const format = `Формат: <b>${shippingTypesStrings[order.shippingType]}</b>`;
   const phone = `Телефон клиента: <b><i>${order.phone}</i></b>`;
-  const address = `Адрес клиента: <b>${delivery.getCities()[(order.city)]}, ${order.address}</b>`;
+  const address = `Адрес клиента: <b>${order.isLavka ? order.city : delivery.getCities()[(order.city)]}, ${order.address}</b>`;
   const status = `Текущий статус: <b>${getStatusTestOfStatusNumber(order.status, order.shippingType)}</b>`;
   const menu = `
 Меню (${order.total - order.deliveryPrice} Р):

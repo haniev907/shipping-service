@@ -13,7 +13,10 @@ class MongoRestaurant extends MongoModelBase {
       userId: { type: String, ref: 'User', required: true },
       telegramChatId: { type: String, required: true },
       city: { type: String, required: true },
-      onlinePayMessage: { type: String }
+      onlinePayMessage: { type: String },
+      isLavka: { type: Boolean },
+      fixedDeliveryPrice: { type: Number },
+      fixedRegion: { type: String }
     }, { timestamps: true });
 
     this.Model = mongoose.model('Restaurant', this.schema);

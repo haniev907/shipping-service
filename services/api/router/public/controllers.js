@@ -75,7 +75,16 @@ const collect = (config, cdx) => {
       const orderNumber = await cdx.db.order.getAmountAllOrders();
       const rest = await cdx.db.restaurant.getRestaurantByRestId(restId);
 
-      const deliveryPrice = shippingType === 'pickup' ? 0 : cdxUtil.delivery.getPriceDelivery(rest.city, city);
+      let deliveryPrice = null;
+
+      if (rest.isLavka) {
+        deliveryPrice = rest.fixedDeliveryPrice;
+      } else if (shippingType === 'pickup') {
+        deliveryPrice = 0;
+      } else {
+        deliveryPrice = cdxUtil.delivery.getPriceDelivery(rest.city, city);
+      }
+
       const fullItemsData = await cdx.db.wrapper.getFullDishes(items);
       const totalPrice = shippingType === 'pickup' ? fullItemsData.totalPrice : fullItemsData.totalPrice + deliveryPrice;
       let discount = 0;
@@ -111,7 +120,8 @@ const collect = (config, cdx) => {
       const order = await cdx.db.order.createOrder({
         publicUserToken, items, restId, address, phone, 
         orderNumber, shippingType, city, deliveryPrice, payType,
-        total: Number(totalPrice), confirmed: isConfirmed, discount
+        total: Number(totalPrice), confirmed: isConfirmed, discount, 
+        isLavka: rest.isLavka || false
       });
       const fullOrder = await cdx.db.wrapper.getFullOrder(order._id);      
 

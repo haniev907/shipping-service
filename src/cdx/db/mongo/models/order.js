@@ -32,6 +32,7 @@ class MongoOrder extends MongoModelBase {
       total: { type: Number, required: true, default: 0 },
       confirmed: { type: Boolean, required: true, default: false },
       discount: { type: Number, default: 0 },
+      isLavka: { type: Boolean, default: false }
     }, { timestamps: true });
 
     this.Model = mongoose.model('Order', this.schema);

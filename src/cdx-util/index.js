@@ -5,11 +5,14 @@ const orderMethods = require('./orderMethods');
 const phoneNotification = require('./phoneNotification');
 const delivery = require('./delivery');
 
+const IBR_CHAT_ID = '368250774';
+const MAGOMED_CHAT_ID = '689459158';
+const LIDA_CHAT_ID = '609733324';
+
 const hardCodeTelegramAdminIds = [
-  '368250774', // ibragim
-  '689459158', // magomed
-  '609733324', // lida
-  '408388567' // daniil
+  IBR_CHAT_ID, // ibragim
+  MAGOMED_CHAT_ID, // magomed
+  LIDA_CHAT_ID, // lida
 ];
 
 class UserError extends Error {
@@ -61,6 +64,10 @@ const sendTelegramAnyMessageToAdmin = (tgRestId, message) => {
 
 const sendTelegramMessageToAdmin = (tgRestId, restName, {order}) => {
   let arrIds = [...hardCodeTelegramAdminIds];
+
+  if (order.isLavka) {
+    arrIds.filter((chatId) => chatId !== LIDA_CHAT_ID);
+  }
 
   if (tgRestId && !arrIds.includes(tgRestId)) {
     arrIds.unshift(tgRestId);
