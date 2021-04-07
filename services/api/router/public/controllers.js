@@ -253,7 +253,8 @@ const collect = (config, cdx) => {
           shippingType: order.shippingType,
           _id: order._id,
           confirmed: order.confirmed,
-          discount: fullOrder.discount
+          discount: fullOrder.discount,
+          isLavka: Boolean(fullOrder.isLavka)
         });
       }
 
