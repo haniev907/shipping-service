@@ -69,6 +69,8 @@ const sendTelegramMessageToAdmin = (tgRestId, restName, {order}) => {
 
   if (order.isLavka) {
     arrIds.filter((chatId) => chatId !== LIDA_CHAT_ID);
+  } else {
+    arrIds.filter((chatId) => chatId !== BASIR_CHAT_ID);
   }
 
   if (tgRestId && !arrIds.includes(tgRestId)) {
