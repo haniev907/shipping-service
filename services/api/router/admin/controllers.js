@@ -1,4 +1,4 @@
-const cdxUtil = require('@cdx/util');
+const cdxUtil = require('../../../../src/cdx-util');
 const base64Img = require('base64-img');
 const fs = require("fs")
 

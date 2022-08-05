@@ -1,4 +1,4 @@
-const cdxUtil = require('@cdx/util');
+const cdxUtil = require('../../cdx-util');
 
 module.exports = (db) => {
   const actions = {

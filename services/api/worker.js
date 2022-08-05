@@ -2,9 +2,9 @@ const util = require('util');
 const validate = require('validate.js');
 
 const express = require('express');
-const config = require('@cdx/config');
-const cdx = require('@cdx/core')(config);
-const cdxUtil = require('@cdx/util');
+const config = require('../../config');
+const cdx = require('../../src/cdx')(config);
+const cdxUtil = require('../../src/cdx-util');
 const { userRouter, publicRouter, adminRouter } = require('./router')(config, cdx);
 const bodyParser = require('body-parser');
 const path = require('path');

@@ -1,7 +1,7 @@
 const express = require('express');
 require('express-async-errors');
 
-const cdxUtil = require('@cdx/util');
+const cdxUtil = require('../../cdx-util');
 const cors = require('cors');
 
 const logger = new cdxUtil.Logging();

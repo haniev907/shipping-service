@@ -1,6 +1,6 @@
 const express = require('express');
-const config = require('@cdx/config');
-const cdx = require('@cdx/core')(config);
+const config = require('../../config');
+const cdx = require('../../src/cdx')(config);
 
 const server = cdx.web.server();
 const router = express.Router();

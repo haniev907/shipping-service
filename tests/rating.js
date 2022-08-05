@@ -3,7 +3,7 @@ const fs = require('fs');
 const moment = require('moment');
 const chai = require('chai');
 
-const { Rating, Tick } = require('@cdx/util');
+const { Rating, Tick } = require('../src/cdx-util');
 
 const testPredefinedStrategy = (path) => {
   const strategyDate = JSON.parse(fs.readFileSync(path, 'utf8'));

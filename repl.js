@@ -1,8 +1,8 @@
 const repl = require('repl');
 
-const cdxUtil = require('@cdx/util');
-const config = require('@cdx/config');
-const cdx = require('@cdx/core')(config);
+const cdxUtil = require('./src/cdx-util');
+const config = require('.//config');
+const cdx = require('./src/cdx')(config);
 
 const replServer = repl.start('cdx > ');
 

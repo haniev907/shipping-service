@@ -1,7 +1,7 @@
 const Sentry = require('@sentry/node');
 const { JsonWebTokenError } = require('jsonwebtoken');
 
-const cdxUtil = require('@cdx/util');
+const cdxUtil = require('../../cdx-util');
 const Crypt = require('./crypt');
 
 class Auth {

@@ -1,4 +1,4 @@
-const cdxUtil = require('@cdx/util');
+const cdxUtil = require('../src/cdx-util');
 
 const config = {};
 
