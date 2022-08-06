@@ -2,7 +2,7 @@ const util = require('util');
 const validate = require('validate.js');
 
 const express = require('express');
-const config = require('../../config');
+const config = require('../../config').server;
 const cdx = require('../../src/cdx')(config);
 const cdxUtil = require('../../src/cdx-util');
 const { userRouter, publicRouter, adminRouter } = require('./router')(config, cdx);
