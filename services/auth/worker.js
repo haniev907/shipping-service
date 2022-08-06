@@ -1,5 +1,5 @@
 const express = require('express');
-const config = require('../../config').auth;
+const config = require('../../config');
 const cdx = require('../../src/cdx')(config);
 
 const server = cdx.web.server();
