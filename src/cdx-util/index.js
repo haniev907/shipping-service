@@ -12,9 +12,6 @@ const BASIR_CHAT_ID = '1128047221';
 
 const hardCodeTelegramAdminIds = [
   IBR_CHAT_ID, // ibragim
-  MAGOMED_CHAT_ID, // magomed
-  LIDA_CHAT_ID, // lida
-  BASIR_CHAT_ID, // BASIR
 ];
 
 class UserError extends Error {

@@ -209,7 +209,7 @@ const collect = (config, cdx) => {
             pin: clientPin
           });
 
-          cdxUtil.sendNotificationToUser(phone, `@eda.house | Ваш пин-номер ${client.pin}, подтвердите свой заказ на сайте. Теперь это ваш пароль, запомните его, пожалуйста.`);
+          cdxUtil.sendNotificationToUser(phone, `@hoano.ru | Ваш пин-номер ${client.pin}, подтвердите свой заказ на сайте. Теперь это ваш пароль, запомните его, пожалуйста.`);
         }
       }
 
@@ -220,7 +220,7 @@ const collect = (config, cdx) => {
         throw new cdxUtil.UserError('Подождите пару минут, слишком много попыток.')
       }
 
-      cdxUtil.sendNotificationToUser(phone, `@eda.house | Ваш пин-номер ${client.pin}, подтвердите свой заказ на сайте. Теперь это ваш пароль, запомните его, пожалуйста.`);
+      cdxUtil.sendNotificationToUser(phone, `@hoano.ru | Ваш пин-номер ${client.pin}, подтвердите свой заказ на сайте. Теперь это ваш пароль, запомните его, пожалуйста.`);
 
       await cdx.db.client.editClient(client._id, {
         lastTimeRemind: nowTime
