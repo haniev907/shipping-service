@@ -16,15 +16,16 @@ class MongoRestaurant extends MongoModelBase {
       onlinePayMessage: { type: String },
       isLavka: { type: Boolean },
       fixedDeliveryPrice: { type: Number },
-      fixedRegion: { type: String }
+      fixedRegion: { type: String },
+      customId: { type: String, unique: true }
     }, { timestamps: true });
 
     this.Model = mongoose.model('Restaurant', this.schema);
   }
 
-  async createRestaurant({name, address, photo, userId, telegramChatId, city, onlinePayMessage}) {
+  async createRestaurant({name, address, photo, userId, telegramChatId, city, onlinePayMessage, customId}) {
     const doc = new this.Model({
-      name, address, photo, userId, telegramChatId, city, onlinePayMessage
+      name, address, photo, userId, telegramChatId, city, onlinePayMessage, customId
     });
 
     return doc.save();
@@ -32,7 +33,7 @@ class MongoRestaurant extends MongoModelBase {
 
   async editRestaurant(idRest, setData) {
     return await this.Model.updateOne(
-      { _id: idRest },
+      { customId: idRest },
       { 
         $set: setData
       },
@@ -48,13 +49,13 @@ class MongoRestaurant extends MongoModelBase {
 
   async removeRestaurantByRestId(restId) {
     return this.Model.deleteOne({
-      _id: restId
+      customId: restId
     }).exec();
   }
 
   async getRestaurantByRestId(restId) {
     return this.Model.findOne({
-      _id: restId
+      customId: restId,
     }).exec();
   }
 
