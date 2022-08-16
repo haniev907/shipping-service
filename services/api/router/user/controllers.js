@@ -48,7 +48,7 @@ const collect = (config, cdx) => {
       }
 
       await cdx.db.restaurant.editRestaurant(idRest, {
-        name, address, telegramChatId, city, onlinePayMessage
+        name, address, telegramChatId, city, onlinePayMessage, customId
       });
 
       res.json(new cdxUtil.UserResponseOK());
@@ -97,7 +97,7 @@ const collect = (config, cdx) => {
       } = req;
 
       const listRests = await cdx.db.restaurant.getRestaurantsByUserId(userId);
-      const isUserOwnerThisRest = listRests.some((currentRest) => currentRest.userId === userId && idRestaurant === String(currentRest._id))
+      const isUserOwnerThisRest = listRests.some((currentRest) => currentRest.userId === userId && idRestaurant === String(currentRest.customId))
 
       if (!isUserOwnerThisRest) {
         throw new Error('User is not owner of this rest')
