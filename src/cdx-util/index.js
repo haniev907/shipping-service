@@ -5,12 +5,6 @@ const orderMethods = require('./orderMethods');
 const phoneNotification = require('./phoneNotification');
 const delivery = require('./delivery');
 
-const IBR_CHAT_ID = '368250774';
-
-const hardCodeTelegramAdminIds = [
-  IBR_CHAT_ID, // ibragim
-];
-
 class UserError extends Error {
   constructor(...args) {
     super(...args);
@@ -58,29 +52,6 @@ const sendTelegramAnyMessageToAdmin = (tgRestId, message) => {
   }
 };
 
-const sendTelegramMessageToAdmin = (tgRestId, restName, {order}) => {
-  let arrIds = [...hardCodeTelegramAdminIds];
-
-  if (tgRestId && !arrIds.includes(tgRestId)) {
-    arrIds.unshift(tgRestId);
-  }
-
-  const sended = {};
-
-  arrIds.forEach((currentTgId) => {
-    try {
-      if (sended[currentTgId]) {
-        return;
-      }
-
-      telegramClient.sendMessageOrder(currentTgId, restName, {order});
-      sended[currentTgId] = true;
-    } catch (error) {
-      console.log(`Ошибка отправки тг-уведомления на ${currentTgId}`);
-    }
-  });
-};
-
 const startTelegramBotAdmin = (cdx, config) => {
   telegramClient.init(cdx, config);
 };
@@ -88,7 +59,7 @@ const startTelegramBotAdmin = (cdx, config) => {
 module.exports = {
   getStatusTestOfStatusNumber: orderMethods.getStatusTestOfStatusNumber,
   sendNotificationToUser: phoneNotification.sendNotificationToUser,
-  sendTelegramMessageToAdmin,
+  sendTelegramMessageToAdmin: telegramClient.sendTelegramMessageToAdmin,
   sendTelegramAnyMessageToAdmin,
   envFlag,
   envRequire,

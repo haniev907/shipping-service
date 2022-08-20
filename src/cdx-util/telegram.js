@@ -130,8 +130,38 @@ const init = async (cdx, config) => {
   enableHandlePullMessage();
 };
 
+const IBR_CHAT_ID = '368250774';
+
+const hardCodeTelegramAdminIds = [
+  IBR_CHAT_ID, // ibragim
+];
+
+const sendTelegramMessageToAdmin = (tgRestId, restName, {order}) => {
+  let arrIds = [...hardCodeTelegramAdminIds];
+
+  if (tgRestId && !arrIds.includes(tgRestId)) {
+    arrIds.unshift(tgRestId);
+  }
+
+  const sended = {};
+
+  arrIds.forEach((currentTgId) => {
+    try {
+      if (sended[currentTgId]) {
+        return;
+      }
+
+      sendMessageOrder(currentTgId, restName, {order});
+      sended[currentTgId] = true;
+    } catch (error) {
+      console.log(`Ошибка отправки тг-уведомления на ${currentTgId}`);
+    }
+  });
+};
+
 module.exports = {
   init,
   sendMessageOrder,
   sendMessage,
+  sendTelegramMessageToAdmin,
 };
