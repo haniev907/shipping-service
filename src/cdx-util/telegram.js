@@ -34,7 +34,7 @@ const getMarkups = (orderId, shippingType, nowOrderStatus) => {
   }
 
   const nextStatusIndex = nowOrderStatus + 1;  
-  const cancelStatusIndex = 5;
+  const cancelStatusIndex = statuses.length - 1;
 
   [nextStatusIndex, cancelStatusIndex].forEach((currentStatusIndex) => {
     resArray.push([{
