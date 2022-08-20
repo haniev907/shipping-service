@@ -73,6 +73,8 @@ const enableHandleChangeStatus = (cdx) => {
 
     const isOwner = hardCodeTelegramAdminIds.includes(msg.chat.id);
 
+    console.log(msg.chat.id);
+
     // Акшен обновить данные
     if (callbackData.actionId === '-1') {
       try {
