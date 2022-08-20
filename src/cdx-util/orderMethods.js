@@ -26,6 +26,22 @@ const shippingTypesStrings = {
   inhouse: 'Покушаю тут'
 };
 
+const smiles = [
+  '\u{1F609}',
+  '\u{1F60A}',
+  '\u{1F60B}',
+  '\u{1F60C}',
+  '\u{1F61C}',
+  '\u{1F624}',
+  '\u{1F632}',
+  '\u{1F635}',
+  '\u{1F63B}',
+  '\u{1F648}',
+  '\u{270C}',
+  '\u{1F680}',
+  '\u{1F380}',
+  '\u{1F388}',
+];
 const getRandorSmile = () => {
   const max = smiles.length - 1;
   const min = 0;
@@ -80,7 +96,7 @@ const getMessageOrderTelegram = (order, restName, options = {
   const isOwner = options.isOwner;
   const infoMap = getInfoArray(order, restName);
   const list = [
-    '\u{1F600}',
+    ,
     isOwner ? infoMap.zakazForOwner : infoMap.zakazForRest,
     '',
     infoMap.format,
