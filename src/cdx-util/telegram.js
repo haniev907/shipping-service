@@ -5,6 +5,8 @@ const phoneNotification = require('./phoneNotification');
 const cdxUtil = require('./');
 
 const idSendOrderToRest = 1;
+const idCancelFromClient = 5;
+const idCancelFromRest = 6;
 
 const token = process.env.TG_BOT;
 
@@ -19,11 +21,14 @@ const getCallbackData = (callbackDataString) => {
   };
 };
 
-const getMarkups = (orderId, shippingType, nowOrderStatus) => {
+const getMarkups = (orderId, shippingType, nowOrderStatus, options = {
+  isOwner: false,
+}) => {
   // const resArray = statuses.map((currentStatus, index) => [{
   //   text: orderMethods.getStatusTestOfStatusNumber(index, shippingType), 
   //   callback_data: createCallbackData(index, orderId)
   // }]);
+  const isOwner = options.isOwner;
 
   const resArray = [
     [{
@@ -31,8 +36,15 @@ const getMarkups = (orderId, shippingType, nowOrderStatus) => {
     }]
   ];
 
-  // Если доставлено или отменено
-  if (nowOrderStatus > 2) {
+  if (isOwner) {
+    return resArray.concat(statuses.map((_, index) => ({
+      text: orderMethods.getStatusTestOfStatusNumber(index, shippingType), 
+      callback_data: createCallbackData(index, orderId)
+    })))
+  }
+
+  // Если отменено
+  if ([idCancelFromClient, idCancelFromRest].includes(nowOrderStatus)) {
     return resArray;
   }
 
@@ -59,6 +71,8 @@ const enableHandleChangeStatus = (cdx) => {
       parse_mode : 'HTML'
     };
 
+    const isOwner = hardCodeTelegramAdminIds.includes(msg.chat.id);
+
     // Акшен обновить данные
     if (callbackData.actionId === '-1') {
       try {
@@ -68,7 +82,9 @@ const enableHandleChangeStatus = (cdx) => {
         const newMessage = orderMethods.getMessageOrderTelegram(fullOrder, rest.name);
 
         options.reply_markup = JSON.stringify({
-          inline_keyboard: getMarkups(callbackData.orderId, order.shippingType, order.status)
+          inline_keyboard: getMarkups(callbackData.orderId, order.shippingType, order.status, {
+            isOwner,
+          })
         });
 
         bot.editMessageText(newMessage, options);
@@ -93,7 +109,9 @@ const enableHandleChangeStatus = (cdx) => {
       }
 
       options.reply_markup = JSON.stringify({
-        inline_keyboard: getMarkups(callbackData.orderId, readyOrder.shippingType, readyOrder.status)
+        inline_keyboard: getMarkups(callbackData.orderId, readyOrder.shippingType, readyOrder.status, {
+          isOwner,
+        })
       });
 
       bot.editMessageText(newMessage, options);

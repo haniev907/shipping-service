@@ -26,25 +26,36 @@ const shippingTypesStrings = {
   inhouse: 'Покушаю тут'
 };
 
+const getRandorSmile = () => {
+  const max = smiles.length - 1;
+  const min = 0;
+  const random = (Math.random() * (max - min)) + min;
+
+  return smiles[random];
+};
+
 const getInfoArray = (order, restName) => {
-  const zakaz = `Заказ <b>№${order.orderNumber}</b> (${restName})`;
+  const zakazForOwner = `Заказ <b>№${order.orderNumber}</b> (${restName})`;
+  const zakazForRest = `Заказ <b>№${order.orderNumber}</b>`;
   const format = `Формат: <b>${shippingTypesStrings[order.shippingType]}</b>`;
   const phone = `Телефон клиента: <b><i>${order.phone}</i></b>`;
   const address = `Адрес клиента: <b>${order.isLavka ? order.city : delivery.getCities()[(order.city)]}, ${order.address}</b>`;
   const status = `Текущий статус: <b>${getStatusTestOfStatusNumber(order.status, order.shippingType)}</b>`;
   const menu = `
-Меню (${order.total - order.deliveryPrice} Р):
+Меню:
 ${getMenuList(order.items).join(`
 `)}
   `;
   const skidka = `Скидка: ${order.discount} Р`;
   const dostavka = `Доставка: ${order.deliveryPrice} Р`;
-  const vsego = `Всего: <b>${order.total - order.discount} Р</b>`;
+  const vsegoForRest = `Всего: <b>${order.total - order.discount - order.deliveryPrice} Р</b> (скидка: ${order.discount})`;
+  const vsegoForOwner = `Всего: <b>${order.total - order.discount} Р</b> (скидка: ${order.discount})`;
   const oplata = `Оплата: <b>${order.payType === 'online' ? 'Перевод онлайн' : 'Наличными'}</b>`;
   const upd = `upd: ${moment().format('h:mm:ss')}`;
 
   return {
-    zakaz,
+    zakazForOwner,
+    zakazForRest,
     format,
     phone,
     address,
@@ -52,7 +63,8 @@ ${getMenuList(order.items).join(`
     menu,
     dostavka,
     skidka,
-    vsego,
+    vsegoForOwner,
+    vsegoForRest,
     oplata,
     upd,
 
@@ -62,10 +74,14 @@ ${getMenuList(order.items).join(`
   };
 };
 
-const getMessageOrderTelegram = (order, restName) => {
+const getMessageOrderTelegram = (order, restName, options = {
+  isOwner: false,
+}) => {
+  const isOwner = options.isOwner;
   const infoMap = getInfoArray(order, restName);
   const list = [
-    infoMap.zakaz,
+    '\u{1F600}',
+    isOwner ? infoMap.zakazForOwner : infoMap.zakazForRest,
     '',
     infoMap.format,
     infoMap.phone,
@@ -79,17 +95,23 @@ const getMessageOrderTelegram = (order, restName) => {
 
   list.push(infoMap.menu);
 
-  if (infoMap.isShippingDelivery) {
+  if (isOwner && infoMap.isShippingDelivery) {
     list.push(infoMap.dostavka);
   }
 
-  list.push(infoMap.skidka);
-  list.push(infoMap.vsego);
-  list.push(infoMap.oplata);
+  list.push(
+    isOwner ? infoMap.vsegoForOwner : infoMap.vsegoForRest
+  );
+
+  if (isOwner) {
+    list.push(infoMap.oplata);
+  }
 
   list.push('');
 
-  list.push(infoMap.upd);
+  if (isOwner) {
+    list.push(infoMap.upd);
+  }
 
   return list.join(`
 `);
