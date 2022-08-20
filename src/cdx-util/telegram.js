@@ -115,6 +115,7 @@ const enableHandlePullMessage = () => {
 };
 
 const init = async (cdx, config) => {
+  console.log('Бот тг стартовал');
   enableHandleChangeStatus(cdx);
   enableHandlePullMessage();
 };
