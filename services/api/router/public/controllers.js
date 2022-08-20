@@ -59,7 +59,7 @@ const collect = (config, cdx) => {
         },
       } = req;
 
-      let isConfirmed = true;
+      let isConfirmed = false;
 
       const {pin} = getPhonePinOfToken(publicUserToken);
       const tokenPhone = phone;
@@ -125,11 +125,11 @@ const collect = (config, cdx) => {
       });
       const fullOrder = await cdx.db.wrapper.getFullOrder(order._id);      
 
-      if (isConfirmed) {
+      // if (isConfirmed) {
         cdxUtil.sendTelegramMessageToAdmin(null, rest.name, {
           order: fullOrder
         });
-      }
+      // }
 
       let client = await cdx.db.client.getUserByPhone(phone);
 
