@@ -68,8 +68,10 @@ ${getMenuList(order.items).join(`
   const vsegoForOwner = `Всего: <b>${order.total - order.discount} Р</b> (скидка: ${order.discount})`;
   const oplata = `Оплата: <b>${order.payType === 'online' ? 'Перевод онлайн' : 'Наличными'}</b>`;
   const upd = `upd: ${moment().format('h:mm:ss')}`;
+  const smile = getRandorSmile();
 
   return {
+    smile,
     zakazForOwner,
     zakazForRest,
     format,
@@ -96,7 +98,7 @@ const getMessageOrderTelegram = (order, restName, options = {
   const isOwner = options.isOwner;
   const infoMap = getInfoArray(order, restName);
   const list = [
-    ,
+    infoMap.smile,,
     isOwner ? infoMap.zakazForOwner : infoMap.zakazForRest,
     '',
     infoMap.format,
