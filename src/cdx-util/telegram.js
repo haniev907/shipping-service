@@ -2,6 +2,9 @@ const TelegramBot = require('node-telegram-bot-api');
 const statuses = require('./statuses');
 const orderMethods = require('./orderMethods');
 const phoneNotification = require('./phoneNotification');
+const cdxUtil = require('./');
+
+const idSendOrderToRest = 1;
 
 const token = process.env.TG_BOT;
 
@@ -81,6 +84,13 @@ const enableHandleChangeStatus = (cdx) => {
       const readyOrder = await cdx.db.wrapper.getFullOrder(updatedOrder._id);
       const rest = await cdx.db.restaurant.getRestaurantByRestId(readyOrder.restId);
       const newMessage = orderMethods.getMessageOrderTelegram(readyOrder, rest.name);
+
+      // Момент принятия заказы управляющей компанией
+      if (readyOrder.status === idSendOrderToRest) {
+        cdxUtil.sendTelegramMessageToAdmin(rest.telegramChatId, rest.name, {
+          order: fullOrder
+        });
+      }
 
       options.reply_markup = JSON.stringify({
         inline_keyboard: getMarkups(callbackData.orderId, readyOrder.shippingType, readyOrder.status)
