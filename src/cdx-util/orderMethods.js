@@ -98,7 +98,7 @@ const getMessageOrderTelegram = (order, restName, options = {
   const isOwner = options.isOwner;
   const infoMap = getInfoArray(order, restName);
   const list = [
-    infoMap.smile,,
+    infoMap.smile,
     isOwner ? infoMap.zakazForOwner : infoMap.zakazForRest,
     '',
     infoMap.format,

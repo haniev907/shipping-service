@@ -79,7 +79,7 @@ const enableHandleChangeStatus = (cdx) => {
         const order = await cdx.db.order.getOrderById(callbackData.orderId);
         const fullOrder = await cdx.db.wrapper.getFullOrder(order._id);
         const rest = await cdx.db.restaurant.getRestaurantByRestId(fullOrder.restId);
-        const newMessage = orderMethods.getMessageOrderTelegram(fullOrder, rest.name);
+        const newMessage = orderMethods.getMessageOrderTelegram(fullOrder, rest.name, {isOwner});
 
         options.reply_markup = JSON.stringify({
           inline_keyboard: getMarkups(callbackData.orderId, order.shippingType, order.status, {
@@ -99,7 +99,7 @@ const enableHandleChangeStatus = (cdx) => {
       const updatedOrder = await cdx.db.order.upgradeOrder(callbackData.orderId, callbackData.actionId);
       const readyOrder = await cdx.db.wrapper.getFullOrder(updatedOrder._id);
       const rest = await cdx.db.restaurant.getRestaurantByRestId(readyOrder.restId);
-      const newMessage = orderMethods.getMessageOrderTelegram(readyOrder, rest.name);
+      const newMessage = orderMethods.getMessageOrderTelegram(readyOrder, rest.name, {isOwner});
 
       // Момент принятия заказы управляющей компанией
       if (readyOrder.status === idSendOrderToRest) {
@@ -122,9 +122,10 @@ const enableHandleChangeStatus = (cdx) => {
 };
 
 const sendMessageOrder = async (chatId, restName, {order}) => {
-  await bot.sendMessage(chatId, orderMethods.getMessageOrderTelegram(order, restName), {
+  const isOwner = hardCodeTelegramAdminIds.includes(chatId);
+  await bot.sendMessage(chatId, orderMethods.getMessageOrderTelegram(order, restName, {isOwner}), {
     reply_markup: JSON.stringify({
-      inline_keyboard: getMarkups(order._id, order.shippingType, order.status)
+      inline_keyboard: getMarkups(order._id, order.shippingType, order.status, {isOwner})
     }),
     parse_mode : 'HTML'
   });
