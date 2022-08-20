@@ -73,7 +73,7 @@ const enableHandleChangeStatus = (cdx) => {
 
     const isOwner = hardCodeTelegramAdminIds.includes(msg.chat.id);
 
-    console.log(msg.chat.id);
+    console.log(msg.chat.id, {isOwner});
 
     // Акшен обновить данные
     if (callbackData.actionId === '-1') {
@@ -81,11 +81,11 @@ const enableHandleChangeStatus = (cdx) => {
         const order = await cdx.db.order.getOrderById(callbackData.orderId);
         const fullOrder = await cdx.db.wrapper.getFullOrder(order._id);
         const rest = await cdx.db.restaurant.getRestaurantByRestId(fullOrder.restId);
-        const newMessage = orderMethods.getMessageOrderTelegram(fullOrder, rest.name, {isOwner});
+        const newMessage = orderMethods.getMessageOrderTelegram(fullOrder, rest.name, {isOwner: isOwner});
 
         options.reply_markup = JSON.stringify({
           inline_keyboard: getMarkups(callbackData.orderId, order.shippingType, order.status, {
-            isOwner,
+            isOwner: isOwner,
           })
         });
 
@@ -101,7 +101,7 @@ const enableHandleChangeStatus = (cdx) => {
       const updatedOrder = await cdx.db.order.upgradeOrder(callbackData.orderId, callbackData.actionId);
       const readyOrder = await cdx.db.wrapper.getFullOrder(updatedOrder._id);
       const rest = await cdx.db.restaurant.getRestaurantByRestId(readyOrder.restId);
-      const newMessage = orderMethods.getMessageOrderTelegram(readyOrder, rest.name, {isOwner});
+      const newMessage = orderMethods.getMessageOrderTelegram(readyOrder, rest.name, {isOwner: isOwner});
 
       // Момент принятия заказы управляющей компанией
       if (readyOrder.status === idSendOrderToRest) {
@@ -125,9 +125,9 @@ const enableHandleChangeStatus = (cdx) => {
 
 const sendMessageOrder = async (chatId, restName, {order}) => {
   const isOwner = hardCodeTelegramAdminIds.includes(chatId);
-  await bot.sendMessage(chatId, orderMethods.getMessageOrderTelegram(order, restName, {isOwner}), {
+  await bot.sendMessage(chatId, orderMethods.getMessageOrderTelegram(order, restName, {isOwner: isOwner}), {
     reply_markup: JSON.stringify({
-      inline_keyboard: getMarkups(order._id, order.shippingType, order.status, {isOwner})
+      inline_keyboard: getMarkups(order._id, order.shippingType, order.status, {isOwner: isOwner})
     }),
     parse_mode : 'HTML'
   });
