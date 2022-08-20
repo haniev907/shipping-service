@@ -88,7 +88,7 @@ const enableHandleChangeStatus = (cdx) => {
       // Момент принятия заказы управляющей компанией
       if (readyOrder.status === idSendOrderToRest) {
         cdxUtil.sendTelegramMessageToAdmin(rest.telegramChatId, rest.name, {
-          order: fullOrder
+          order: readyOrder
         });
       }
 
