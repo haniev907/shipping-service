@@ -73,7 +73,7 @@ const enableHandleChangeStatus = (cdx) => {
 
     const isOwner = hardCodeTelegramAdminIds.includes(msg.chat.id);
 
-    console.log(msg.chat.id, {isOwner});
+    console.log(msg.chat.id, {isOwner, hardCodeTelegramAdminIds});
 
     // Акшен обновить данные
     if (callbackData.actionId === '-1') {
@@ -151,7 +151,7 @@ const init = async (cdx, config) => {
   enableHandlePullMessage();
 };
 
-const IBR_CHAT_ID = '368250774';
+const IBR_CHAT_ID = 368250774;
 
 const hardCodeTelegramAdminIds = [
   IBR_CHAT_ID, // ibragim
