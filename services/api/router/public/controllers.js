@@ -59,18 +59,18 @@ const collect = (config, cdx) => {
         },
       } = req;
 
-      let isConfirmed = false;
+      let isConfirmed = true;
 
       const {pin} = getPhonePinOfToken(publicUserToken);
       const tokenPhone = phone;
 
-      if (pin) {
-        const client = await cdx.db.client.getUserByPhone(tokenPhone);
+      // if (pin) {
+      //   const client = await cdx.db.client.getUserByPhone(tokenPhone);
 
-        if (client && client.pin) {
-          isConfirmed = client.pin === pin;
-        }
-      }
+      //   if (client && client.pin) {
+      //     isConfirmed = client.pin === pin;
+      //   }
+      // }
 
       const orderNumber = await cdx.db.order.getAmountAllOrders();
       const rest = await cdx.db.restaurant.getRestaurantByRestId(restId);
@@ -126,12 +126,12 @@ const collect = (config, cdx) => {
       const fullOrder = await cdx.db.wrapper.getFullOrder(order._id);      
 
       if (isConfirmed) {
-        cdxUtil.sendTelegramMessageToAdmin(rest.telegramChatId, rest.name, {
+        cdxUtil.sendTelegramMessageToAdmin(null, rest.name, {
           order: fullOrder
         });
       }
 
-      let client = await cdx.db.client.getUserByPhone(phone);;
+      let client = await cdx.db.client.getUserByPhone(phone);
 
       if (!isConfirmed) {
         let clientPin = getRandomPin();
@@ -144,7 +144,7 @@ const collect = (config, cdx) => {
             address
           });
 
-          cdxUtil.sendNotificationToUser(phone, `@eda.house | Ваш пин-номер ${client.pin}, подтвердите свой заказ на сайте. Теперь это ваш пароль, запомните его, пожалуйста.`);
+          // cdxUtil.sendNotificationToUser(phone, `@hoano.ru | Ваш пин-номер ${client.pin}, подтвердите свой заказ на сайте. Теперь это ваш пароль, запомните его, пожалуйста.`);
         }
       }
 

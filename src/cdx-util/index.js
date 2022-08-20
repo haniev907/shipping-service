@@ -6,9 +6,6 @@ const phoneNotification = require('./phoneNotification');
 const delivery = require('./delivery');
 
 const IBR_CHAT_ID = '368250774';
-const MAGOMED_CHAT_ID = '689459158';
-const LIDA_CHAT_ID = '609733324';
-const BASIR_CHAT_ID = '1128047221';
 
 const hardCodeTelegramAdminIds = [
   IBR_CHAT_ID, // ibragim
@@ -63,12 +60,6 @@ const sendTelegramAnyMessageToAdmin = (tgRestId, message) => {
 
 const sendTelegramMessageToAdmin = (tgRestId, restName, {order}) => {
   let arrIds = [...hardCodeTelegramAdminIds];
-
-  if (order.isLavka) {
-    arrIds.filter((chatId) => chatId !== LIDA_CHAT_ID);
-  } else {
-    arrIds.filter((chatId) => chatId !== BASIR_CHAT_ID);
-  }
 
   if (tgRestId && !arrIds.includes(tgRestId)) {
     arrIds.unshift(tgRestId);
