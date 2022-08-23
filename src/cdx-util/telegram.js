@@ -51,7 +51,7 @@ const getMarkups = (orderId, shippingType, nowOrderStatus, options = {
     }])))
   }
 
-  if (!isOwner && nowOrderStatus > 3) {
+  if (!isOwner && nowOrderStatus > 2) {
     return resArray;
   }
 
