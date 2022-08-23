@@ -17,15 +17,16 @@ class MongoRestaurant extends MongoModelBase {
       isLavka: { type: Boolean },
       fixedDeliveryPrice: { type: Number },
       fixedRegion: { type: String },
-      customId: { type: String, unique: true }
+      customId: { type: String, unique: true },
+      instagram: { type: String }
     }, { timestamps: true });
 
     this.Model = mongoose.model('Restaurant', this.schema);
   }
 
-  async createRestaurant({name, address, photo, userId, telegramChatId, city, onlinePayMessage, customId}) {
+  async createRestaurant({name, address, photo, userId, telegramChatId, city, onlinePayMessage, customId, instagram}) {
     const doc = new this.Model({
-      name, address, photo, userId, telegramChatId, city, onlinePayMessage, customId
+      name, address, photo, userId, telegramChatId, city, onlinePayMessage, customId, instagram
     });
 
     return doc.save();

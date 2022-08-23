@@ -30,11 +30,6 @@ const getMarkups = (orderId, shippingType, nowOrderStatus, options = {
   //   text: orderMethods.getStatusTestOfStatusNumber(index, shippingType), 
   //   callback_data: createCallbackData(index, orderId)
   // }]);
-  console.log({
-    orderId,
-    shippingType,
-    nowOrderStatus,
-  });
 
   const isOwner = options.isOwner;
 
