@@ -65,9 +65,8 @@ const getMarkups = (orderId, shippingType, nowOrderStatus, options = {
   }
 
   const nextStatusIndex = nowOrderStatus + 1;  
-  const cancelStatusIndex = statuses.length - 1;
 
-  [nextStatusIndex, cancelStatusIndex].forEach((currentStatusIndex) => {
+  [nextStatusIndex].forEach((currentStatusIndex) => {
     resArray.push([{
       text: orderMethods.getStatusTestOfStatusNumber(currentStatusIndex, shippingType), 
       callback_data: createCallbackData(currentStatusIndex, orderId)
