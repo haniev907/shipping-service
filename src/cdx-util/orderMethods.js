@@ -9,7 +9,7 @@ const getMessageOrder = (order) => (
 );
 
 const getStatusTestOfStatusNumber = (statusNumber, shippingType) => {
-  if (statusNumber === 2 && shippingType === 'pickup') {
+  if (statusNumber === 3 && shippingType === 'pickup') {
     return 'Готов, приходите забирать'
   }
 
