@@ -6,6 +6,7 @@ const cdxUtil = require('./');
 
 const idSendOrderToRest = 1;
 const idFinishPickup = 3;
+const idFinishDelivery = 4;
 const idCancelFromClient = 5;
 const idCancelFromRest = 6;
 
@@ -50,12 +51,16 @@ const getMarkups = (orderId, shippingType, nowOrderStatus, options = {
     }])))
   }
 
+  if (!isOwner && nowOrderStatus > 3) {
+    return resArray;
+  }
+
   if (shippingType === 'pickup' && nowOrderStatus === idFinishPickup) {
     return resArray;
   }
 
   // Если отменено
-  if ([idCancelFromClient, idCancelFromRest].includes(nowOrderStatus)) {
+  if ([idCancelFromClient, idCancelFromRest, idFinishDelivery].includes(nowOrderStatus)) {
     return resArray;
   }
 
