@@ -5,6 +5,7 @@ const phoneNotification = require('./phoneNotification');
 const cdxUtil = require('./');
 
 const idSendOrderToRest = 1;
+const idFinishPickup = 3;
 const idCancelFromClient = 5;
 const idCancelFromRest = 6;
 
@@ -28,6 +29,12 @@ const getMarkups = (orderId, shippingType, nowOrderStatus, options = {
   //   text: orderMethods.getStatusTestOfStatusNumber(index, shippingType), 
   //   callback_data: createCallbackData(index, orderId)
   // }]);
+  console.log({
+    orderId,
+    shippingType,
+    nowOrderStatus,
+  });
+
   const isOwner = options.isOwner;
 
   const resArray = [
@@ -41,6 +48,10 @@ const getMarkups = (orderId, shippingType, nowOrderStatus, options = {
       text: orderMethods.getStatusTestOfStatusNumber(index, shippingType), 
       callback_data: createCallbackData(index, orderId)
     }])))
+  }
+
+  if (shippingType === 'pickup' && nowOrderStatus === idFinishPickup) {
+    return resArray;
   }
 
   // Если отменено
