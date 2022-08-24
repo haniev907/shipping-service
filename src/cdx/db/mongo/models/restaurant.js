@@ -20,7 +20,8 @@ class MongoRestaurant extends MongoModelBase {
       customId: { type: String, unique: true },
       instagram: { type: String },
       isBad: { type: Boolean },
-      shortDescription: { type: String }
+      shortDescription: { type: String },
+      isClosed: { type: Boolean }
     }, { timestamps: true });
 
     this.Model = mongoose.model('Restaurant', this.schema);

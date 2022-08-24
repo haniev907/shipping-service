@@ -51,6 +51,7 @@ const collect = (config, cdx) => {
           instagram,
           isBad,
           shortDescription,
+          isClosed,
         },
       } = req;
 
@@ -66,6 +67,7 @@ const collect = (config, cdx) => {
           instagram,
           isBad,
           shortDescription,
+          isClosed,
         });
       };
 
