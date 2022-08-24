@@ -54,7 +54,7 @@ const collect = (config, cdx) => {
         },
       } = req;
 
-      const edit = (data) => {
+      const edit = async (data) => {
         await cdx.db.restaurant.editRestaurant(idRest, {
           ...data,
           name,
@@ -74,14 +74,14 @@ const collect = (config, cdx) => {
           const pathArr = filepath.split('/')
           const fileName = pathArr[pathArr.length - 1];
 
-          edit({
+          await edit({
             photo: fileName,
           });
   
           res.json(new cdxUtil.UserResponseOK());
         });
       } else {
-        edit();
+        await edit();
       }
 
       res.json(new cdxUtil.UserResponseOK());
