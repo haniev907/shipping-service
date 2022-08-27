@@ -81,9 +81,7 @@ const enableHandleChangeStatus = (cdx) => {
       parse_mode : 'HTML'
     };
 
-    const isOwner = hardCodeTelegramAdminIds.includes(msg.chat.id);
-
-    console.log(msg.chat.id, {isOwner, hardCodeTelegramAdminIds});
+    const isOwner = true; //hardCodeTelegramAdminIds.includes(msg.chat.id);
 
     // Акшен обновить данные
     if (callbackData.actionId === '-1') {
@@ -114,11 +112,11 @@ const enableHandleChangeStatus = (cdx) => {
       const newMessage = orderMethods.getMessageOrderTelegram(readyOrder, rest.name, {isOwner: isOwner});
 
       // Момент принятия заказы управляющей компанией
-      if (readyOrder.status === idSendOrderToRest) {
-        sendTelegramMessageToAdmin(rest.telegramChatId, rest.name, {
-          order: readyOrder
-        });
-      }
+      // if (readyOrder.status === idSendOrderToRest) {
+      //   sendTelegramMessageToAdmin(rest.telegramChatId, rest.name, {
+      //     order: readyOrder
+      //   });
+      // }
 
       options.reply_markup = JSON.stringify({
         inline_keyboard: getMarkups(callbackData.orderId, readyOrder.shippingType, readyOrder.status, {
@@ -134,7 +132,7 @@ const enableHandleChangeStatus = (cdx) => {
 };
 
 const sendMessageOrder = async (chatId, restName, {order}) => {
-  const isOwner = hardCodeTelegramAdminIds.includes(chatId);
+  const isOwner = true; //hardCodeTelegramAdminIds.includes(chatId);
   await bot.sendMessage(chatId, orderMethods.getMessageOrderTelegram(order, restName, {isOwner: isOwner}), {
     reply_markup: JSON.stringify({
       inline_keyboard: getMarkups(order._id, order.shippingType, order.status, {isOwner: isOwner})
