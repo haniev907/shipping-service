@@ -145,7 +145,7 @@ const sendMessage = async (chatId, message) => {
   await bot.sendMessage(chatId, message);
 };
 
-const enableHandlePullMessage = () => {
+const enableHandlePullMessage = (cdx) => {
   bot.on('message', async (msg) => {
     if (msg.text === '/getChatId') {
       bot.sendMessage(msg.chat.id, msg.chat.id);
@@ -184,7 +184,7 @@ const enableHandlePullMessage = () => {
 const init = async (cdx, config) => {
   console.log('Бот тг стартовал');
   enableHandleChangeStatus(cdx);
-  enableHandlePullMessage();
+  enableHandlePullMessage(cdx);
 };
 
 const IBR_CHAT_ID = 368250774;
