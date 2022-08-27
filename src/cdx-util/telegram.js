@@ -46,9 +46,9 @@ const getMarkups = (orderId, shippingType, nowOrderStatus, options = {
     }])))
   }
 
-  if (!isOwner && nowOrderStatus > 2) {
-    return resArray;
-  }
+  // if (!isOwner && nowOrderStatus > 2) {
+  //   return resArray;
+  // }
 
   if (shippingType === 'pickup' && nowOrderStatus === idFinishPickup) {
     return resArray;
@@ -164,7 +164,6 @@ const init = async (cdx, config) => {
 const IBR_CHAT_ID = 368250774;
 
 const hardCodeTelegramAdminIds = [
-  IBR_CHAT_ID, // ibragim
 ];
 
 const sendTelegramMessageToAdmin = (tgRestId, restName, {order}) => {
