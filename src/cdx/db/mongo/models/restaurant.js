@@ -18,7 +18,10 @@ class MongoRestaurant extends MongoModelBase {
       fixedDeliveryPrice: { type: Number },
       fixedRegion: { type: String },
       customId: { type: String, unique: true },
-      instagram: { type: String }
+      instagram: { type: String },
+      isBad: { type: Boolean },
+      shortDescription: { type: String },
+      isClosed: { type: Boolean }
     }, { timestamps: true });
 
     this.Model = mongoose.model('Restaurant', this.schema);

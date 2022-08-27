@@ -11,7 +11,7 @@ const collect = (config, cdx) => {
     addRestaurant: async (req, res) => {
       const {
         userId, body: {
-          name, address, photo, telegramChatId, city, onlinePayMessage, customId, instagram
+          name, address, photo, telegramChatId, city, onlinePayMessage, customId, instagram, isBad, shortDescription
         },
       } = req;
 
@@ -19,7 +19,19 @@ const collect = (config, cdx) => {
         const pathArr = filepath.split('/')
         const fileName = pathArr[pathArr.length - 1];
 
-        await cdx.db.restaurant.createRestaurant({name, address, photo: fileName, userId, telegramChatId, city, onlinePayMessage, customId, instagram});
+        await cdx.db.restaurant.createRestaurant({
+          name,
+          address,
+          photo: fileName,
+          userId,
+          telegramChatId,
+          city,
+          onlinePayMessage,
+          customId,
+          instagram,
+          isBad,
+          shortDescription,
+        });
 
         res.json(new cdxUtil.UserResponseOK());
       });
@@ -28,28 +40,51 @@ const collect = (config, cdx) => {
     editRestaurant: async (req, res) => {
       const {
         userId, body: {
-          name, address, photo, telegramChatId, idRest, city, onlinePayMessage, customId, instagram
+          name,
+          address,
+          photo,
+          telegramChatId,
+          idRest,
+          city,
+          onlinePayMessage,
+          customId,
+          instagram,
+          isBad,
+          shortDescription,
+          isClosed,
         },
       } = req;
+
+      const edit = async (data) => {
+        await cdx.db.restaurant.editRestaurant(idRest, {
+          ...data,
+          name,
+          address,
+          telegramChatId,
+          city,
+          onlinePayMessage,
+          customId,
+          instagram,
+          isBad,
+          shortDescription,
+          isClosed,
+        });
+      };
 
       if (photo) {
         base64Img.img(photo, imagesDir, Date.now(), async function(err, filepath) {
           const pathArr = filepath.split('/')
           const fileName = pathArr[pathArr.length - 1];
-  
-          await cdx.db.restaurant.editRestaurant(idRest, {
-            name, address, photo: fileName, telegramChatId, city, onlinePayMessage, customId, instagram
+
+          await edit({
+            photo: fileName,
           });
   
           res.json(new cdxUtil.UserResponseOK());
         });
-
-        return;
+      } else {
+        await edit();
       }
-
-      await cdx.db.restaurant.editRestaurant(idRest, {
-        name, address, telegramChatId, city, onlinePayMessage, customId, instagram
-      });
 
       res.json(new cdxUtil.UserResponseOK());
     },
