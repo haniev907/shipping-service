@@ -160,6 +160,7 @@ const enableHandlePullMessage = () => {
         });
         bot.sendMessage(msg.chat.id, 'Ваш ресторан успешно закрыт.');
       } catch (error) {
+        console.log(error);
         bot.sendMessage(msg.chat.id, 'Произошла ошибка, попробуйте позже.');
       }
     }
@@ -173,6 +174,7 @@ const enableHandlePullMessage = () => {
         });
         bot.sendMessage(msg.chat.id, 'Ваш ресторан успешно закрыт.');
       } catch (error) {
+        console.log(error);
         bot.sendMessage(msg.chat.id, 'Произошла ошибка, попробуйте позже.');
       }
     }
