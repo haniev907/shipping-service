@@ -39,12 +39,12 @@ const getMarkups = (orderId, shippingType, nowOrderStatus, options = {
     }]
   ];
 
-  if (isOwner) {
-    return resArray.concat(statuses.map((_, index) => ([{
-      text: orderMethods.getStatusTestOfStatusNumber(index, shippingType), 
-      callback_data: createCallbackData(index, orderId)
-    }])))
-  }
+  // if (isOwner) {
+  //   return resArray.concat(statuses.map((_, index) => ([{
+  //     text: orderMethods.getStatusTestOfStatusNumber(index, shippingType), 
+  //     callback_data: createCallbackData(index, orderId)
+  //   }])))
+  // }
 
   // if (!isOwner && nowOrderStatus > 2) {
   //   return resArray;
