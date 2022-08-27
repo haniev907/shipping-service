@@ -162,6 +162,7 @@ const init = async (cdx, config) => {
 const IBR_CHAT_ID = 368250774;
 
 const hardCodeTelegramAdminIds = [
+  IBR_CHAT_ID,
 ];
 
 const sendTelegramMessageToAdmin = (tgRestId, restName, {order}) => {
