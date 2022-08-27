@@ -51,6 +51,12 @@ class MongoRestaurant extends MongoModelBase {
     }).exec();
   }
 
+  async getRestaurantsByChatId(telegramChatId) {
+    return this.Model.find({
+      telegramChatId
+    }).exec();
+  }
+
   async removeRestaurantByRestId(restId) {
     return this.Model.deleteOne({
       customId: restId

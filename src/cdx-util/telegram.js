@@ -146,9 +146,35 @@ const sendMessage = async (chatId, message) => {
 };
 
 const enableHandlePullMessage = () => {
-  bot.on('message', (msg) => {
+  bot.on('message', async (msg) => {
     if (msg.text === '/getChatId') {
       bot.sendMessage(msg.chat.id, msg.chat.id);
+    }
+
+    //Экшен чтобы закрыть ресторан
+    if (msg.text === '/closerest') {
+      try {
+        const rest = await cdx.db.restaurant.getRestaurantsByChatId(msg.chat.id);
+        await cdx.db.restaurant.editRestaurant(rest.customId, {
+          isClosed: true,
+        });
+        bot.sendMessage(msg.chat.id, 'Ваш ресторан успешно закрыт.');
+      } catch (error) {
+        bot.sendMessage(msg.chat.id, 'Произошла ошибка, попробуйте позже.');
+      }
+    }
+
+    //Экшен чтобы закрыть ресторан
+    if (msg.text === '/openrest') {
+      try {
+        const rest = await cdx.db.restaurant.getRestaurantsByChatId(msg.chat.id);
+        await cdx.db.restaurant.editRestaurant(rest.customId, {
+          isClosed: false,
+        });
+        bot.sendMessage(msg.chat.id, 'Ваш ресторан успешно закрыт.');
+      } catch (error) {
+        bot.sendMessage(msg.chat.id, 'Произошла ошибка, попробуйте позже.');
+      }
     }
   });
 };
