@@ -155,7 +155,6 @@ const enableHandlePullMessage = (cdx) => {
     if (msg.text === '/closerest') {
       try {
         const rest = await cdx.db.restaurant.getRestaurantByChatId(msg.chat.id);
-        console.log(rest);
         await cdx.db.restaurant.editRestaurant(rest.customId, {
           isClosed: true,
         });
