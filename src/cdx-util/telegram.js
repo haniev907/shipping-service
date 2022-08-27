@@ -154,7 +154,7 @@ const enableHandlePullMessage = (cdx) => {
     //Экшен чтобы закрыть ресторан
     if (msg.text === '/closerest') {
       try {
-        const rest = await cdx.db.restaurant.getRestaurantsByChatId(msg.chat.id);
+        const rest = await cdx.db.restaurant.getRestaurantByChatId(msg.chat.id);
         console.log(rest);
         await cdx.db.restaurant.editRestaurant(rest.customId, {
           isClosed: true,
@@ -169,7 +169,7 @@ const enableHandlePullMessage = (cdx) => {
     //Экшен чтобы закрыть ресторан
     if (msg.text === '/openrest') {
       try {
-        const rest = await cdx.db.restaurant.getRestaurantsByChatId(msg.chat.id);
+        const rest = await cdx.db.restaurant.getRestaurantByChatId(msg.chat.id);
         await cdx.db.restaurant.editRestaurant(rest.customId, {
           isClosed: false,
         });
